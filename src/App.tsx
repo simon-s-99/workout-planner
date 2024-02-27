@@ -1,27 +1,27 @@
+// App component
 import { useState } from "react";
 import "./App.css";
 import type { Settings } from "./types";
-import WeekComponent from "./components/weekComponent";
+import WeekComponent from "./components/WeekComponent";
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
-    // Default values
     units: "kilograms",
     trainingGoal: "powerlifting",
   });
 
-  // State for managing the selected weekday
+  // Currently selected weekday, initialized to "Monday" in case we want a start value.
   const [selectedWeekday, setSelectedWeekday] = useState<string>("Monday");
 
   return (
     <div className="App">
       <h1>Workout Planner</h1>
-      {/* Week selection */}
-      <div className="week-selector-container">
-        <WeekComponent setSelectedWeekday={setSelectedWeekday} />
+      <div className="weekComponent">
+        <WeekComponent
+          selectedWeekday={selectedWeekday}
+          setSelectedWeekday={setSelectedWeekday}
+        />
       </div>
-
-      <div>Selected Day: {selectedWeekday}</div>
     </div>
   );
 };

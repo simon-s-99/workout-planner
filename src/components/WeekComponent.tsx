@@ -1,12 +1,15 @@
 import React from "react";
 
-// Props for WeekdayPicker, allowing for setting the selected weekday in a parent component
+// Define the props expected by the WeekComponent
 interface WeekdayPickerProps {
+  selectedWeekday: string;
+
+  // Function to update the selected weekday
   setSelectedWeekday: React.Dispatch<React.SetStateAction<string>>;
 }
 
-// WeekdayPicker component for selecting a weekday
 const WeekComponent: React.FC<WeekdayPickerProps> = ({
+  selectedWeekday,
   setSelectedWeekday,
 }) => {
   const weekdays = [
@@ -19,13 +22,6 @@ const WeekComponent: React.FC<WeekdayPickerProps> = ({
     "Sunday",
   ];
 
-  // Handler function for when a radio button is changed
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    // Update the selected weekday based on the radio button's value
-    setSelectedWeekday(e.target.value);
-  }
-
-  // Render radio buttons for each weekday
   return (
     <div className="WeekComponent">
       {weekdays.map((weekday) => (
@@ -35,9 +31,8 @@ const WeekComponent: React.FC<WeekdayPickerProps> = ({
             type="radio"
             name="weekday"
             value={weekday}
-            onChange={handleChange}
-            // standard value set to monday
-            checked={weekday === "Monday"}
+            onChange={(e) => setSelectedWeekday(e.target.value)} // Update selectedWeekday
+            checked={selectedWeekday === weekday} // Mark as checked if it matches the selectedWeekday
           />
         </label>
       ))}

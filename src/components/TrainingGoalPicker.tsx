@@ -17,7 +17,7 @@ const TrainingGoalPicker: React.FC<TrainingGoalPickerProps> = ({
   return (
     <div className="TrainingGoalPicker">
       <label>
-        Bodybuilding
+        Strength
         <input
           type="radio"
           name="trainingGoal"

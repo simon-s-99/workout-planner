@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import type { Settings } from "./types";
+import MuscleCategory from './components/MuscleCategory.tsx';
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
@@ -12,6 +13,8 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <h1>Workout Planner</h1>
+      <MuscleCategory muscleGroup='biceps'></MuscleCategory>
+      <MuscleCategory muscleGroup='legs'></MuscleCategory>
     </div>
   );
 };

@@ -1,16 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import {Test} from './components/Test'
+import { useState } from "react";
+import "./App.css";
+import type { Settings } from "./types";
 
-function App() {
+const App: React.FC = () => {
+  const [settings, setSettings] = useState<Settings>({
+    // Default values
+    units: "metric",
+    trainingGoal: "bodybuilding",
+  });
 
   return (
     <div className="App">
-      <Test name={"My heading"}></Test>
+      <h1>Workout Planner</h1>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

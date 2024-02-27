@@ -21,26 +21,26 @@ const TrainingGoalPicker: React.FC<TrainingGoalPickerProps> = ({
         <input
           type="radio"
           name="trainingGoal"
-          value="bodybuilding"
+          value="strength"
           defaultChecked
           onChange={(e) => handleChange(e)}
         />
       </label>
       <label>
-        Endurance
+        Cardio
         <input
           type="radio"
           name="trainingGoal"
-          value="endurance"
+          value="cardio"
           onChange={(e) => handleChange(e)}
         />
       </label>
       <label>
-        Strength
+        Powerlifting
         <input
           type="radio"
           name="trainingGoal"
-          value="strength"
+          value="powerlifting"
           onChange={(e) => handleChange(e)}
         />
       </label>

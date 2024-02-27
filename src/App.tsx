@@ -5,8 +5,8 @@ import type { Settings } from "./types";
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
     // Default values
-    units: "metric",
-    trainingGoal: "bodybuilding",
+    units: "kilograms",
+    trainingGoal: "powerlifting",
   });
 
   return (

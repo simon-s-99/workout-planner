@@ -4,6 +4,7 @@ import "./App.css";
 import type { Settings } from "./types";
 import { Weekday } from "./types";
 import WeekComponent from "./components/WeekComponent";
+import ExerciseDropdownComponent from "./components/SetRepsWeight"; // Too lazy to change this ugly name rn
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
@@ -23,6 +24,8 @@ const App: React.FC = () => {
           setSelectedWeekday as React.Dispatch<React.SetStateAction<Weekday>>
         }
       />
+      {/* Include the ExerciseDropdownComponent here */}
+      <ExerciseDropdownComponent />
     </div>
   );
 };

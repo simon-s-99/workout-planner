@@ -24,15 +24,22 @@ const WeekComponent: React.FC<WeekdayPickerProps> = ({
 
   return (
     <div className="WeekComponent">
+      <h2 className="weekdays-heading">Day</h2>
       {weekdays.map((weekday) => (
-        <label key={weekday}>
+        <label
+          key={weekday}
+          className={`weekday-label ${
+            selectedWeekday === weekday ? "selected" : ""
+          }`}
+        >
           {weekday}
           <input
             type="radio"
             name="weekday"
             value={weekday}
-            onChange={(e) => setSelectedWeekday(e.target.value)} // Update selectedWeekday
-            checked={selectedWeekday === weekday} // Mark as checked if it matches the selectedWeekday
+            className="weekday-radio"
+            onChange={(e) => setSelectedWeekday(e.target.value)}
+            checked={selectedWeekday === weekday}
           />
         </label>
       ))}

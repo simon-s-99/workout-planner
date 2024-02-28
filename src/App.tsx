@@ -16,6 +16,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <h1>Workout Planner</h1>
+
       <div className="weekComponent">
         <WeekComponent
           selectedWeekday={selectedWeekday}

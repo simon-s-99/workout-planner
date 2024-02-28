@@ -8,3 +8,5 @@ export type Settings = {
     units: Unit;
     trainingGoal: TrainingGoal;
 }
+
+export type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-//might need to have a converter here depending on if it's set to kg or lbs
-
 interface ExerciseSet {
   setNumber: number;
   reps: number;
@@ -10,20 +8,20 @@ interface ExerciseSet {
 
 interface Exercise {
   name: string;
-  sets: ExerciseSet[]; // An array of sets
+  sets: ExerciseSet[];
 }
 
-//Subcomponent to display details of an exercise
-const ExerciseDetail: React.FC<{ exercise: Exercise }> = ({ exercise }) => {
-  // Maps over each set in the exercise to display its details
+// Assume a prop for weight unit is added to this component
+const ExerciseDetail: React.FC<{ exercise: Exercise; unit: "kgs" | "lbs" }> = ({
+  exercise,
+  unit,
+}) => {
   return (
     <div>
       {exercise.sets.map((set, index) => (
         <div key={index}>
-          {/* Display information about the set */}
           <div>
-            Set {set.setNumber}: {set.reps} reps, {set.weight} kgs/lbs (change
-            this later)
+            Set {set.setNumber}: {set.reps} reps, {set.weight} {unit}
           </div>
         </div>
       ))}
@@ -31,39 +29,37 @@ const ExerciseDetail: React.FC<{ exercise: Exercise }> = ({ exercise }) => {
   );
 };
 
-// Main component to display exercises and manage which exercise's details are shown
-const ExerciseDropdownComponent: React.FC = () => {
-  const [exercises, setExercises] = useState<Exercise[]>([]); // Stores the list of exercises
+// Adding a prop for the selected weight unit
+const ExerciseDropdownComponent: React.FC<{ unit: "kgs" | "lbs" }> = ({
+  unit,
+}) => {
+  const [exercises, setExercises] = useState<Exercise[]>([]);
   const [selectedExerciseName, setSelectedExerciseName] = useState<
     string | null
-  >(null); // Tracks the currently selected exercise
+  >(null);
 
   useEffect(() => {
-    // Fetches exercises from localStorage on component mount
+    // Placeholder for fetching data from an API or localStorage
+    // TODO: Replace with actual data fetching logic
     const storedExercises = localStorage.getItem("exercises");
     if (storedExercises) {
-      // Parse the JSON string back into an array of Exercise objects and set it to state
       setExercises(JSON.parse(storedExercises));
     }
-  }, []); // Empty dependency array ensures this effect runs only once when the component mounts
+  }, []);
 
-  // Function to toggle the visibility of an exercise's details
   const toggleExerciseDetail = (name: string) => {
     setSelectedExerciseName((prevName) => (prevName === name ? null : name));
-    // If the selected exercise is clicked again, it hides its details, otherwise shows the new one
   };
 
   return (
     <div>
       {exercises.map((exercise) => (
         <div key={exercise.name}>
-          {/* Button to toggle the display of the exercise details */}
           <button onClick={() => toggleExerciseDetail(exercise.name)}>
             {exercise.name}
           </button>
-          {/* Conditionally render the ExerciseDetail component if this exercise is selected */}
           {selectedExerciseName === exercise.name && (
-            <ExerciseDetail exercise={exercise} />
+            <ExerciseDetail exercise={exercise} unit={unit} />
           )}
         </div>
       ))}

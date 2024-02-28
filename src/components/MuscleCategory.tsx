@@ -1,16 +1,48 @@
-interface MuscleCategoryProps {
-    muscleGroup: string;
-    // we also need access to the users training goals here so that we
-    // can make a more specific api call with this info 
-}
+const MuscleCategory: React.FC = () => {
+    const muscleGroups: string[] = [
+        "Abdominals",
+        "Biceps",
+        "Triceps",
+        "Forearms",
+        "Chest",
+        "Lats",
+        "Traps",
+        "Lower_back",
+        "Middle_back",
+        "Glutes",
+        "Hamstrings",
+        "Quadriceps",
+        "Abductors",
+        "Adductors",
+        "Calves",
+    ];
 
-const MuscleCategory: React.FC<MuscleCategoryProps> = ({ muscleGroup }) => {
+    const muscleGroupsListItems: JSX.Element[] = muscleGroups.map((muscleGroup, index) => {
+        return (
+            <li key={index}>
+                <label>
+                    <input 
+                        type="button" 
+                        name="categoryDropdown" 
+                        value={muscleGroup}
+                        onChange={(e) => renderExerciseList(e)}></input>
+                </label>
+            </li>
+        );
+    });
+
+    function renderExerciseList(e: React.ChangeEvent<HTMLInputElement>) {
+        /*
+            do api call here
+            maybe call new component to draw up the list of exercises
+            returned from the api call ??
+        */
+    }
+
     return (
-        <div>
-            <label>
-                <input type="button" name="categoryDropdown" value={muscleGroup}></input>
-            </label>
-        </div>
+        <ul className="muscleGroupsCategoriesList">
+            {muscleGroupsListItems}
+        </ul>
     );
 };
 

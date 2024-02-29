@@ -5,48 +5,12 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
 .weekdays-heading {
   text-align: center;
-  margin-bottom: 10px; 
-  padding-left: 65px; 
-  color: #333; 
-  font-size: 40px; 
+  margin-bottom: 10px;
+  padding-left: 65px;
+  color: #333;
+  font-size: 40px;
 }
 
 
@@ -68,7 +32,6 @@
   padding: 10px 20px;
   cursor: pointer;
   border: 1px solid #ddd;
-  background-color: white;
   transition: all 0.3s ease;
   width: 40%;
   font-weight: bold;
@@ -81,6 +44,23 @@
 .weekday-label.selected {
   border-color: #051007;
   background-color: #8beb7f;
-  color: black
 }
 
+.UnitsPicker {
+  display: inline-block;
+  border: 1px solid rgb(165, 165, 165);
+  border-radius: 5px;
+  padding: 1rem;
+}
+
+.UnitsPicker label {
+  padding: 1rem;
+}
+
+.UnitsPicker label:first-of-type {
+  border-right: 1px solid rgb(165, 165, 165);
+}
+
+.UnitsPicker label:has(input:checked) {
+  text-shadow: 1px 1px 0px black;
+}

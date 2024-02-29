@@ -1,19 +1,19 @@
 import React from "react";
 import { Weekday } from "../types";
 
-// Define the props expected by the WeekComponent
-interface WeekdayPicker {
+// Define the props expected by the WeekdayPicker
+interface WeekdayPickerProps {
   selectedWeekday: Weekday;
   // Function to update the selected weekday
   setSelectedWeekday: React.Dispatch<React.SetStateAction<Weekday>>;
 }
 
-const WeekComponent: React.FC<WeekdayPicker> = ({
+const WeekdayPicker: React.FC<WeekdayPickerProps> = ({
   selectedWeekday,
   setSelectedWeekday,
 }) => {
   return (
-    <div className="WeekComponent">
+    <div className="WeekdayPicker">
       <h2 className="weekdays-heading">Day</h2>
       {(
         [
@@ -49,4 +49,4 @@ const WeekComponent: React.FC<WeekdayPicker> = ({
   );
 };
 
-export default WeekComponent;
+export default WeekdayPicker;

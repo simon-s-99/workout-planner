@@ -2,7 +2,7 @@
 import { useState } from "react";
 import "./App.css";
 import type { Settings } from "./types";
-import MuscleCategory from './components/MuscleCategory.tsx';
+import MuscleCategory from './components/MuscleCategory';
 import { Weekday } from "./types";
 import WeekComponent from "./components/WeekComponent";
 
@@ -18,7 +18,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <h1>Workout Planner</h1>
-      <MuscleCategory></MuscleCategory>
+      <MuscleCategory />
       <WeekComponent
         selectedWeekday={selectedWeekday}
         setSelectedWeekday={

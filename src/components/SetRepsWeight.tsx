@@ -85,6 +85,7 @@ const SetRepsWeight: React.FC = () => {
     );
   };
 
+  // Always removes the last set. Might have to do with setNumber
   // Removes a set from the specified exercise
   const removeSet = (exerciseName: string, indexToRemove: number) => {
     setExercises(

@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Barbell Bench Press",
+    "sets": [
+      {
+        "setNumber": 1,
+        "reps": 10,
+        "weight": 80
+      },
+      {
+        "setNumber": 2,
+        "reps": 8,
+        "weight": 100
+      }
+    ]
+  },
+  {
+    "name": "Deadlift",
+    "sets": [
+      {
+        "setNumber": 1,
+        "reps": 5,
+        "weight": 120
+      },
+      {
+        "setNumber": 2,
+        "reps": 5,
+        "weight": 140
+      }
+    ]
+  },
+  {
+    "name": "Squats",
+    "sets": [
+      {
+        "setNumber": 1,
+        "reps": 8,
+        "weight": 100
+      },
+      {
+        "setNumber": 2,
+        "reps": 8,
+        "weight": 120
+      }
+    ]
+  }
+]

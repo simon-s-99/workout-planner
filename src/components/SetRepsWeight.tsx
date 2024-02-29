@@ -1,84 +1,150 @@
 import React, { useState } from "react";
+import exerciseData from "../components/exerciseData.json";
 
-// Define the structure for individual sets within an exercise
 interface ExerciseSet {
-  setNumber: number;
+  setNumber: number; // Identifies the order of the set
   reps: number;
   weight: number;
 }
 
-// Define the structure for an Exercise object
 interface Exercise {
   name: string;
-  sets: ExerciseSet[];
+  sets: ExerciseSet[]; // Array of sets associated with the exercise
 }
 
-// Subcomponent to display details of an exercise
-const ExerciseDetail: React.FC<{ exercise: Exercise }> = ({ exercise }) => {
-  // Maps over each set in the exercise to display its details
+// Component for displaying and editing details of an exercise
+const ExerciseDetail: React.FC<{
+  exercise: Exercise; // The current exercise to display
+  onAddSet: (exerciseName: string) => void; // Function to handle adding a new set
+  onRemoveSet: (exerciseName: string, index: number) => void; // Adjusted to use index
+  onUpdateSet: (
+    exerciseName: string,
+    setNumber: number,
+    reps: number,
+    weight: number
+  ) => void; // Function to update the details of a set
+}> = ({ exercise, onAddSet, onRemoveSet, onUpdateSet }) => {
+  // Function to render an input field for editing either reps or weight of a set
+  const renderEditableField = (
+    set: ExerciseSet,
+    field: "reps" | "weight",
+    index: number
+  ) => {
+    return (
+      <input
+        type="number"
+        defaultValue={field === "reps" ? set.reps : set.weight}
+        // Update the set details when the user leaves the input field
+        onBlur={(e) =>
+          onUpdateSet(
+            exercise.name,
+            index + 1, // Adjust setNumber based on index for consistency
+            field === "reps" ? parseInt(e.target.value, 10) : set.reps,
+            field === "weight" ? parseInt(e.target.value, 10) : set.weight
+          )
+        }
+      />
+    );
+  };
+
   return (
     <div>
       {exercise.sets.map((set, index) => (
         <div key={index}>
-          {/* Display information about the set */}
-          <div>
-            Set {set.setNumber}: {set.reps} reps, {set.weight} kgs/lbs (change
-            this later)
-          </div>
+          <span>Set {index + 1}: </span>{" "}
+          {/* Displaying index + 1 for user clarity */}
+          {renderEditableField(set, "weight", index)} kgs/lbs
+          {renderEditableField(set, "reps", index)} reps,
+          <button onClick={() => onRemoveSet(exercise.name, index)}>
+            Remove Set
+          </button>
         </div>
       ))}
+      <button onClick={() => onAddSet(exercise.name)}>Add Set</button>
     </div>
   );
 };
 
-// Main component to display exercises and manage which exercise's details are shown
-const ExerciseDropdownComponent: React.FC = () => {
-  // Initialize the component with example exercises
-  const [exercises] = useState<Exercise[]>([
-    {
-      name: "Barbell Bench Press",
-      sets: [
-        { setNumber: 1, reps: 10, weight: 135 },
-        { setNumber: 2, reps: 8, weight: 185 },
-      ],
-    },
-    {
-      name: "Deadlift",
-      sets: [
-        { setNumber: 1, reps: 5, weight: 225 },
-        { setNumber: 2, reps: 5, weight: 275 },
-      ],
-    },
-    {
-      name: "Squats",
-      sets: [
-        { setNumber: 1, reps: 8, weight: 185 },
-        { setNumber: 2, reps: 8, weight: 235 },
-      ],
-    },
-  ]);
+// Main component to manage and display the list of exercises
+const SetRepsWeight: React.FC = () => {
+  // State to hold the list of exercises, initialized from JSON data
+  const [exercises, setExercises] = useState<Exercise[]>(exerciseData);
+  const [selectedExercise, setSelectedExercise] = useState<string | null>(null);
 
-  const [selectedExerciseName, setSelectedExerciseName] = useState<
-    string | null
-  >(null); // Tracks the currently selected exercise
+  // Adds a new set to the specified exercise
+  const addSet = (exerciseName: string) => {
+    setExercises(
+      exercises.map((exercise) => {
+        if (exercise.name === exerciseName) {
+          const newSetNumber = exercise.sets.length + 1;
+          const newSet = { setNumber: newSetNumber, reps: 0, weight: 0 };
+          return { ...exercise, sets: [...exercise.sets, newSet] };
+        }
+        return exercise;
+      })
+    );
+  };
 
-  // Function to toggle the visibility of an exercise's details
-  const toggleExerciseDetail = (name: string) => {
-    setSelectedExerciseName((prevName) => (prevName === name ? null : name));
-    // If the selected exercise is clicked again, it hides its details, otherwise shows the new one
+  // Removes a set from the specified exercise
+  const removeSet = (exerciseName: string, indexToRemove: number) => {
+    setExercises(
+      exercises.map((exercise) => {
+        if (exercise.name === exerciseName) {
+          // Create a new array without the set to remove
+          const newSets = exercise.sets.filter(
+            (_, index) => index !== indexToRemove
+          );
+          return { ...exercise, sets: newSets };
+        }
+        return exercise;
+      })
+    );
+  };
+
+  // Updates the details of a specific set within an exercise
+  const onUpdateSet = (
+    exerciseName: string,
+    setNumber: number,
+    reps: number,
+    weight: number
+  ) => {
+    setExercises(
+      exercises.map((exercise) => {
+        if (exercise.name === exerciseName) {
+          const updatedSets = exercise.sets.map((set) =>
+            set.setNumber === setNumber ? { ...set, reps, weight } : set
+          );
+          return { ...exercise, sets: updatedSets };
+        }
+        return exercise;
+      })
+    );
+  };
+
+  // Function to toggle the selected exercise's detail view
+  const toggleExerciseDetail = (exerciseName: string) => {
+    setSelectedExercise((prevName) =>
+      prevName === exerciseName ? null : exerciseName
+    );
   };
 
   return (
     <div>
       {exercises.map((exercise) => (
         <div key={exercise.name}>
-          {/* Button to toggle the display of the exercise details */}
-          <button onClick={() => toggleExerciseDetail(exercise.name)}>
+          <h3
+            onClick={() => toggleExerciseDetail(exercise.name)}
+            style={{ cursor: "pointer" }}
+          >
             {exercise.name}
-          </button>
-          {/* Conditionally render the ExerciseDetail component if this exercise is selected */}
-          {selectedExerciseName === exercise.name && (
-            <ExerciseDetail exercise={exercise} />
+          </h3>
+          {selectedExercise === exercise.name && (
+            <ExerciseDetail
+              exercise={exercise}
+              onAddSet={addSet}
+              onRemoveSet={removeSet}
+              onUpdateSet={onUpdateSet}
+            />
           )}
         </div>
       ))}
@@ -86,4 +152,4 @@ const ExerciseDropdownComponent: React.FC = () => {
   );
 };
 
-export default ExerciseDropdownComponent;
+export default SetRepsWeight;

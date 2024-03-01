@@ -1,3 +1,6 @@
+import { useState } from "react";
+import MuscleCategoryExercisesList from "./MuscleCategoryExercisesList";
+
 const MuscleCategoryList: React.FC = () => {
     const muscleGroups: string[] = [
         "Abdominals",
@@ -18,26 +21,22 @@ const MuscleCategoryList: React.FC = () => {
     ];
 
     const muscleGroupsListItems: JSX.Element[] = muscleGroups.map((muscleGroup, index) => {
+        const [selected, setSelected] = useState(false);
+
         return (
             <li key={index}>
                 <label>
-                    <input 
-                        type="button" 
-                        name="categoryDropdown" 
+                    <input
+                        type="button"
+                        name="categoryDropdown"
                         value={muscleGroup}
-                        onChange={(e) => renderExerciseList(e)}></input>
+                        onClick={() => setSelected(!selected)}></input>
+                    {/* ^ toggle selected to true if it is false and vice versa */}
                 </label>
+                <MuscleCategoryExercisesList muscleGroup={muscleGroup} renderList={selected} />
             </li>
         );
     });
-
-    function renderExerciseList(e: React.ChangeEvent<HTMLInputElement>) {
-        /*
-            do api call here
-            maybe call new component to draw up the list of exercises
-            returned from the api call ??
-        */
-    }
 
     return (
         <ul className="muscleGroupsCategoriesList">

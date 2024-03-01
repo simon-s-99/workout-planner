@@ -1,44 +1,45 @@
 import React, { useState } from "react";
 import initialExerciseData from "../components/exerciseData.json";
 
-// add checkbox if set is done.
-// add checkbox if exercise is done.
+// add checkbox if exercise is completed in a new component
+// add toggle all sets as completed
 
 interface ExerciseSet {
-  id: string; // Unique identifier for each set
-  setNumber: number; // The order number of the set
+  id: string;
+  setNumber: number;
   reps: number;
   weight: number;
-  // completed: boolean; // Bool to check if a set is completed
+  completed: boolean;
 }
 
 interface Exercise {
-  name: string; // Name of the exercise
+  name: string;
   sets: ExerciseSet[];
 }
 
-// Props for the ExerciseDetail component
+// Props expected by the ExerciseDetail component, including functions for modifying exercise data.
 interface ExerciseDetailProps {
-  exercise: Exercise; // The current exercise being displayed
-  onAddSet: (exerciseName: string) => void; // Function to add a set to an exercise
-  onRemoveSet: (exerciseName: string, setId: string) => void; // Function to remove a set from an exercise
+  exercise: Exercise;
+  onAddSet: (exerciseName: string) => void;
+  onRemoveSet: (exerciseName: string, setId: string) => void;
   onUpdateSet: (
-    // Function to update the details of a set
     exerciseName: string,
     setId: string,
     reps: number,
     weight: number
   ) => void;
+  toggleSetCompleted: (exerciseName: string, setId: string) => void; // Function to toggle completion status of a set.
 }
 
-// Component for displaying and editing details of an exercise
+// Component for displaying and editing details of an exercise.
 const ExerciseDetail: React.FC<ExerciseDetailProps> = ({
   exercise,
   onAddSet,
   onRemoveSet,
   onUpdateSet,
+  toggleSetCompleted,
 }) => {
-  // Renders input fields for editing reps or weight of a set
+  // Renders input fields for editing reps or weight of a set.
   const renderEditableField = (set: ExerciseSet, field: "reps" | "weight") => {
     return (
       <input
@@ -64,6 +65,12 @@ const ExerciseDetail: React.FC<ExerciseDetailProps> = ({
           <span>Set {set.setNumber}: </span>
           {renderEditableField(set, "weight")} kgs/lbs
           {renderEditableField(set, "reps")} reps,
+          <input
+            type="checkbox"
+            checked={set.completed}
+            onChange={() => toggleSetCompleted(exercise.name, set.id)}
+          />{" "}
+          Completed
           <button onClick={() => onRemoveSet(exercise.name, set.id)}>
             Remove Set
           </button>
@@ -73,9 +80,9 @@ const ExerciseDetail: React.FC<ExerciseDetailProps> = ({
   );
 };
 
-// Main component to manage and display the list of exercises
+// Main component to manage and display the list of exercises.
 const SetRepsWeight: React.FC = () => {
-  // State to hold the list of exercises, dynamically initialized with IDs for each set
+  // Initializes state with exercise data, adding unique IDs and a completed flag for each set.
   const [exercises, setExercises] = useState<Exercise[]>(() =>
     initialExerciseData.map((exercise) => ({
       ...exercise,
@@ -84,11 +91,12 @@ const SetRepsWeight: React.FC = () => {
         id: `${exercise.name.replace(/\s+/g, "")}-set-${set.setNumber}-${
           Date.now() + index
         }`,
+        completed: false,
       })),
     }))
   );
 
-  // Function to add a new set to an exercise
+  // Function to add a new set to an exercise.
   const addSet = (exerciseName: string) => {
     setExercises((currentExercises) =>
       currentExercises.map((exercise) => {
@@ -100,6 +108,7 @@ const SetRepsWeight: React.FC = () => {
             setNumber: exercise.sets.length + 1,
             reps: 0,
             weight: 0,
+            completed: false,
           };
           return { ...exercise, sets: [...exercise.sets, newSet] };
         }
@@ -108,7 +117,7 @@ const SetRepsWeight: React.FC = () => {
     );
   };
 
-  // Function to remove a set from an exercise
+  // Function to remove a set from an exercise.
   const removeSet = (exerciseName: string, setId: string) => {
     setExercises((currentExercises) =>
       currentExercises.map((exercise) => {
@@ -123,7 +132,7 @@ const SetRepsWeight: React.FC = () => {
     );
   };
 
-  // Function to update the details of a specific set within an exercise
+  // Function to update the details of a specific set within an exercise.
   const onUpdateSet = (
     exerciseName: string,
     setId: string,
@@ -143,16 +152,34 @@ const SetRepsWeight: React.FC = () => {
     );
   };
 
-  // State to track which exercise's details are being displayed
+  // Function to toggle the completion status of a set.
+  const toggleSetCompleted = (exerciseName: string, setId: string) => {
+    setExercises((currentExercises) =>
+      currentExercises.map((exercise) => {
+        if (exercise.name === exerciseName) {
+          return {
+            ...exercise,
+            sets: exercise.sets.map((set) =>
+              set.id === setId ? { ...set, completed: !set.completed } : set
+            ),
+          };
+        }
+        return exercise;
+      })
+    );
+  };
+
+  // State to track which exercise's details are being displayed.
   const [selectedExercise, setSelectedExercise] = useState<string | null>(null);
 
-  // Function to toggle the display of an exercise's detail view
+  // Function to toggle the display of an exercise's detail view.
   const toggleExerciseDetail = (exerciseName: string) => {
     setSelectedExercise((prevName) =>
       prevName === exerciseName ? null : exerciseName
     );
   };
 
+  // The component renders a list of exercises, each with a detail view that can be toggled.
   return (
     <div>
       {exercises.map((exercise) => (
@@ -169,6 +196,7 @@ const SetRepsWeight: React.FC = () => {
               onAddSet={addSet}
               onRemoveSet={removeSet}
               onUpdateSet={onUpdateSet}
+              toggleSetCompleted={toggleSetCompleted} // Pass the toggle function to ExerciseDetail.
             />
           )}
         </div>

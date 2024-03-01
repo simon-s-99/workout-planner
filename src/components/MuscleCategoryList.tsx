@@ -1,4 +1,4 @@
-const MuscleCategory: React.FC = () => {
+const MuscleCategoryList: React.FC = () => {
     const muscleGroups: string[] = [
         "Abdominals",
         "Biceps",
@@ -46,4 +46,4 @@ const MuscleCategory: React.FC = () => {
     );
 };
 
-export default MuscleCategory;
+export default MuscleCategoryList;

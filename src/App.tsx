@@ -5,6 +5,7 @@ import type { Settings, Weekday } from "./types";
 import MuscleCategory from './components/MuscleCategory';
 import WeekdayPicker from "./components/WeekdayPicker";
 import UnitsPicker from "./components/UnitsPicker";
+import PieChart from "./components/PieChart";
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
@@ -23,6 +24,7 @@ const App: React.FC = () => {
         selectedWeekday={selectedWeekday}
         setSelectedWeekday={setSelectedWeekday as React.Dispatch<React.SetStateAction<Weekday>>}
       />
+      <PieChart/>
     </div>
   );
 };

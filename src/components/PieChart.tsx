@@ -1,4 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { MuscleGroupData } from "../types";
 
 interface PieChartProps {
   // Sets
@@ -6,56 +7,61 @@ interface PieChartProps {
 }
 
 const PieChart: React.FC<PieChartProps> = ({}) => {
-  const map = new Map<string, number>();
-  // Test values
-  map.set("legs", 4);
-  map.set("arms", 7);
-  map.set("chest", 5);
-
+  const [muscleGroupData, setMuscleGroupData] = useState<MuscleGroupData[]>([
+    {
+      muscleGroup: "chest",
+      sets: 2,
+      color: "pink"
+    },
+    {
+      muscleGroup: "lats",
+      sets: 7,
+      color: "orange"
+    }
+  ]);
+  
   // Grab the element, the same as doing document.getElementById("canvas")
   const canvasRef = useRef(null);
-  const colors = ["yellow", "blue", "pink"];
-  const values = Array.from(map);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     const canvasContext = canvas.getContext("2d");
-    let total: number = 0;
-    let end = 0;
-
-    for (let value of map.values()) {
-      total += value;
+    let total: number = 0; // Sum of sets
+    let angle: number = 0; // Where 
+    
+    for (let value of muscleGroupData) {
+      total += value.sets;
     }
+    
+    for (let i = 0; i < muscleGroupData.length; i++) {
+      canvasContext.fillStyle = muscleGroupData[i].color;
 
-    for (let i = 0; i < map.size; i++) {
-      canvasContext.fillStyle = colors[i];
+      // Start drawing
       canvasContext.beginPath();
-      canvasContext.moveTo(100 / 2, 100 / 2);
-      canvasContext.arc(
-        100 / 2,
-        100 / 2,
-        100 / 2,
-        end,
-        end + Math.PI * 2 * (values[i][1] / total),
-        false
-      );
-      canvasContext.lineTo(100 / 2, 100 / 2);
+
+      // Move to the center of the canvas
+      canvasContext.moveTo(50, 50);
+
+      // Starting from the center of the canvas, add an arc with a radius of 50 from a start angle of 0 to an angle influenced by the amount of sets
+      canvasContext.arc(50, 50, 50, angle, angle + Math.PI * 2 * (muscleGroupData[i].sets / total));
+
+      // Fill the arc
       canvasContext.fill();
-      end += Math.PI * 2 * (values[i][1] / total);
+
+      // Add the end angle to the angle, thus making the next arc's start angle equal to the current arc's end angle
+      angle += Math.PI * 2 * (muscleGroupData[i].sets / total);
     }
   });
-
+  
   return (
     <div className="PieChart">
       <canvas ref={canvasRef} width={100} height={100}></canvas>
-      {values.map((value, index) => {
-        return <div key={index}>{value[1]}</div>;
-      })}
-
-      {colors.map((color, index) => {
+      {muscleGroupData.map((data, index) => {
         return (
-            <div key={index}>{color}</div>
-        )
+          <p key={index}>
+            {data.muscleGroup} <div style={{backgroundColor: data.color}}></div>
+          </p>
+        );
       })}
     </div>
   );

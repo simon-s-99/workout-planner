@@ -1,5 +1,3 @@
-// add checkbox if exercise is completed in a new component
-
 import React, { useState } from "react";
 import initialExerciseData from "../components/exerciseData.json";
 
@@ -14,6 +12,7 @@ interface ExerciseSet {
 interface Exercise {
   name: string;
   sets: ExerciseSet[];
+  completed: boolean;
 }
 
 // Props expected by the ExerciseDetail component, including functions for modifying exercise data.
@@ -27,8 +26,15 @@ interface ExerciseDetailProps {
     reps: number,
     weight: number
   ) => void;
-  toggleSetCompleted: (exerciseName: string, setId: string) => void; // Function to toggle completion status of a set.
+  toggleSetCompleted: (exerciseName: string, setId: string) => void;
   toggleAllSetsCompleted: (exerciseName: string) => void;
+}
+
+// Gives each set a unique id
+function generateSetId(exerciseName: string, setNumber: number, index = 0) {
+  const cleanName = exerciseName.replace(/\s+/g, "");
+  const timestamp = Date.now() + index;
+  return `${cleanName}-set-${setNumber}-${timestamp}`;
 }
 
 // Component for displaying and editing details of an exercise.
@@ -61,43 +67,18 @@ const ExerciseDetail: React.FC<ExerciseDetailProps> = ({
   return (
     <div>
       <button onClick={() => onAddSet(exercise.name)}>Add Set</button>
-      <button
-        onClick={() => toggleAllSetsCompleted(exercise.name)}
-        //Style with svg for "toggle all sets"
-        style={{
-          fontSize: "24px",
-          border: "none",
-          background: "none",
-          cursor: "pointer",
-        }}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="feather feather-check"
-        >
-          <polyline points="20 6 9 17 4 12"></polyline>
-        </svg>
-      </button>
+      <button onClick={() => toggleAllSetsCompleted(exercise.name)}>✔</button>
 
       {exercise.sets.map((set) => (
         <div key={set.id}>
           <span>Set {set.setNumber}: </span>
           {renderEditableField(set, "weight")} kgs/lbs
-          {renderEditableField(set, "reps")} reps,
+          {renderEditableField(set, "reps")} reps
           <input
             type="checkbox"
             checked={set.completed}
             onChange={() => toggleSetCompleted(exercise.name, set.id)}
           />{" "}
-          Completed
           <button onClick={() => onRemoveSet(exercise.name, set.id)}>
             Remove Set
           </button>
@@ -115,26 +96,44 @@ const SetRepsWeight: React.FC = () => {
       ...exercise,
       sets: exercise.sets.map((set, index) => ({
         ...set,
-        id: `${exercise.name.replace(/\s+/g, "")}-set-${set.setNumber}-${
-          Date.now() + index
-        }`,
+        id: generateSetId(exercise.name, set.setNumber, index),
         completed: false,
       })),
+      completed: false,
     }))
   );
+
+  //Mark an exercise as completed
+  const toggleExerciseCompleted = (exerciseName: string) => {
+    setExercises((currentExercises) =>
+      currentExercises.map((exercise) => {
+        if (exercise.name === exerciseName) {
+          const newCompletedStatus = !exercise.completed;
+          return {
+            ...exercise,
+            sets: exercise.sets.map((set) => ({
+              ...set,
+              completed: newCompletedStatus,
+            })),
+            completed: newCompletedStatus,
+          };
+        }
+        return exercise;
+      })
+    );
+  };
 
   // Function to add a new set to an exercise.
   const addSet = (exerciseName: string) => {
     setExercises((currentExercises) =>
       currentExercises.map((exercise) => {
         if (exercise.name === exerciseName) {
+          const newSetNumber = exercise.sets.length + 1;
           const newSet = {
-            id: `${exerciseName.replace(/\s+/g, "")}-set-${
-              exercise.sets.length + 1
-            }-${Date.now()}`,
-            setNumber: exercise.sets.length + 1,
-            reps: 0,
-            weight: 0,
+            id: generateSetId(exerciseName, newSetNumber),
+            setNumber: newSetNumber,
+            reps: 8, //current default value
+            weight: 20, // current default value
             completed: false,
           };
           return { ...exercise, sets: [...exercise.sets, newSet] };
@@ -143,15 +142,23 @@ const SetRepsWeight: React.FC = () => {
       })
     );
   };
-
   // Function to remove a set from an exercise.
-  const removeSet = (exerciseName: string, setId: string) => {
+  const removeSet = (exerciseName: string, setId: string): void => {
     setExercises((currentExercises) =>
       currentExercises.map((exercise) => {
         if (exercise.name === exerciseName) {
+          // Remove the set by its id
+          const filteredSets = exercise.sets.filter((set) => set.id !== setId);
+
+          //Renumber the sets to maintain sequential setNumbers after a removal
+          const renumberedSets = filteredSets.map((set, index) => ({
+            ...set,
+            setNumber: index + 1,
+          }));
+
           return {
             ...exercise,
-            sets: exercise.sets.filter((set) => set.id !== setId),
+            sets: renumberedSets,
           };
         }
         return exercise;
@@ -236,6 +243,12 @@ const SetRepsWeight: React.FC = () => {
           >
             {exercise.name}
           </h3>
+          <input
+            type="checkbox"
+            checked={exercise.completed}
+            onChange={() => toggleExerciseCompleted(exercise.name)}
+          />{" "}
+          Exercise completed
           {selectedExercise === exercise.name && (
             <ExerciseDetail
               exercise={exercise}

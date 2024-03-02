@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import initialExerciseData from "../components/exerciseData.json";
-
 // add checkbox if exercise is completed in a new component
 // add toggle all sets as completed
+import React, { useState } from "react";
+import initialExerciseData from "../components/exerciseData.json";
 
 interface ExerciseSet {
   id: string;
@@ -29,6 +28,7 @@ interface ExerciseDetailProps {
     weight: number
   ) => void;
   toggleSetCompleted: (exerciseName: string, setId: string) => void; // Function to toggle completion status of a set.
+  toggleAllSetsCompleted: (exerciseName: string) => void;
 }
 
 // Component for displaying and editing details of an exercise.
@@ -38,6 +38,7 @@ const ExerciseDetail: React.FC<ExerciseDetailProps> = ({
   onRemoveSet,
   onUpdateSet,
   toggleSetCompleted,
+  toggleAllSetsCompleted,
 }) => {
   // Renders input fields for editing reps or weight of a set.
   const renderEditableField = (set: ExerciseSet, field: "reps" | "weight") => {
@@ -60,6 +61,32 @@ const ExerciseDetail: React.FC<ExerciseDetailProps> = ({
   return (
     <div>
       <button onClick={() => onAddSet(exercise.name)}>Add Set</button>
+      <button
+        onClick={() => toggleAllSetsCompleted(exercise.name)}
+        //Style with svg for "toggle all sets"
+        style={{
+          fontSize: "24px",
+          border: "none",
+          background: "none",
+          cursor: "pointer",
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="feather feather-check"
+        >
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </button>
+
       {exercise.sets.map((set) => (
         <div key={set.id}>
           <span>Set {set.setNumber}: </span>
@@ -169,6 +196,25 @@ const SetRepsWeight: React.FC = () => {
     );
   };
 
+  const toggleAllSetsCompleted = (exerciseName: string) => {
+    setExercises((currentExercises) =>
+      currentExercises.map((exercise) => {
+        if (exercise.name === exerciseName) {
+          // Check if all sets are completed to determine the new state
+          const allCompleted = exercise.sets.every((set) => set.completed);
+          return {
+            ...exercise,
+            sets: exercise.sets.map((set) => ({
+              ...set,
+              completed: !allCompleted,
+            })),
+          };
+        }
+        return exercise;
+      })
+    );
+  };
+
   // State to track which exercise's details are being displayed.
   const [selectedExercise, setSelectedExercise] = useState<string | null>(null);
 
@@ -196,7 +242,8 @@ const SetRepsWeight: React.FC = () => {
               onAddSet={addSet}
               onRemoveSet={removeSet}
               onUpdateSet={onUpdateSet}
-              toggleSetCompleted={toggleSetCompleted} // Pass the toggle function to ExerciseDetail.
+              toggleSetCompleted={toggleSetCompleted}
+              toggleAllSetsCompleted={toggleAllSetsCompleted}
             />
           )}
         </div>

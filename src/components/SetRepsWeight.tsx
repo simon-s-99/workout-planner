@@ -106,7 +106,7 @@ const SetRepsWeight: React.FC = () => {
           const newSet = {
             id: generateSetId(exerciseName, newSetNumber),
             setNumber: newSetNumber,
-            reps: 8, //current default values. These will most likely be changed by training goal values
+            reps: 10, // default values for now
             weight: 20,
             completed: false,
           };
@@ -116,6 +116,7 @@ const SetRepsWeight: React.FC = () => {
       })
     );
   };
+
   // Function to remove a set from an exercise.
   const removeSet = (exerciseName: string, setId: string): void => {
     setExercises((currentExercises) =>

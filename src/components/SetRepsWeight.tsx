@@ -2,35 +2,6 @@ import React, { useState } from "react";
 import initialExerciseData from "../components/exerciseData.json";
 import { ExerciseSet, Exercise, ExerciseDetailProps } from "../types";
 
-// interface ExerciseSet {
-//   id: string;
-//   setNumber: number;
-//   reps: number;
-//   weight: number;
-//   completed: boolean;
-// }
-
-// interface Exercise {
-//   name: string;
-//   sets: ExerciseSet[];
-//   completed: boolean;
-// }
-
-// Props expected by the ExerciseDetail component, including functions for modifying exercise data.
-// interface ExerciseDetailProps {
-//   exercise: Exercise;
-//   onAddSet: (exerciseName: string) => void;
-//   onRemoveSet: (exerciseName: string, setId: string) => void;
-//   onUpdateSet: (
-//     exerciseName: string,
-//     setId: string,
-//     reps: number,
-//     weight: number
-//   ) => void;
-//   toggleSetCompleted: (exerciseName: string, setId: string) => void;
-//   toggleAllSetsCompleted: (exerciseName: string) => void;
-// }
-
 // Gives each set a unique id
 function generateSetId(exerciseName: string, setNumber: number, index = 0) {
   // fugly ass code, but it works to create a unique id.
@@ -42,9 +13,8 @@ function generateSetId(exerciseName: string, setNumber: number, index = 0) {
 // Component for displaying and editing details of an exercise.
 const ExerciseDetail: React.FC<ExerciseDetailProps> = ({
   exercise,
-  onAddSet,
   onRemoveSet,
-  onUpdateSet,
+  onUpdateSet, //Allows the user to edit their set
   toggleSetCompleted,
   toggleAllSetsCompleted,
 }) => {
@@ -67,9 +37,11 @@ const ExerciseDetail: React.FC<ExerciseDetailProps> = ({
   };
 
   return (
+    // Change this button later on
     <div>
-      <button onClick={() => onAddSet(exercise.name)}>Add Set</button>
-      <button onClick={() => toggleAllSetsCompleted(exercise.name)}>✔</button>
+      <button onClick={() => toggleAllSetsCompleted(exercise.name)}>
+        ✔ Mark all sets as completed
+      </button>
 
       {exercise.sets.map((set) => (
         <div key={set.id}>
@@ -134,7 +106,7 @@ const SetRepsWeight: React.FC = () => {
           const newSet = {
             id: generateSetId(exerciseName, newSetNumber),
             setNumber: newSetNumber,
-            reps: 8, //current default values
+            reps: 8, //current default values. These will most likely be changed by training goal values
             weight: 20,
             completed: false,
           };
@@ -260,7 +232,11 @@ const SetRepsWeight: React.FC = () => {
               {exercise.name}
             </h3>
             <button
-              onClick={() => onAddSet(exercise.name)}
+              onClick={(a) => {
+                // prevents the click from reaching the parent div, that toggles exercise detail
+                a.stopPropagation();
+                addSet(exercise.name);
+              }}
               className="add-set-button"
             >
               Add Set
@@ -288,8 +264,8 @@ const SetRepsWeight: React.FC = () => {
           </div>
           {selectedExercise === exercise.name && (
             <ExerciseDetail
+              // Pass functions as props
               exercise={exercise}
-              onAddSet={addSet}
               onRemoveSet={removeSet}
               onUpdateSet={onUpdateSet}
               toggleSetCompleted={toggleSetCompleted}

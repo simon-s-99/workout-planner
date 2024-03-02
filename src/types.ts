@@ -27,7 +27,6 @@ export type ExerciseSet = {
 
   export type ExerciseDetailProps = {
     exercise: Exercise;
-    onAddSet: (exerciseName: string) => void;
     onRemoveSet: (exerciseName: string, setId: string) => void;
     onUpdateSet: (
       exerciseName: string,

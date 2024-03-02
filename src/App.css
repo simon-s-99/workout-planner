@@ -84,6 +84,11 @@
   margin-bottom: 20px;
 }
 
+.title-and-add-set {
+  display: flex;
+  align-items: center;
+}
+
 .exercise-title {
   margin: 0;
   color: #333;

@@ -37,3 +37,12 @@ export type ExerciseSet = {
     toggleSetCompleted: (exerciseName: string, setId: string) => void;
     toggleAllSetsCompleted: (exerciseName: string) => void;
   }
+
+export type ExerciseObject = {
+    name: string,
+    type: string,
+    muscle: string,
+    equipment: string,
+    difficulty: string,
+    instructions: string
+}

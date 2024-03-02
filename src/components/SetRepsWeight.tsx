@@ -1,5 +1,5 @@
 // add checkbox if exercise is completed in a new component
-// add toggle all sets as completed
+
 import React, { useState } from "react";
 import initialExerciseData from "../components/exerciseData.json";
 

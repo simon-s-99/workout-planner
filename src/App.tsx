@@ -18,7 +18,6 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <h1>Workout Planner</h1>
-      =======
       <MuscleCategory />
       <UnitsPicker setSettings={setSettings} />
       <WeekdayPicker

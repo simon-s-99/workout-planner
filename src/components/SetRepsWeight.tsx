@@ -32,6 +32,7 @@ interface ExerciseDetailProps {
 
 // Gives each set a unique id
 function generateSetId(exerciseName: string, setNumber: number, index = 0) {
+  // fugly ass code, but it works to create a unique id.
   const cleanName = exerciseName.replace(/\s+/g, "");
   const timestamp = Date.now() + index;
   return `${cleanName}-set-${setNumber}-${timestamp}`;
@@ -226,7 +227,19 @@ const SetRepsWeight: React.FC = () => {
   const [selectedExercise, setSelectedExercise] = useState<string | null>(null);
 
   // Function to toggle the display of an exercise's detail view.
-  const toggleExerciseDetail = (exerciseName: string) => {
+  const toggleExerciseDetail = (
+    exerciseName: string,
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    // Prevent toggling if the checkbox was clicked
+    if (
+      (event.target as HTMLElement).className.includes(
+        "exercise-completion-checkbox"
+      )
+    ) {
+      return;
+    }
+
     setSelectedExercise((prevName) =>
       prevName === exerciseName ? null : exerciseName
     );
@@ -234,21 +247,37 @@ const SetRepsWeight: React.FC = () => {
 
   // The component renders a list of exercises, each with a detail view that can be toggled.
   return (
-    <div>
+    <div className="exercises-container">
       {exercises.map((exercise) => (
-        <div key={exercise.name}>
-          <h3
-            onClick={() => toggleExerciseDetail(exercise.name)}
-            style={{ cursor: "pointer" }}
+        <div key={exercise.name} className="exercise-item">
+          <div
+            className="exercise-header"
+            // "(a) to pass the click event for toggleExerciseDetails"
+            onClick={(a) => toggleExerciseDetail(exercise.name, a)}
           >
-            {exercise.name}
-          </h3>
-          <input
-            type="checkbox"
-            checked={exercise.completed}
-            onChange={() => toggleExerciseCompleted(exercise.name)}
-          />{" "}
-          Exercise completed
+            <h3 className="exercise-title" style={{ cursor: "pointer" }}>
+              {exercise.name}
+            </h3>
+            <div className="exercise-completion">
+              <label className="exercise-completion-label">
+                <input
+                  type="checkbox"
+                  checked={exercise.completed}
+                  onChange={(event) => {
+                    const isChecked = event.target.checked;
+                    event.stopPropagation();
+                    toggleExerciseCompleted(exercise.name);
+                    //// Close the exercise detail view if the checkbox is being checked
+                    if (isChecked && selectedExercise === exercise.name) {
+                      setSelectedExercise(null);
+                    }
+                  }}
+                  className="exercise-completion-checkbox"
+                />
+                Exercise completed
+              </label>
+            </div>
+          </div>
           {selectedExercise === exercise.name && (
             <ExerciseDetail
               exercise={exercise}

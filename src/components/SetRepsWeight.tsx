@@ -1,34 +1,35 @@
 import React, { useState } from "react";
 import initialExerciseData from "../components/exerciseData.json";
+import { ExerciseSet, Exercise, ExerciseDetailProps } from "../types";
 
-interface ExerciseSet {
-  id: string;
-  setNumber: number;
-  reps: number;
-  weight: number;
-  completed: boolean;
-}
+// interface ExerciseSet {
+//   id: string;
+//   setNumber: number;
+//   reps: number;
+//   weight: number;
+//   completed: boolean;
+// }
 
-interface Exercise {
-  name: string;
-  sets: ExerciseSet[];
-  completed: boolean;
-}
+// interface Exercise {
+//   name: string;
+//   sets: ExerciseSet[];
+//   completed: boolean;
+// }
 
 // Props expected by the ExerciseDetail component, including functions for modifying exercise data.
-interface ExerciseDetailProps {
-  exercise: Exercise;
-  onAddSet: (exerciseName: string) => void;
-  onRemoveSet: (exerciseName: string, setId: string) => void;
-  onUpdateSet: (
-    exerciseName: string,
-    setId: string,
-    reps: number,
-    weight: number
-  ) => void;
-  toggleSetCompleted: (exerciseName: string, setId: string) => void;
-  toggleAllSetsCompleted: (exerciseName: string) => void;
-}
+// interface ExerciseDetailProps {
+//   exercise: Exercise;
+//   onAddSet: (exerciseName: string) => void;
+//   onRemoveSet: (exerciseName: string, setId: string) => void;
+//   onUpdateSet: (
+//     exerciseName: string,
+//     setId: string,
+//     reps: number,
+//     weight: number
+//   ) => void;
+//   toggleSetCompleted: (exerciseName: string, setId: string) => void;
+//   toggleAllSetsCompleted: (exerciseName: string) => void;
+// }
 
 // Gives each set a unique id
 function generateSetId(exerciseName: string, setNumber: number, index = 0) {
@@ -133,8 +134,8 @@ const SetRepsWeight: React.FC = () => {
           const newSet = {
             id: generateSetId(exerciseName, newSetNumber),
             setNumber: newSetNumber,
-            reps: 8, //current default value
-            weight: 20, // current default value
+            reps: 8, //current default values
+            weight: 20,
             completed: false,
           };
           return { ...exercise, sets: [...exercise.sets, newSet] };
@@ -245,7 +246,7 @@ const SetRepsWeight: React.FC = () => {
     );
   };
 
-  // The component renders a list of exercises, each with a detail view that can be toggled.
+  // Rendering of each exerciseDetail
   return (
     <div className="exercises-container">
       {exercises.map((exercise) => (
@@ -258,6 +259,13 @@ const SetRepsWeight: React.FC = () => {
             <h3 className="exercise-title" style={{ cursor: "pointer" }}>
               {exercise.name}
             </h3>
+            <button
+              onClick={() => onAddSet(exercise.name)}
+              className="add-set-button"
+            >
+              Add Set
+            </button>
+
             <div className="exercise-completion">
               <label className="exercise-completion-label">
                 <input
@@ -267,7 +275,7 @@ const SetRepsWeight: React.FC = () => {
                     const isChecked = event.target.checked;
                     event.stopPropagation();
                     toggleExerciseCompleted(exercise.name);
-                    //// Close the exercise detail view if the checkbox is being checked
+                    // Close the exercise detail view if the checkbox is being checked
                     if (isChecked && selectedExercise === exercise.name) {
                       setSelectedExercise(null);
                     }

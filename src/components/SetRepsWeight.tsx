@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import initialExerciseData from "../components/exerciseData.json";
 import { ExerciseSet, Exercise, ExerciseDetailProps } from "../types";
 
+// exercise complete bug is still there if clicking on the text (label)
+
 // Gives each set a unique id
 function generateSetId(exerciseName: string, setNumber: number, index = 0) {
   // fugly ass code, but it works to create a unique id.

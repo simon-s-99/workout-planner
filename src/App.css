@@ -5,19 +5,21 @@
   text-align: center;
 }
 
+.App {
+  display: flex;
+  flex-direction: row;
+}
+.WeekdayPicker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .weekdays-heading {
   text-align: center;
   margin-bottom: 10px;
-  padding-left: 65px;
   color: #333;
   font-size: 40px;
-}
-
-
-.WeekComponent {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 }
 
 .weekday {
@@ -33,7 +35,7 @@
   cursor: pointer;
   border: 1px solid #ddd;
   transition: all 0.3s ease;
-  width: 40%;
+  width: 60%;
   font-weight: bold;
 }
 
@@ -46,21 +48,25 @@
   background-color: #8beb7f;
 }
 
-.UnitsPicker {
-  display: inline-block;
+.UnitsPicker, .TrainingGoalPicker {
+  display: block;
   border: 1px solid rgb(165, 165, 165);
   border-radius: 5px;
   padding: 1rem;
 }
 
-.UnitsPicker label {
+.UnitsPicker label, .TrainingGoalPicker label {
   padding: 1rem;
 }
 
-.UnitsPicker label:first-of-type {
+.UnitsPicker label:first-of-type, .TrainingGoalPicker label:first-of-type {
   border-right: 1px solid rgb(165, 165, 165);
 }
 
-.UnitsPicker label:has(input:checked) {
+.TrainingGoalPicker label:last-of-type {
+  border-left: 1px solid rgb(165, 165, 165);
+}
+
+.UnitsPicker label:has(input:checked), .TrainingGoalPicker label:has(input:checked) {
   text-shadow: 1px 1px 0px black;
 }

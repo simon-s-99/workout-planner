@@ -1,8 +1,35 @@
 import React, { useState } from "react";
 import initialExerciseData from "../components/exerciseData.json";
-import { ExerciseSet, Exercise, ExerciseDetailProps } from "../types";
 
 // exercise complete bug is still there if clicking on the text (label)
+
+interface ExerciseSet {
+  id: string;
+  setNumber: number;
+  reps: number;
+  weight: number;
+  completed: boolean;
+}
+
+interface Exercise {
+  name: string;
+  sets: ExerciseSet[];
+  completed: boolean;
+}
+
+// Props expected by the ExerciseDetail component, including functions for modifying exercise data.
+interface ExerciseDetailProps {
+  exercise: Exercise;
+  onRemoveSet: (exerciseName: string, setId: string) => void;
+  onUpdateSet: (
+    exerciseName: string,
+    setId: string,
+    reps: number,
+    weight: number
+  ) => void;
+  toggleSetCompleted: (exerciseName: string, setId: string) => void;
+  toggleAllSetsCompleted: (exerciseName: string) => void;
+}
 
 // Gives each set a unique id
 function generateSetId(exerciseName: string, setNumber: number, index = 0) {
@@ -221,7 +248,7 @@ const SetRepsWeight: React.FC = () => {
     );
   };
 
-  // Rendering of each exerciseDetail
+  // The component renders a list of exercises, each with a detail view that can be toggled.
   return (
     <div className="exercises-container">
       {exercises.map((exercise) => (

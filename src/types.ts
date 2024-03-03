@@ -10,39 +10,3 @@ export type Settings = {
 }
 
 export type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
-
-export type ExerciseSet = {
-    id: string;
-    setNumber: number;
-    reps: number;
-    weight: number;
-    completed: boolean;
-  }
-
-  export type Exercise = {
-    name: string;
-    sets: ExerciseSet[];
-    completed: boolean;
-  }
-
-  export type ExerciseDetailProps = {
-    exercise: Exercise;
-    onRemoveSet: (exerciseName: string, setId: string) => void;
-    onUpdateSet: (
-      exerciseName: string,
-      setId: string,
-      reps: number,
-      weight: number
-    ) => void;
-    toggleSetCompleted: (exerciseName: string, setId: string) => void;
-    toggleAllSetsCompleted: (exerciseName: string) => void;
-  }
-
-export type ExerciseObject = {
-    name: string,
-    type: string,
-    muscle: string,
-    equipment: string,
-    difficulty: string,
-    instructions: string
-}

@@ -18,6 +18,8 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({ muscleGrou
         const url: URL = new URL("https://api.api-ninjas.com/v1/exercises");
         url.searchParams.set("muscle", muscleGroup);
 
+        // Note that the below api call runs twice in development mode
+        // this is intended React behaviour to help us catch bugs. 
         fetch(url, {
             headers: {
                 "X-Api-Key": "hRwPXK6YvKgUbEKzGW01sw==YttRwZHUK8grKBfI"

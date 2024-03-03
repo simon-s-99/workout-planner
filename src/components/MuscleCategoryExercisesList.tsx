@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Exercise } from "../types";
+import { ExerciseObject } from "../types";
 
 interface MuscleCategoryProps {
     muscleGroup: string;
@@ -8,7 +8,7 @@ interface MuscleCategoryProps {
 
 const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({ muscleGroup, renderList }) => {
     const [loading, setLoading] = useState<boolean>(true);
-    const [exercises, setExercises] = useState<Exercise[]>([]);
+    const [exercises, setExercises] = useState<ExerciseObject[]>([]);
 
     useEffect(() => {
         // this is a base request, we can build on this later to add exercise type (cardio/strongman/plyometrics/etc.)

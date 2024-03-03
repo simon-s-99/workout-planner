@@ -8,7 +8,7 @@ export function useLocalStorageRead(weekday: Weekday): ExerciseObject[] {
     const weekDayData: ExerciseObject[] = [];
     const weekDayDataRaw = window.localStorage.getItem(weekday); // should be type=string but js throws error
     if (weekDayDataRaw !== null) {
-        weekDayData.push(JSON.parse(weekDayDataRaw));
+        weekDayData.push(...JSON.parse(weekDayDataRaw));
     }
     
     // if day has no data return emtpy array

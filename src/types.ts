@@ -11,11 +11,11 @@ export type Settings = {
 
 export type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
 
-export type ExerciseObject = {
+export type Exercise = {
     name: string,
     type: string,
     muscle: string,
     equipment: string,
-    difficulty: string,
+    difficulty: string, // <- this variable will most likely not be used for anything, should be a throwaway
     instructions: string
 }

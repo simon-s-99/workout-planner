@@ -17,6 +17,8 @@ export type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday"
 export type WorkingSet = {
     repetitions: number,
     weight: number,
+    id: string,
+    setNumber: number,
     completed: boolean
 };
 

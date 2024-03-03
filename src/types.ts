@@ -10,3 +10,13 @@ export type Settings = {
 }
 
 export type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
+
+
+export type ExerciseObject = {
+  name: string,
+  type: string,
+  muscle: string,
+  equipment: string,
+  difficulty: string,
+  instructions: string
+}

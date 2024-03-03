@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import initialExerciseData from "../components/exerciseData.json";
+import React, { useState, useEffect } from "react";
+// import initialExerciseData from "../components/exerciseData.json";
 
 // exercise complete bug is still there if clicking on the text (label)
 
@@ -93,18 +93,16 @@ const ExerciseDetail: React.FC<ExerciseDetailProps> = ({
 
 // Main component to manage and display the list of exercises.
 const SetRepsWeight: React.FC = () => {
-  // Initializes state with exercise data, adding unique IDs and a completed flag for each set.
-  const [exercises, setExercises] = useState<Exercise[]>(() =>
-    initialExerciseData.map((exercise) => ({
-      ...exercise,
-      sets: exercise.sets.map((set, index) => ({
-        ...set,
-        id: generateSetId(exercise.name, set.setNumber, index),
-        completed: false,
-      })),
-      completed: false,
-    }))
-  );
+  // Initializes state with exercise data from localStorage
+  const [exercises, setExercises] = useState<Exercise[]>(() => {
+    const localData = localStorage.getItem("exercisesData");
+    return localData ? JSON.parse(localData) : []; // Start with an empty array if no data is found
+  });
+
+  //hook to update localStorage whenever the exercises state changes
+  useEffect(() => {
+    localStorage.setItem("exercisesData", JSON.stringify(exercises));
+  }, [exercises]);
 
   //Mark an exercise as completed
   const toggleExerciseCompleted = (exerciseName: string) => {

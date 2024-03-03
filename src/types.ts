@@ -19,21 +19,21 @@ export type Weekday =
   | "Sunday";
 
 export type MuscleGroup =
-  | "abdominals"
-  | "biceps"
-  | "triceps"
-  | "forearms"
-  | "chest"
-  | "lats"
-  | "traps"
-  | "lower_back"
-  | "middle_back"
-  | "glutes"
-  | "hamstrings"
-  | "quadriceps"
-  | "abductors"
-  | "adductors"
-  | "calves";
+  | "Abdominals"
+  | "Biceps"
+  | "Triceps"
+  | "Forearms"
+  | "Chest"
+  | "Lats"
+  | "Traps"
+  | "Lower_back"
+  | "Middle_back"
+  | "Glutes"
+  | "Hamstrings"
+  | "Quadriceps"
+  | "Abductors"
+  | "Adductors"
+  | "Calves";
 
 export type Color =
   | "red"

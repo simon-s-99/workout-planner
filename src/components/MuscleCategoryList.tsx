@@ -2,21 +2,21 @@ import type { MuscleGroup } from "../types";
 
 const MuscleCategory: React.FC = () => {
   const muscleGroups: MuscleGroup[] = [
-    "abdominals",
-    "biceps",
-    "triceps",
-    "forearms",
-    "chest",
-    "lats",
-    "traps",
-    "lower_back",
-    "middle_back",
-    "glutes",
-    "hamstrings",
-    "quadriceps",
-    "abductors",
-    "adductors",
-    "calves",
+    "Abdominals",
+    "Biceps",
+    "Triceps",
+    "Forearms",
+    "Chest",
+    "Lats",
+    "Traps",
+    "Lower_back",
+    "Middle_back",
+    "Glutes",
+    "Hamstrings",
+    "Quadriceps",
+    "Abductors",
+    "Adductors",
+    "Calves",
   ];
 
   const muscleGroupsListItems: JSX.Element[] = muscleGroups.map((muscleGroup, index) => {

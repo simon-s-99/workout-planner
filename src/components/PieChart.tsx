@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import type { MuscleGroupData } from "../types";
+import type { ExerciseObject, MuscleGroup, MuscleGroupData } from "../types";
+import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 
 interface PieChartProps {
   // Sets
@@ -7,19 +8,26 @@ interface PieChartProps {
 }
 
 const PieChart: React.FC<PieChartProps> = ({}) => {
-  const [muscleGroupData, setMuscleGroupData] = useState<MuscleGroupData[]>([
-    {
-      muscleGroup: "chest",
-      sets: 2,
-      color: "pink"
-    },
-    {
-      muscleGroup: "lats",
-      sets: 7,
-      color: "orange"
+  const exerciseData = useLocalStorageRead("Monday");
+  const [muscleGroupData, setMuscleGroupData] = useState<ExerciseObject[]>(exerciseData);
+
+  for (const exercise of exerciseData) {
+    console.log(exercise);
+
+    if (exercise.type === "Back") {
+      const strength: MuscleGroupData = {
+        muscleGroup: exercise.muscle as MuscleGroup,
+        sets: exercise.sets.length,
+        color: "red",
+      };
+      setMuscleGroupData([
+        ...muscleGroupData,
+        { muscleGroup: exercise.muscle, sets: exercise.sets.length, color: "red" },
+      ]);
     }
-  ]);
-  
+  }
+
+  console.log(exerciseData);
   // Grab the element, the same as doing document.getElementById("canvas")
   const canvasRef = useRef(null);
 
@@ -27,12 +35,12 @@ const PieChart: React.FC<PieChartProps> = ({}) => {
     const canvas = canvasRef.current;
     const canvasContext = canvas.getContext("2d");
     let total: number = 0; // Sum of sets
-    let angle: number = 0; // Where 
-    
+    let angle: number = 0; // Where
+
     for (let value of muscleGroupData) {
       total += value.sets;
     }
-    
+
     for (let i = 0; i < muscleGroupData.length; i++) {
       canvasContext.fillStyle = muscleGroupData[i].color;
 
@@ -52,17 +60,19 @@ const PieChart: React.FC<PieChartProps> = ({}) => {
       angle += Math.PI * 2 * (muscleGroupData[i].sets / total);
     }
   });
-  
+
   return (
     <div className="PieChart">
       <canvas ref={canvasRef} width={100} height={100}></canvas>
-      {muscleGroupData.map((data, index) => {
-        return (
-          <p key={index}>
-            {data.muscleGroup} <div style={{backgroundColor: data.color}}></div>
-          </p>
-        );
-      })}
+      {muscleGroupData
+        ? muscleGroupData.map((data, index) => {
+            return (
+              <p key={index}>
+                {data.muscleGroup} <div style={{ backgroundColor: data.color }}></div>
+              </p>
+            );
+          })
+        : null}
     </div>
   );
 };

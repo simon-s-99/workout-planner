@@ -3,12 +3,7 @@ import React, { useState, useEffect } from "react";
 import ExerciseDetail from "./ExerciseDetail";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
-import {
-  ExerciseObject,
-  Weekday,
-  WeekdayExerciseMap,
-  WorkingSet,
-} from "../types";
+import { ExerciseObject, Weekday, WorkingSet } from "../types";
 
 const SetRepsWeight: React.FC = () => {
   const currentWeekday = "Monday";
@@ -16,6 +11,16 @@ const SetRepsWeight: React.FC = () => {
   const [exercises, setExercises] =
     useState<ExerciseObject[]>(initialExercises);
   const [setIdCounter, setSetIdCounter] = useState(0); // New state to keep track of the setIdCounter
+
+  //Used to fetch json data
+  useEffect(() => {
+    fetch("../src/components/exerciseData.json")
+      .then((response) => response.json())
+      .then((data) => {
+        setExercises(data.Monday);
+      })
+      .catch((error) => console.error("Failed to load exercise data:", error));
+  }, []);
 
   useEffect(() => {
     // Find the highest set number across all exercises to ensure unique IDs for newly added sets

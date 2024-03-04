@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import type { ExerciseObject, WorkingSet } from "../types";
+import "./SetRepsWeight.css";
 
 type SetRepsWeightProps = {
   exercise: ExerciseObject;
@@ -95,62 +96,70 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
     });
   };
 
-  const exerciseBlockStyle = {
-    background: "#f0f0f0",
-    padding: "10px",
-    borderRadius: "8px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "10px",
-    cursor: "pointer",
-  };
+  // const exerciseBlockStyle = {
+  //   background: "#f0f0f0",
+  //   padding: "10px",
+  //   borderRadius: "8px",
+  //   display: "flex",
+  //   justifyContent: "space-between",
+  //   alignItems: "center",
+  //   marginBottom: "10px",
+  //   cursor: "pointer",
+  // };
 
-  const inputAndButtonContainerStyle = {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    flex: 1,
-  };
+  // const inputAndButtonContainerStyle = {
+  //   display: "flex",
+  //   alignItems: "center",
+  //   justifyContent: "space-between",
+  //   flex: 1,
+  // };
 
-  const inputStyle = {
-    margin: "0 10px",
-    padding: "5px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-  };
+  // const inputStyle = {
+  //   margin: "0 10px",
+  //   padding: "5px",
+  //   border: "1px solid #ccc",
+  //   borderRadius: "4px",
+  // };
 
-  const addButtonStyle = {
-    background: "#4CAF50",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    padding: "5px 10px",
-    cursor: "pointer",
-    margin: "0 10px",
-  };
+  // const exerciseCompletedButtonStyle = {
+  //   background: "#008CBA",
+  //   color: "white",
+  //   border: "none",
+  //   borderRadius: "4px",
+  //   padding: "5px 10px",
+  //   cursor: "pointer",
+  //   margin: "0 10px",
+  //   marginLeft: "170px",
+  // };
 
-  const removeButtonStyle = {
-    background: "#f44336",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    padding: "5px 10px",
-    cursor: "pointer",
-    margin: "0 10px",
-  };
+  // const addButtonStyle = {
+  //   background: "#4CAF50",
+  //   color: "white",
+  //   border: "none",
+  //   borderRadius: "4px",
+  //   padding: "5px 10px",
+  //   cursor: "pointer",
+  //   margin: "0 10px",
+  // };
 
-  const checkboxLabelStyle = {
-    display: "flex",
-    alignItems: "center",
-    cursor: "pointer",
-    margin: "0 10px",
-  };
+  // const removeButtonStyle = {
+  //   background: "#f44336",
+  //   color: "white",
+  //   border: "none",
+  //   borderRadius: "4px",
+  //   padding: "5px 10px",
+  //   cursor: "pointer",
+  //   margin: "0 10px",
+  // };
 
-  const toggleAllButtonStyle = {
-    ...addButtonStyle,
-    background: "#008CBA",
-  };
+  <div className="exercise-block">
+    <div className="input-and-button-container">
+      <input className="input-style" />
+      <button className="exercise-completed-button">Exercise Completed</button>
+      <button className="add-button">Add Set</button>
+    </div>
+    <button className="remove-button">Remove Set</button>
+  </div>;
 
   return (
     <div>
@@ -159,24 +168,26 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
           {exercise.name}
         </h3>
         <div style={inputAndButtonContainerStyle}>
-          <button onClick={toggleAllSetsCompleted} style={toggleAllButtonStyle}>
-            Toggle All Sets
+          <button
+            onClick={handleExerciseCompletedChange}
+            style={exerciseCompletedButtonStyle}
+          >
+            Exercise Completed
           </button>
+          <label
+            style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
+          >
+            <input
+              type="checkbox"
+              checked={editableSets.every((set) => set.completed)}
+              onChange={toggleAllSetsCompleted}
+              style={{ marginRight: "5px" }}
+            />
+          </label>
           <button onClick={addSet} style={addButtonStyle}>
             Add Set
           </button>
         </div>
-        <label
-          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
-        >
-          <input
-            type="checkbox"
-            checked={isExerciseCompleted}
-            onChange={handleExerciseCompletedChange}
-            style={{ marginRight: "5px" }}
-          />
-          Exercise Completed
-        </label>
       </div>
       {showSets &&
         editableSets.map((set, index) => (

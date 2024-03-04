@@ -1,0 +1,62 @@
+/* exerciseBlockStyle */
+.exercise-block {
+    background: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  
+  /* inputAndButtonContainerStyle */
+  .input-and-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1;
+  }
+  
+  /* inputStyle */
+  .input-style {
+    margin: 0 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* exerciseCompletedButtonStyle */
+  .exercise-completed-button {
+    background: #008CBA;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 0 10px;
+    margin-left: 170px; /* Adjusted as per the original object */
+  }
+  
+  /* addButtonStyle */
+  .add-button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 0 10px;
+  }
+  
+  /* removeButtonStyle */
+  .remove-button {
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin: 0 10px;
+  }
+  

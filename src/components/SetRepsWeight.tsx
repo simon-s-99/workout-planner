@@ -99,9 +99,7 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
   return (
     <div>
       <div className="exercise-block">
-        <h3 style={{ margin: "0", cursor: "pointer" }} onClick={toggleShowSets}>
-          {exercise.name}
-        </h3>
+        <h3 onClick={toggleShowSets}>{exercise.name}</h3>
         <div className="input-and-button-container">
           <span className="total-sets-info">
             Total Sets: {editableSets.length}
@@ -134,6 +132,7 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
                 onChange={toggleAllSetsCompleted}
                 style={{ marginRight: "5px" }}
               />
+              All sets completed
             </label>
             <button onClick={addSet} className="add-button">
               Add Set

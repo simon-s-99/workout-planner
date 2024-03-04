@@ -51,7 +51,8 @@ export type Color =
   | "black"
   | "white"
   | "teal"
-  | "lime";
+  | "lime"
+  | "aquamarine";
 
 export type MuscleGroupData = {
     muscleGroup: MuscleGroup,

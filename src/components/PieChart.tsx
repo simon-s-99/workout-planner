@@ -1,50 +1,75 @@
 import { useEffect, useRef, useState } from "react";
-import type { Color, MuscleGroup, MuscleGroupData } from "../types";
+import type { Color, ExerciseObject, MuscleGroup, MuscleGroupData, Weekday, WeekdayExerciseMap } from "../types";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
+import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 
 const PieChart: React.FC = () => {
-  const muscleGroups: MuscleGroup[] = [
-    "Abdominals",
-    "Biceps",
-    "Triceps",
-    "Forearms",
-    "Chest",
-    "Lats",
-    "Traps",
-    "Lower_back",
-    "Middle_back",
-    "Glutes",
-    "Back",
-    "Hamstrings",
-    "Quadriceps",
-    "Abductors",
-    "Adductors",
-    "Calves",
+  const colors: Color[] = [
+    "red",
+    "green",
+    "blue",
+    "yellow",
+    "purple",
+    "cyan",
+    "magenta",
+    "orange",
+    "pink",
+    "brown",
+    "gray",
+    "black",
+    "white",
+    "teal",
+    "lime",
+    "aquamarine",
   ];
 
-  const exerciseData = useLocalStorageRead("Monday");
   const [muscleGroupData, setMuscleGroupData] = useState<MuscleGroupData[]>([]);
+  const [colorCounter, setColorCounter] = useState<number>(0);
+
+  function getExerciseData(): ExerciseObject[] {
+    const mondayData = useLocalStorageRead("Monday");
+    const tuesdayData = useLocalStorageRead("Tuesday");
+    const wednesdayData = useLocalStorageRead("Wednesday");
+    const thursdayData = useLocalStorageRead("Thursday");
+    const fridayData = useLocalStorageRead("Friday");
+    const saturdayData = useLocalStorageRead("Saturday");
+    const sundayData = useLocalStorageRead("Sunday");
+
+    // Combine all arrays into one
+    const exerciseData = mondayData
+      .concat(tuesdayData)
+      .concat(wednesdayData)
+      .concat(thursdayData)
+      .concat(fridayData)
+      .concat(saturdayData)
+      .concat(sundayData);
+    return exerciseData;
+  }
 
   useEffect(() => {
+    const exerciseData = getExerciseData();
     for (const exercise of exerciseData) {
-      if (muscleGroups.includes(exercise.muscle as MuscleGroup)) {
-        if (muscleGroupData.filter((m) => m.muscleGroup === exercise.muscle).length === 0) {
-          const data: MuscleGroupData = {
-            muscleGroup: exercise.muscle as MuscleGroup,
-            sets: exercise.sets.length,
-            color: "red" as Color,
-          };
-          setMuscleGroupData([...muscleGroupData, data]);
-        } else {
-          const duplicateMuscleGroup = muscleGroupData.find((muscle) => muscle.muscleGroup === exercise.muscle);
-          if (duplicateMuscleGroup) {
-            duplicateMuscleGroup.sets += exercise.sets.length;
-          }
+      // If muscle group is not already present
+      if (muscleGroupData.filter((m) => m.muscleGroup === (exercise.muscle as MuscleGroup)).length === 0) {
+        let data: MuscleGroupData = {
+          muscleGroup: exercise.muscle as MuscleGroup,
+          sets: exercise.sets.length,
+          color: colors[colorCounter],
+        };
+        setMuscleGroupData([...muscleGroupData, data]);
+        setColorCounter(colorCounter + 1);
+      } else {
+        const duplicateMuscleGroup = muscleGroupData.find((muscle) => muscle.muscleGroup === exercise.muscle);
+        if (duplicateMuscleGroup) {
+          // Add muscle group's sets to the total amount of sets
+          duplicateMuscleGroup.sets += exercise.sets.length;
         }
       }
     }
-  }, []);
-  
+  }, [muscleGroupData, colorCounter]);
+
+  console.log(muscleGroupData);
+
   // Grab the element, the same as doing document.getElementById("canvas")
   const canvasRef = useRef(null);
 
@@ -85,7 +110,8 @@ const PieChart: React.FC = () => {
         ? muscleGroupData.map((data, index) => {
             return (
               <p key={index}>
-                {data.muscleGroup} <div style={{ backgroundColor: data.color }}></div>
+                {data.muscleGroup} {data.sets}
+                <div style={{ backgroundColor: data.color }}></div>
               </p>
             );
           })

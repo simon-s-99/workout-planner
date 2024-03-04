@@ -10,8 +10,43 @@ import type {
 import MuscleCategoryList from "./components/MuscleCategoryList";
 import WeekdayPicker from "./components/WeekdayPicker";
 import UnitsPicker from "./components/UnitsPicker";
-import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
-import { useLocalStorageWrite } from "./hooks/useLocalStorageWrite";
+
+// Utility to serialize a WeekdayExerciseMap to a string
+const serializeWeekdayExerciseMap = (map: WeekdayExerciseMap): string => {
+  const entries = Array.from(map.entries());
+  return JSON.stringify(entries);
+};
+
+// Utility to deserialize a string back to a WeekdayExerciseMap
+const deserializeWeekdayExerciseMap = (
+  serializedMap: string
+): WeekdayExerciseMap => {
+  const entries: [Weekday, ExerciseObject[]][] = JSON.parse(serializedMap);
+  return new Map(entries);
+};
+
+// Reads exercises for a specific weekday from localStorage
+const readLocalStorageForWeekday = (weekday: Weekday): ExerciseObject[] => {
+  const serializedMap = localStorage.getItem("exercises");
+  if (serializedMap) {
+    const exercisesMap = deserializeWeekdayExerciseMap(serializedMap);
+    return exercisesMap.get(weekday) || [];
+  }
+  return [];
+};
+
+// Writes exercises for a specific weekday to localStorage
+const writeLocalStorageForWeekday = (
+  weekday: Weekday,
+  exercises: ExerciseObject[]
+) => {
+  const serializedMap = localStorage.getItem("exercises");
+  const exercisesMap = serializedMap
+    ? deserializeWeekdayExerciseMap(serializedMap)
+    : new Map();
+  exercisesMap.set(weekday, exercises);
+  localStorage.setItem("exercises", serializeWeekdayExerciseMap(exercisesMap));
+};
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
@@ -22,29 +57,18 @@ const App: React.FC = () => {
   const [exercises, setExercises] = useState<ExerciseObject[]>([]);
 
   useEffect(() => {
-    const storedExercises = useLocalStorageRead(selectedWeekday);
-    if (storedExercises) {
-      const uniqueExercises = storedExercises.filter(
-        (exercise, index, self) =>
-          index === self.findIndex((e) => e.name === exercise.name)
-      );
-      setExercises(uniqueExercises);
-    }
+    const storedExercises = readLocalStorageForWeekday(selectedWeekday);
+    setExercises(storedExercises);
   }, [selectedWeekday]);
 
-  // This is the adjustment to directly update and persist changes without returning a new function
   const handleExerciseUpdate = (updatedExercise: ExerciseObject) => {
     const updatedExercises = exercises.map((exercise) =>
       exercise.name === updatedExercise.name
         ? { ...exercise, ...updatedExercise }
         : exercise
     );
-
-    // Update the local state with the modified exercises
     setExercises(updatedExercises);
-
-    // Persist the changes to local storage
-    useLocalStorageWrite(selectedWeekday, updatedExercises);
+    writeLocalStorageForWeekday(selectedWeekday, updatedExercises);
   };
 
   return (
@@ -60,9 +84,7 @@ const App: React.FC = () => {
         <SetRepsWeight
           key={index}
           exercise={exercise}
-          updateExercise={(updatedExercise) =>
-            handleExerciseUpdate(updatedExercise)
-          }
+          updateExercise={handleExerciseUpdate}
         />
       ))}
     </div>

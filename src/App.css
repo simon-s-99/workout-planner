@@ -65,46 +65,4 @@
   text-shadow: 1px 1px 0px black;
 }
 
-.exercises-container {
-  margin: 20px;
-}
 
-.exercise-item {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  padding: 15px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.exercise-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.title-and-add-set {
-  display: flex;
-  align-items: center;
-}
-
-.exercise-title {
-  margin: 0;
-  color: #333;
-}
-
-.exercise-completion {
-  display: flex;
-  align-items: center;
-}
-
-.exercise-completion-label {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.exercise-completion-checkbox {
-  margin-right: 5px;
-}

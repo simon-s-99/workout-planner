@@ -29,7 +29,7 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
 
     // Construct an updated exercise object with the new sets
     const updatedExercise = { ...exercise, sets: updatedSets };
-    // Correctly pass the updated exercise object to the updateExercise function
+
     updateExercise(updatedExercise);
   };
   const addSet = () => {

@@ -28,6 +28,7 @@ export type MuscleGroup =
   | "Traps"
   | "Lower_back"
   | "Middle_back"
+  | "Back"
   | "Glutes"
   | "Hamstrings"
   | "Quadriceps"

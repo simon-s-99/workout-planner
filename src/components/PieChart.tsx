@@ -1,33 +1,50 @@
 import { useEffect, useRef, useState } from "react";
-import type { ExerciseObject, MuscleGroup, MuscleGroupData } from "../types";
+import type { Color, MuscleGroup, MuscleGroupData } from "../types";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 
-interface PieChartProps {
-  // Sets
-  // Muscle groups
-}
+const PieChart: React.FC = () => {
+  const muscleGroups: MuscleGroup[] = [
+    "Abdominals",
+    "Biceps",
+    "Triceps",
+    "Forearms",
+    "Chest",
+    "Lats",
+    "Traps",
+    "Lower_back",
+    "Middle_back",
+    "Glutes",
+    "Back",
+    "Hamstrings",
+    "Quadriceps",
+    "Abductors",
+    "Adductors",
+    "Calves",
+  ];
 
-const PieChart: React.FC<PieChartProps> = ({}) => {
   const exerciseData = useLocalStorageRead("Monday");
-  const [muscleGroupData, setMuscleGroupData] = useState<ExerciseObject[]>(exerciseData);
+  const [muscleGroupData, setMuscleGroupData] = useState<MuscleGroupData[]>([]);
 
-  for (const exercise of exerciseData) {
-    console.log(exercise);
-
-    if (exercise.type === "Back") {
-      const strength: MuscleGroupData = {
-        muscleGroup: exercise.muscle as MuscleGroup,
-        sets: exercise.sets.length,
-        color: "red",
-      };
-      setMuscleGroupData([
-        ...muscleGroupData,
-        { muscleGroup: exercise.muscle, sets: exercise.sets.length, color: "red" },
-      ]);
+  useEffect(() => {
+    for (const exercise of exerciseData) {
+      if (muscleGroups.includes(exercise.muscle as MuscleGroup)) {
+        if (muscleGroupData.filter((m) => m.muscleGroup === exercise.muscle).length === 0) {
+          const data: MuscleGroupData = {
+            muscleGroup: exercise.muscle as MuscleGroup,
+            sets: exercise.sets.length,
+            color: "red" as Color,
+          };
+          setMuscleGroupData([...muscleGroupData, data]);
+        } else {
+          const duplicateMuscleGroup = muscleGroupData.find((muscle) => muscle.muscleGroup === exercise.muscle);
+          if (duplicateMuscleGroup) {
+            duplicateMuscleGroup.sets += exercise.sets.length;
+          }
+        }
+      }
     }
-  }
-
-  console.log(exerciseData);
+  }, []);
+  
   // Grab the element, the same as doing document.getElementById("canvas")
   const canvasRef = useRef(null);
 

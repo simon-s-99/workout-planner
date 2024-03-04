@@ -1,4 +1,4 @@
-// // DayWorkout.tsx
+// // DayWorkout.tsx currently has no real function lol
 // import React, { useState } from "react";
 // import Exercise from "./SetRepsWeight";
 // import { ExerciseObject } from "../types";

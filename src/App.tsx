@@ -5,6 +5,7 @@ import type { Settings, Weekday } from "./types";
 import MuscleCategoryList from './components/MuscleCategoryList';
 import WeekdayPicker from "./components/WeekdayPicker";
 import UnitsPicker from "./components/UnitsPicker";
+import AddExercise from "./components/AddExercise";
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
@@ -18,12 +19,12 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <h1>Workout Planner</h1>
-      <MuscleCategoryList />
       <UnitsPicker setSettings={setSettings} />
       <WeekdayPicker
         selectedWeekday={selectedWeekday}
         setSelectedWeekday={setSelectedWeekday as React.Dispatch<React.SetStateAction<Weekday>>}
       />
+      <AddExercise weekday={selectedWeekday} />
     </div>
   );
 };

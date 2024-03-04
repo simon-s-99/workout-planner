@@ -32,107 +32,20 @@ const App: React.FC = () => {
     }
   }, [selectedWeekday]);
 
+  // This is the adjustment to directly update and persist changes without returning a new function
   const handleExerciseUpdate = (updatedExercise: ExerciseObject) => {
     const updatedExercises = exercises.map((exercise) =>
-      exercise.name === updatedExercise.name ? updatedExercise : exercise
+      exercise.name === updatedExercise.name
+        ? { ...exercise, ...updatedExercise }
+        : exercise
     );
+
+    // Update the local state with the modified exercises
     setExercises(updatedExercises);
+
+    // Persist the changes to local storage
+    useLocalStorageWrite(selectedWeekday, updatedExercises);
   };
-
-  const testData: WeekdayExerciseMap = new Map<Weekday, ExerciseObject[]>([
-    [
-      "Monday",
-      [
-        {
-          name: "Bench Press",
-          type: "Strength",
-          muscle: "Chest",
-          equipment: "Barbell",
-          difficulty: "Intermediate",
-          instructions:
-            "Lie on the bench, lift the barbell, keep your feet flat on the ground.",
-          sets: [
-            {
-              repetitions: 10,
-              weight: 200,
-              completed: false,
-            },
-            {
-              repetitions: 8,
-              weight: 220,
-              completed: false,
-            },
-          ],
-          completed: false,
-        },
-        {
-          name: "Bench Press",
-          type: "Strength",
-          muscle: "Chest",
-          equipment: "Barbell",
-          difficulty: "Intermediate",
-          instructions:
-            "Lie on the bench, lift the barbell, keep your feet flat on the ground.",
-          sets: [
-            {
-              repetitions: 10,
-              weight: 200,
-              completed: false,
-            },
-            {
-              repetitions: 8,
-              weight: 220,
-              completed: false,
-            },
-          ],
-          completed: false,
-        },
-        {
-          name: "Bench Press",
-          type: "Strength",
-          muscle: "Chest",
-          equipment: "Barbell",
-          difficulty: "Intermediate",
-          instructions:
-            "Lie on the bench, lift the barbell, keep your feet flat on the ground.",
-          sets: [
-            {
-              repetitions: 10,
-              weight: 200,
-              completed: false,
-            },
-            {
-              repetitions: 8,
-              weight: 220,
-              completed: false,
-            },
-          ],
-          completed: false,
-        },
-      ],
-    ],
-  ]);
-
-  // useLocalStorageWrite(testData);
-
-  // const clearTestData = () => {
-  //   const weekdays = [
-  //     "Monday",
-  //     "Tuesday",
-  //     "Wednesday",
-  //     "Thursday",
-  //     "Friday",
-  //     "Saturday",
-  //     "Sunday",
-  //   ];
-  //   weekdays.forEach((day) => {
-  //     localStorage.removeItem(day);
-  //   });
-  //   console.log("Test data cleared from localStorage.");
-  // };
-  // useEffect(() => {
-  //   clearTestData();
-  // }, []);
 
   return (
     <div className="App">
@@ -147,7 +60,9 @@ const App: React.FC = () => {
         <SetRepsWeight
           key={index}
           exercise={exercise}
-          updateExercise={handleExerciseUpdate}
+          updateExercise={(updatedExercise) =>
+            handleExerciseUpdate(updatedExercise)
+          }
         />
       ))}
     </div>

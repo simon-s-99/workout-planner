@@ -26,19 +26,23 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
       idx === index ? { ...set, [field]: value } : set
     );
     setEditableSets(updatedSets);
-    // Update the parent component immediately with the new set values
-    updateExercise({ ...exercise, sets: updatedSets });
-  };
 
+    // Construct an updated exercise object with the new sets
+    const updatedExercise = { ...exercise, sets: updatedSets };
+    // Correctly pass the updated exercise object to the updateExercise function
+    updateExercise(updatedExercise);
+  };
   const addSet = () => {
     const newSet: WorkingSet = {
       repetitions: 10,
       weight: 100,
       completed: false,
-    }; // Default values for new set, update later with training goal in mind?
+    };
     const updatedSets = [...editableSets, newSet];
     setEditableSets(updatedSets);
-    updateExercise({ ...exercise, sets: updatedSets });
+
+    const updatedExercise = { ...exercise, sets: updatedSets };
+    updateExercise(updatedExercise);
   };
 
   const removeSet = (index: number) => {
@@ -79,7 +83,7 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
           <button onClick={addSet} style={{ marginRight: "10px" }}>
             Add Set
           </button>
-          <button onClick={toggleAllSetsCompleted}>Toggle All Completed</button>
+          <button onClick={toggleAllSetsCompleted}>✔</button>
         </div>
       </div>
       {editableSets.map((set, index) => (

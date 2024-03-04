@@ -10,12 +10,18 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
   exercise,
   updateExercise,
 }) => {
-  // Local state to manage edits to sets
   const [editableSets, setEditableSets] = useState<WorkingSet[]>(exercise.sets);
+  const [showSets, setShowSets] = useState(false);
+  const [isExerciseCompleted, setIsExerciseCompleted] = useState(
+    exercise.completed
+  );
 
   useEffect(() => {
     setEditableSets(exercise.sets);
-  }, [exercise.sets]);
+    setIsExerciseCompleted(exercise.sets.every((set) => set.completed));
+  }, [exercise]);
+
+  const toggleShowSets = () => setShowSets(!showSets);
 
   const handleSetChange = (
     index: number,
@@ -26,12 +32,9 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
       idx === index ? { ...set, [field]: value } : set
     );
     setEditableSets(updatedSets);
-
-    // Construct an updated exercise object with the new sets
-    const updatedExercise = { ...exercise, sets: updatedSets };
-
-    updateExercise(updatedExercise);
+    updateExercise({ ...exercise, sets: updatedSets });
   };
+
   const addSet = () => {
     const newSet: WorkingSet = {
       repetitions: 10,
@@ -40,9 +43,7 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
     };
     const updatedSets = [...editableSets, newSet];
     setEditableSets(updatedSets);
-
-    const updatedExercise = { ...exercise, sets: updatedSets };
-    updateExercise(updatedExercise);
+    updateExercise({ ...exercise, sets: updatedSets });
   };
 
   const removeSet = (index: number) => {
@@ -60,78 +61,170 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
   };
 
   const toggleAllSetsCompleted = () => {
+    // Check if all sets are already marked as completed
     const allCompleted = editableSets.every((set) => set.completed);
+
     const updatedSets = editableSets.map((set) => ({
       ...set,
       completed: !allCompleted,
     }));
+
     setEditableSets(updatedSets);
-    updateExercise({ ...exercise, sets: updatedSets });
+    updateExercise({
+      ...exercise,
+      sets: updatedSets,
+      completed: updatedSets.every((set) => set.completed),
+    });
+  };
+
+  const handleExerciseCompletedChange = () => {
+    const newCompletionStatus = !isExerciseCompleted;
+    setIsExerciseCompleted(newCompletionStatus);
+    if (newCompletionStatus) {
+      setShowSets(false); // Close the sets if the exercise is marked as completed
+    }
+    const updatedSets = editableSets.map((set) => ({
+      ...set,
+      completed: newCompletionStatus,
+    }));
+    setEditableSets(updatedSets);
+    updateExercise({
+      ...exercise,
+      sets: updatedSets,
+      completed: newCompletionStatus,
+    });
+  };
+
+  const exerciseBlockStyle = {
+    background: "#f0f0f0",
+    padding: "10px",
+    borderRadius: "8px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "10px",
+    cursor: "pointer",
+  };
+
+  const inputAndButtonContainerStyle = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flex: 1,
+  };
+
+  const inputStyle = {
+    margin: "0 10px",
+    padding: "5px",
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+  };
+
+  const addButtonStyle = {
+    background: "#4CAF50",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    padding: "5px 10px",
+    cursor: "pointer",
+    margin: "0 10px",
+  };
+
+  const removeButtonStyle = {
+    background: "#f44336",
+    color: "white",
+    border: "none",
+    borderRadius: "4px",
+    padding: "5px 10px",
+    cursor: "pointer",
+    margin: "0 10px",
+  };
+
+  const checkboxLabelStyle = {
+    display: "flex",
+    alignItems: "center",
+    cursor: "pointer",
+    margin: "0 10px",
+  };
+
+  const toggleAllButtonStyle = {
+    ...addButtonStyle,
+    background: "#008CBA",
   };
 
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h3>{exercise.name}</h3>
-        <div>
-          <button onClick={addSet} style={{ marginRight: "10px" }}>
+      <div style={exerciseBlockStyle}>
+        <h3 style={{ margin: "0", cursor: "pointer" }} onClick={toggleShowSets}>
+          {exercise.name}
+        </h3>
+        <div style={inputAndButtonContainerStyle}>
+          <button onClick={toggleAllSetsCompleted} style={toggleAllButtonStyle}>
+            Toggle All Sets
+          </button>
+          <button onClick={addSet} style={addButtonStyle}>
             Add Set
           </button>
-          <button onClick={toggleAllSetsCompleted}>✔</button>
         </div>
-      </div>
-      {editableSets.map((set, index) => (
-        <div
-          key={index}
-          style={{
-            marginBottom: "10px",
-            display: "flex",
-            alignItems: "center",
-          }}
+        <label
+          style={{ display: "flex", alignItems: "center", cursor: "pointer" }}
         >
-          <label style={{ marginRight: "5px" }}>
-            Reps:
-            <input
-              type="number"
-              value={set.repetitions}
-              onChange={(e) =>
-                handleSetChange(index, "repetitions", parseInt(e.target.value))
-              }
-              style={{ margin: "0 5px" }}
-            />
-          </label>
-          <label style={{ marginRight: "5px" }}>
-            Weight:
-            <input
-              type="number"
-              value={set.weight}
-              onChange={(e) =>
-                handleSetChange(index, "weight", parseInt(e.target.value))
-              }
-              style={{ margin: "0 5px" }}
-            />
-          </label>
           <input
             type="checkbox"
-            checked={set.completed}
-            onChange={() => toggleSetCompleted(index)}
+            checked={isExerciseCompleted}
+            onChange={handleExerciseCompletedChange}
             style={{ marginRight: "5px" }}
           />
-          <span>Completed</span>
-          <button
-            onClick={() => removeSet(index)}
-            style={{ marginLeft: "auto" }}
+          Exercise Completed
+        </label>
+      </div>
+      {showSets &&
+        editableSets.map((set, index) => (
+          <div
+            key={index}
+            style={{ ...exerciseBlockStyle, background: "#ECEAEA" }}
           >
-            Remove Set
-          </button>
-        </div>
-      ))}
+            <span>{`Set ${index + 1}: `}</span>
+            <label style={{ marginRight: "5px" }}>
+              Reps:
+              <input
+                type="number"
+                value={set.repetitions}
+                onChange={(e) =>
+                  handleSetChange(
+                    index,
+                    "repetitions",
+                    parseInt(e.target.value)
+                  )
+                }
+                style={inputStyle}
+              />
+            </label>
+            <label style={{ marginRight: "5px" }}>
+              Weight:
+              <input
+                type="number"
+                value={set.weight}
+                onChange={(e) =>
+                  handleSetChange(index, "weight", parseInt(e.target.value))
+                }
+                style={inputStyle}
+              />
+            </label>
+            <label style={{ cursor: "pointer" }}>
+              <input
+                type="checkbox"
+                checked={set.completed}
+                onChange={() => toggleSetCompleted(index)}
+                style={{ marginRight: "5px" }}
+              />
+              Completed
+            </label>
+            <button onClick={() => removeSet(index)} style={removeButtonStyle}>
+              Remove Set
+            </button>
+          </div>
+        ))}
     </div>
   );
 };

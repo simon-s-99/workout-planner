@@ -24,7 +24,11 @@ const App: React.FC = () => {
   useEffect(() => {
     const storedExercises = useLocalStorageRead(selectedWeekday);
     if (storedExercises) {
-      setExercises(storedExercises);
+      const uniqueExercises = storedExercises.filter(
+        (exercise, index, self) =>
+          index === self.findIndex((e) => e.name === exercise.name)
+      );
+      setExercises(uniqueExercises);
     }
   }, [selectedWeekday]);
 

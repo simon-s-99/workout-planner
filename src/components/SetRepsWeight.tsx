@@ -35,7 +35,7 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
       repetitions: 10,
       weight: 100,
       completed: false,
-    }; // Default values for new set
+    }; // Default values for new set, update later with training goal in mind?
     const updatedSets = [...editableSets, newSet];
     setEditableSets(updatedSets);
     updateExercise({ ...exercise, sets: updatedSets });
@@ -55,12 +55,43 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
     updateExercise({ ...exercise, sets: updatedSets });
   };
 
+  const toggleAllSetsCompleted = () => {
+    const allCompleted = editableSets.every((set) => set.completed);
+    const updatedSets = editableSets.map((set) => ({
+      ...set,
+      completed: !allCompleted,
+    }));
+    setEditableSets(updatedSets);
+    updateExercise({ ...exercise, sets: updatedSets });
+  };
+
   return (
     <div>
-      <h3>{exercise.name}</h3>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <h3>{exercise.name}</h3>
+        <div>
+          <button onClick={addSet} style={{ marginRight: "10px" }}>
+            Add Set
+          </button>
+          <button onClick={toggleAllSetsCompleted}>Toggle All Completed</button>
+        </div>
+      </div>
       {editableSets.map((set, index) => (
-        <div key={index} style={{ marginBottom: "10px" }}>
-          <label>
+        <div
+          key={index}
+          style={{
+            marginBottom: "10px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <label style={{ marginRight: "5px" }}>
             Reps:
             <input
               type="number"
@@ -71,7 +102,7 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
               style={{ margin: "0 5px" }}
             />
           </label>
-          <label>
+          <label style={{ marginRight: "5px" }}>
             Weight:
             <input
               type="number"
@@ -82,20 +113,21 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
               style={{ margin: "0 5px" }}
             />
           </label>
+          <input
+            type="checkbox"
+            checked={set.completed}
+            onChange={() => toggleSetCompleted(index)}
+            style={{ marginRight: "5px" }}
+          />
+          <span>Completed</span>
           <button
-            onClick={() => toggleSetCompleted(index)}
-            style={{ margin: "0 5px" }}
+            onClick={() => removeSet(index)}
+            style={{ marginLeft: "auto" }}
           >
-            {set.completed ? "Undo Complete" : "Complete"}
-          </button>
-          <button onClick={() => removeSet(index)} style={{ margin: "0 5px" }}>
             Remove Set
           </button>
         </div>
       ))}
-      <button onClick={addSet} style={{ marginTop: "10px" }}>
-        Add Set
-      </button>
     </div>
   );
 };

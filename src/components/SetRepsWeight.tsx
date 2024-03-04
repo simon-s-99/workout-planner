@@ -1,183 +1,103 @@
-// src/components/SetRepsWeight.tsx
 import React, { useState, useEffect } from "react";
-import ExerciseDetail from "./ExerciseDetail";
-import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
-import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
-import { ExerciseObject, Weekday, WorkingSet } from "../types";
+import type { ExerciseObject, WorkingSet } from "../types";
 
-const SetRepsWeight: React.FC = () => {
-  const currentWeekday = "Monday";
-  const initialExercises = useLocalStorageRead(currentWeekday);
-  const [exercises, setExercises] =
-    useState<ExerciseObject[]>(initialExercises);
-  const [setIdCounter, setSetIdCounter] = useState(0); // New state to keep track of the setIdCounter
+type SetRepsWeightProps = {
+  exercise: ExerciseObject;
+  updateExercise: (updatedExercise: ExerciseObject) => void;
+};
 
-  //Used to fetch json data
-  useEffect(() => {
-    fetch("../src/components/exerciseData.json")
-      .then((response) => response.json())
-      .then((data) => {
-        setExercises(data.Monday);
-      })
-      .catch((error) => console.error("Failed to load exercise data:", error));
-  }, []);
+const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
+  exercise,
+  updateExercise,
+}) => {
+  // Local state to manage edits to sets
+  const [editableSets, setEditableSets] = useState<WorkingSet[]>(exercise.sets);
 
   useEffect(() => {
-    // Find the highest set number across all exercises to ensure unique IDs for newly added sets
-    const highestSetId = exercises.reduce((acc, curr) => {
-      const maxSetId = curr.sets.reduce(
-        (setAcc, setCurr) => Math.max(setAcc, parseInt(setCurr.id, 10) || 0),
-        0
-      );
-      return Math.max(acc, maxSetId);
-    }, 0);
-    setSetIdCounter(highestSetId + 1);
-  }, [exercises]);
+    setEditableSets(exercise.sets);
+  }, [exercise.sets]);
 
-  const generateId = () => {
-    const newId = setIdCounter;
-    setSetIdCounter((prevId) => prevId + 1);
-    return newId.toString();
-  };
-
-  const addSet = (exerciseName: string) => {
-    setExercises((currentExercises) =>
-      currentExercises.map((exercise) => {
-        if (exercise.name === exerciseName) {
-          const newSet: WorkingSet = {
-            id: generateId(),
-            setNumber: exercise.sets.length + 1,
-            repetitions: 10, // default value
-            weight: 20, // default value
-            completed: false,
-          };
-          return { ...exercise, sets: [...exercise.sets, newSet] };
-        }
-        return exercise;
-      })
-    );
-  };
-
-  const removeSet = (exerciseName: string, setId: string) => {
-    setExercises((currentExercises) =>
-      currentExercises.map((exercise) => {
-        if (exercise.name === exerciseName) {
-          return {
-            ...exercise,
-            sets: exercise.sets.filter((set) => set.id !== setId),
-          };
-        }
-        return exercise;
-      })
-    );
-  };
-
-  const updateSet = (
-    exerciseName: string,
-    setId: string,
-    reps: number,
-    weight: number
+  const handleSetChange = (
+    index: number,
+    field: "weight" | "repetitions",
+    value: number
   ) => {
-    setExercises((currentExercises) =>
-      currentExercises.map((exercise) => {
-        if (exercise.name === exerciseName) {
-          return {
-            ...exercise,
-            sets: exercise.sets.map((set) =>
-              set.id === setId ? { ...set, reps, weight } : set
-            ),
-          };
-        }
-        return exercise;
-      })
+    const updatedSets = editableSets.map((set, idx) =>
+      idx === index ? { ...set, [field]: value } : set
     );
+    setEditableSets(updatedSets);
+    // Update the parent component immediately with the new set values
+    updateExercise({ ...exercise, sets: updatedSets });
   };
 
-  const toggleSetCompleted = (exerciseName: string, setId: string) => {
-    setExercises((currentExercises) =>
-      currentExercises.map((exercise) => {
-        if (exercise.name === exerciseName) {
-          return {
-            ...exercise,
-            sets: exercise.sets.map((set) =>
-              set.id === setId ? { ...set, completed: !set.completed } : set
-            ),
-          };
-        }
-        return exercise;
-      })
-    );
+  const addSet = () => {
+    const newSet: WorkingSet = {
+      repetitions: 10,
+      weight: 100,
+      completed: false,
+    }; // Default values for new set
+    const updatedSets = [...editableSets, newSet];
+    setEditableSets(updatedSets);
+    updateExercise({ ...exercise, sets: updatedSets });
   };
 
-  const toggleAllSetsCompleted = (exerciseName: string) => {
-    setExercises((currentExercises) =>
-      currentExercises.map((exercise) => {
-        if (exercise.name === exerciseName) {
-          // Determine if all sets are already completed to toggle them all
-          const areAllCompleted = exercise.sets.every((set) => set.completed);
-          const toggledSets = exercise.sets.map((set) => ({
-            ...set,
-            completed: !areAllCompleted,
-          }));
-          return {
-            ...exercise,
-            sets: toggledSets,
-            completed: !areAllCompleted,
-          };
-        }
-        return exercise;
-      })
-    );
+  const removeSet = (index: number) => {
+    const updatedSets = editableSets.filter((_, idx) => idx !== index);
+    setEditableSets(updatedSets);
+    updateExercise({ ...exercise, sets: updatedSets });
   };
 
-  useEffect(() => {
-    const weekdayExercisesMap = new Map<Weekday, ExerciseObject[]>();
-    weekdayExercisesMap.set(currentWeekday, exercises);
-
-    useLocalStorageWrite(weekdayExercisesMap);
-  }, [exercises, currentWeekday]);
+  const toggleSetCompleted = (index: number) => {
+    const updatedSets = editableSets.map((set, idx) =>
+      idx === index ? { ...set, completed: !set.completed } : set
+    );
+    setEditableSets(updatedSets);
+    updateExercise({ ...exercise, sets: updatedSets });
+  };
 
   return (
-    <div className="exercises-container">
-      {exercises.map((exercise, index) => (
-        <ExerciseDetail
-          key={index}
-          exercise={exercise}
-          onRemoveSet={removeSet}
-          onUpdateSet={updateSet}
-          toggleSetCompleted={toggleSetCompleted}
-          toggleAllSetsCompleted={toggleAllSetsCompleted}
-        />
+    <div>
+      <h3>{exercise.name}</h3>
+      {editableSets.map((set, index) => (
+        <div key={index} style={{ marginBottom: "10px" }}>
+          <label>
+            Reps:
+            <input
+              type="number"
+              value={set.repetitions}
+              onChange={(e) =>
+                handleSetChange(index, "repetitions", parseInt(e.target.value))
+              }
+              style={{ margin: "0 5px" }}
+            />
+          </label>
+          <label>
+            Weight:
+            <input
+              type="number"
+              value={set.weight}
+              onChange={(e) =>
+                handleSetChange(index, "weight", parseInt(e.target.value))
+              }
+              style={{ margin: "0 5px" }}
+            />
+          </label>
+          <button
+            onClick={() => toggleSetCompleted(index)}
+            style={{ margin: "0 5px" }}
+          >
+            {set.completed ? "Undo Complete" : "Complete"}
+          </button>
+          <button onClick={() => removeSet(index)} style={{ margin: "0 5px" }}>
+            Remove Set
+          </button>
+        </div>
       ))}
-
-      <button onClick={() => addSet(exercises[0].name)}>Add Set</button>
+      <button onClick={addSet} style={{ marginTop: "10px" }}>
+        Add Set
+      </button>
     </div>
   );
-
-  //Mark an exercise as completed //currently redundant
-  const toggleExerciseCompleted = (exerciseName: string) => {
-    setExercises((currentExercises) =>
-      currentExercises.map((exercise) => {
-        if (exercise.name === exerciseName) {
-          const newCompletedStatus = !exercise.completed;
-
-          return {
-            ...exercise,
-
-            sets: exercise.sets.map((set) => ({
-              ...set,
-
-              completed: newCompletedStatus,
-            })),
-
-            completed: newCompletedStatus,
-          };
-        }
-
-        return exercise;
-      })
-    );
-  };
 };
 
 export default SetRepsWeight;

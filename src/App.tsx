@@ -1,20 +1,48 @@
-// App component
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
-import ExerciseDropdownComponent from "./components/SetRepsWeight"; // Too lazy to change this ugly name rn
-import type { Settings, Weekday } from "./types";
+import SetRepsWeight from "./components/SetRepsWeight";
+import type {
+  Settings,
+  Weekday,
+  ExerciseObject,
+  WeekdayExerciseMap,
+} from "./types";
 import MuscleCategoryList from "./components/MuscleCategoryList";
 import WeekdayPicker from "./components/WeekdayPicker";
 import UnitsPicker from "./components/UnitsPicker";
+import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
+import { useLocalStorageWrite } from "./hooks/useLocalStorageWrite";
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
     units: "kilograms",
     trainingGoal: "powerlifting",
   });
-
-  // Currently selected weekday, initialized to "Monday" in case we want a start value.
   const [selectedWeekday, setSelectedWeekday] = useState<Weekday>("Monday");
+  const [exercises, setExercises] = useState<ExerciseObject[]>([]);
+
+  useEffect(() => {
+    const storedExercises = useLocalStorageRead(selectedWeekday);
+    if (storedExercises) {
+      setExercises(storedExercises);
+    }
+  }, [selectedWeekday]);
+
+  useEffect(() => {
+    // Construct a WeekdayExerciseMap for the current selectedWeekday and its exercises
+    const updatedMap: WeekdayExerciseMap = new Map();
+    updatedMap.set(selectedWeekday, exercises);
+
+    // Directly call useLocalStorageWrite with the updated map
+    useLocalStorageWrite(updatedMap);
+  }, [selectedWeekday, exercises]);
+
+  const handleExerciseUpdate = (updatedExercise: ExerciseObject) => {
+    const updatedExercises = exercises.map((exercise) =>
+      exercise.name === updatedExercise.name ? updatedExercise : exercise
+    );
+    setExercises(updatedExercises);
+  };
 
   return (
     <div className="App">
@@ -23,12 +51,15 @@ const App: React.FC = () => {
       <UnitsPicker setSettings={setSettings} />
       <WeekdayPicker
         selectedWeekday={selectedWeekday}
-        setSelectedWeekday={
-          setSelectedWeekday as React.Dispatch<React.SetStateAction<Weekday>>
-        }
+        setSelectedWeekday={setSelectedWeekday}
       />
-      {/* Include the ExerciseDropdownComponent here */}
-      <ExerciseDropdownComponent />
+      {exercises.map((exercise, index) => (
+        <SetRepsWeight
+          key={index}
+          exercise={exercise}
+          updateExercise={handleExerciseUpdate}
+        />
+      ))}
     </div>
   );
 };

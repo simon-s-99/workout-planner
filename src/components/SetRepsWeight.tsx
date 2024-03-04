@@ -11,12 +11,18 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
   exercise,
   updateExercise,
 }) => {
+  // State for the editable sets of the exercise
   const [editableSets, setEditableSets] = useState<WorkingSet[]>(exercise.sets);
-  const [showSets, setShowSets] = useState(false); // initial state is false for showing sets
+
+  // Toggle visibility of sets
+  const [showSets, setShowSets] = useState(false);
+
+  // Track if the exercise is completed
   const [isExerciseCompleted, setIsExerciseCompleted] = useState(
     exercise.completed
   );
 
+  // Effect hook to update state when the exercise prop changes
   useEffect(() => {
     setEditableSets(exercise.sets);
     setIsExerciseCompleted(exercise.sets.every((set) => set.completed));
@@ -78,6 +84,7 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
     });
   };
 
+  // Function to handle change in the exercise's completion status
   const handleExerciseCompletedChange = () => {
     const newCompletionStatus = !isExerciseCompleted;
     setIsExerciseCompleted(newCompletionStatus);

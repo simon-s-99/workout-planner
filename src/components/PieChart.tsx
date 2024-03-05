@@ -4,8 +4,7 @@ import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 
 const PieChart: React.FC = () => {
   const styles = {
-    canvas: {
-    }
+    canvas: {},
   };
 
   const colors: Color[] = [
@@ -64,6 +63,7 @@ const PieChart: React.FC = () => {
         setColorCounter(colorCounter + 1);
       } else {
         const duplicateMuscleGroup = muscleGroupData.find((muscle) => muscle.muscleGroup === exercise.muscle);
+        // To resolve TypeScript undefined error
         if (duplicateMuscleGroup) {
           // Add muscle group's sets to the total amount of sets
           duplicateMuscleGroup.sets += exercise.sets.length;
@@ -71,8 +71,6 @@ const PieChart: React.FC = () => {
       }
     }
   }, [muscleGroupData, colorCounter]);
-
-  console.log(muscleGroupData);
 
   // Grab the element, the same as doing document.getElementById("canvas")
   const canvasRef = useRef(null);

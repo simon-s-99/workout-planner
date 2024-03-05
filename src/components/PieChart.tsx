@@ -4,6 +4,13 @@ import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 
 const PieChart: React.FC = () => {
+  const styles = {
+    canvas: {
+      width: "300px",
+      height: "300px",
+    },
+  };
+
   const colors: Color[] = [
     "red",
     "green",
@@ -105,13 +112,20 @@ const PieChart: React.FC = () => {
 
   return (
     <div className="PieChart">
-      <canvas ref={canvasRef} width={100} height={100}></canvas>
+      <canvas ref={canvasRef} style={styles.canvas} width={100} height={100}></canvas>
       {muscleGroupData
         ? muscleGroupData.map((data, index) => {
             return (
               <p key={index}>
                 {data.muscleGroup} {data.sets}
-                <div style={{ backgroundColor: data.color }}></div>
+                <div
+                  style={{
+                    backgroundColor: data.color,
+                    height: "20px",
+                    width: "20px",
+                    display: "inline-block",
+                    borderRadius: "25px",
+                  }}></div>
               </p>
             );
           })

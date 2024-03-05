@@ -45,7 +45,7 @@
   border-color: #051007;
   background-color: #8beb7f;
 }
-
+/*
 .UnitsPicker {
   display: inline-block;
   border: 1px solid rgb(165, 165, 165);
@@ -56,7 +56,7 @@
 .UnitsPicker label {
   padding: 1rem;
 }
-
+*/
 .UnitsPicker label:first-of-type {
   border-right: 1px solid rgb(165, 165, 165);
 }
@@ -68,11 +68,4 @@
 .PieChart svg {
   width: 300px;
   height: 300px;
-}
-
-.PieChart div {
-  height: 20px;
-  width: 20px;
-  display: inline-block;
-  border-radius: 25px;
 }

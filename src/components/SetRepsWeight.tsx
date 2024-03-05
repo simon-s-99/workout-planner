@@ -1,16 +1,24 @@
 import React, { useState, useEffect } from "react";
-import type { ExerciseObject, WorkingSet } from "../types";
-import "../SetRepsWeight.css";
+import type { ExerciseObject, Weekday, WorkingSet } from "../types";
+import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 
 type SetRepsWeightProps = {
   exercise: ExerciseObject;
+  weekday: Weekday;
   updateExercise: (updatedExercise: ExerciseObject) => void;
 };
 
 const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
   exercise,
   updateExercise,
+  weekday,
 }) => {
+
+  const weekdayExercises: ExerciseObject[] = useLocalStorageRead(weekday); 
+    // loop som går in på exercise sen en loops som går in en loop med set (nestad loop)
+
+  
+  weekdayExercises
   // State for the editable sets of the exercise
   const [editableSets, setEditableSets] = useState<WorkingSet[]>(exercise.sets);
 

@@ -5,23 +5,22 @@ import type { Settings, Weekday, ExerciseObject } from "./types";
 import MuscleCategoryList from "./components/MuscleCategoryList";
 import WeekdayPicker from "./components/WeekdayPicker";
 import UnitsPicker from "./components/UnitsPicker";
-import { useExerciseStorage } from "./hooks/useExerciseStorage";
+import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
+// import { useExerciseStorage } from "./hooks/useExerciseStorage";
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
     units: "kilograms",
     trainingGoal: "powerlifting",
   });
+
   const [selectedWeekday, setSelectedWeekday] = useState<Weekday>("Monday");
   const [exercises, setExercises] = useState<ExerciseObject[]>([]);
-  const { read, write } = useExerciseStorage();
 
-  // This useEffect hook is used to fetch and set the exercises for the selected weekday
-  // whenever the selectedWeekday changes. It leverages the `read` function from the
-  // useExerciseStorage hook to fetch the exercises from localStorage.
-  useEffect(() => {
-    setExercises(read(selectedWeekday));
-  }, [selectedWeekday, read]);
+  const weekdayExercises: ExerciseObject[] = useLocalStorageRead(selectedWeekday); 
+
+ // loop som går in på exercise sen en loops som går in en loop med set (nestad loop)
+
 
   // This function handles updates to an individual exercise. It's typically triggered
   // by some user action in the UI, such as completing an exercise or updating its details.
@@ -37,7 +36,7 @@ const App: React.FC = () => {
     setExercises(updatedExercises);
 
     // Calls the "write" function with the currently selected weekday and the updated list
-    write(selectedWeekday, updatedExercises);
+    useLocalStorageRead(selectedWeekday);
   };
 
   return (

@@ -1,3 +1,25 @@
+.flex-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+}
+
+.flex-label, .checkbox-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.checkbox-margin, .label-margin {
+  margin-right: 5px;
+}
+
+.exercise-block-background {
+  background: #ECEAEA;
+}
+
 .exercise-block {
     background: #f0f0f0;
     padding: 10px;
@@ -68,4 +90,6 @@
     color: #007bff; 
     text-decoration:underline;
   }
+
+
   

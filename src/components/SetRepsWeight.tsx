@@ -13,34 +13,13 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
   updateExercise,
   weekday,
 }) => {
+  // Fetch all exercises for the given weekday from local storage
+  const weekdayExercises: ExerciseObject[] = useLocalStorageRead(weekday);
 
-  const weekdayExercises: ExerciseObject[] = useLocalStorageRead(weekday); 
-
-  // put this in a return statement
-  weekdayExercises.map((exerciseObject, index) => {
-    // rita upp varje exercise här, namn, utrustning, sets etc
-    exerciseObject.sets.map((set, setIndex) => {
-      //rita upp varje individuellt set
-      set.weight
-      set.repetitions
-      set.completed;
-
-    });
-  });
-
-  // ändra hela return statement
-
-    // loop som går in på exercise object array sen en loops som går in en loop igenom  array med set (nestad loop)'
-    // ritar upp allt för användaren.
-
-  
-  weekdayExercises
   // State for the editable sets of the exercise
   const [editableSets, setEditableSets] = useState<WorkingSet[]>(exercise.sets);
-
   // Toggle visibility of sets
   const [showSets, setShowSets] = useState(false);
-
   // Track if the exercise is completed
   const [isExerciseCompleted, setIsExerciseCompleted] = useState(
     exercise.completed
@@ -129,39 +108,43 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
 
   return (
     <div>
+      {/* Display of static exercise data fetched from local storage */}
+      {weekdayExercises.map((exerciseObject, index) => (
+        <div key={`exercise-${index}`} className="exercise-container">
+          <h3>{exerciseObject.name}</h3>
+          <p>Equipment: {exerciseObject.equipment || "None"}</p>
+          {exerciseObject.sets.map((set, setIndex) => (
+            <div key={`set-${setIndex}`} className="set-details">
+              <p>
+                Set {setIndex + 1}: Reps: {set.repetitions}, Weight:{" "}
+                {set.weight}, Completed: {set.completed ? "Yes" : "No"}
+              </p>
+            </div>
+          ))}
+        </div>
+      ))}
+
+      {/* Interactive block for the current exercise */}
       <div className="exercise-block">
         <h3 onClick={toggleShowSets}>{exercise.name}</h3>
         <div className="input-and-button-container">
+          {/* Dynamic interaction UI for editing sets */}
           <span className="total-sets-info">
             Total Sets: {editableSets.length}
           </span>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              flex: 1,
-            }}
-          >
+          <div className="flex-container">
             <button
               onClick={handleExerciseCompletedChange}
               className="exercise-completed-button"
             >
               Exercise Completed
             </button>
-            <label
-              style={{
-                display: "flex",
-                alignItems: "center",
-                cursor: "pointer",
-                marginLeft: "10px",
-              }}
-            >
+            <label className="flex-label">
               <input
                 type="checkbox"
                 checked={editableSets.every((set) => set.completed)}
                 onChange={toggleAllSetsCompleted}
-                style={{ marginRight: "5px" }}
+                className="checkbox-margin"
               />
               All sets completed
             </label>
@@ -171,15 +154,12 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
           </div>
         </div>
       </div>
+
       {showSets &&
         editableSets.map((set, index) => (
-          <div
-            key={index}
-            className="exercise-block"
-            style={{ background: "#ECEAEA" }}
-          >
+          <div key={index} className="exercise-block exercise-block-background">
             <span>{`Set ${index + 1}: `}</span>
-            <label style={{ marginRight: "5px" }}>
+            <label className="label-margin">
               Reps:
               <input
                 type="number"
@@ -194,7 +174,7 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
                 className="input-style"
               />
             </label>
-            <label style={{ marginRight: "5px" }}>
+            <label className="label-margin">
               Weight:
               <input
                 type="number"
@@ -205,12 +185,12 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
                 className="input-style"
               />
             </label>
-            <label style={{ cursor: "pointer" }}>
+            <label className="checkbox-label">
               <input
                 type="checkbox"
                 checked={set.completed}
                 onChange={() => toggleSetCompleted(index)}
-                style={{ marginRight: "5px" }}
+                className="checkbox-margin"
               />
               Completed
             </label>

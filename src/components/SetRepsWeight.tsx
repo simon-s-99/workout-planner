@@ -15,7 +15,8 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({
 }) => {
 
   const weekdayExercises: ExerciseObject[] = useLocalStorageRead(weekday); 
-    // loop som går in på exercise sen en loops som går in en loop med set (nestad loop)
+    // loop som går in på exercise object array sen en loops som går in en loop igenom  array med set (nestad loop)'
+    // ritar upp allt för användaren.
 
   
   weekdayExercises

@@ -64,8 +64,3 @@
 .UnitsPicker label:has(input:checked) {
   text-shadow: 1px 1px 0px black;
 }
-
-.PieChart svg {
-  width: 300px;
-  height: 300px;
-}

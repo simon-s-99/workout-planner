@@ -74,21 +74,4 @@
 
   // useLocalStorageWrite(testData);
 
-  // const clearTestData = () => {
-  //   const weekdays = [
-  //     "Monday",
-  //     "Tuesday",
-  //     "Wednesday",
-  //     "Thursday",
-  //     "Friday",
-  //     "Saturday",
-  //     "Sunday",
-  //   ];
-  //   weekdays.forEach((day) => {
-  //     localStorage.removeItem(day);
-  //   });
-  //   console.log("Test data cleared from localStorage.");
-  // };
-  // useEffect(() => {
-  //   clearTestData();
-  // }, []);
+// localstorage.clear();

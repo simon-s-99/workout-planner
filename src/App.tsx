@@ -20,31 +20,32 @@ const App: React.FC = () => {
   });
 
   const [selectedWeekday, setSelectedWeekday] = useState<Weekday>("Monday");
+
   const [exercises, setExercises] = useState<ExerciseObject[]>([]);
+
+  useEffect(() => {
+    // Use the hook to fetch data and then set it to state
+    const fetchedExercises = useLocalStorageRead(selectedWeekday);
+    setExercises(fetchedExercises);
+  }, [selectedWeekday]); // Re-fetch when selectedWeekday changes
 
   const weekdayExercises: ExerciseObject[] =
     useLocalStorageRead(selectedWeekday);
 
-  // This function handles updates to an individual exercise. It's typically triggered
-  // by some user action in the UI, such as completing an exercise or updating its details.
-  const handleExerciseUpdate = (updatedExercise: ExerciseObject) => {
-    // Maps over the current list of exercises, looking for the exercise that matches it
-
-    const updatedExercises = exercises.map((exercise) =>
-      exercise.name === updatedExercise.name
-        ? { ...exercise, ...updatedExercise }
-        : exercise
+  function handleExerciseUpdate(updatedExercise: ExerciseObject): void {
+    // Find and update the exercise in `weekdayExercises` or `exercises` state
+    const updatedExercises = exercises.map((ex) =>
+      ex.name === updatedExercise.name ? updatedExercise : ex
     );
 
+    // Update your state and write back to localStorage
     setExercises(updatedExercises);
-
-    // Calls the "write" function with the currently selected weekday and the updated list
-    useLocalStorageRead(selectedWeekday);
-  };
+    useLocalStorageWrite(new Map([[selectedWeekday, updatedExercises]]));
+  }
 
   const testData: WeekdayExerciseMap = new Map<Weekday, ExerciseObject[]>([
     [
-      "Friday",
+      "Monday",
       [
         {
           name: "Bench Press",
@@ -116,7 +117,7 @@ const App: React.FC = () => {
     ],
   ]);
 
-  // useLocalStorageWrite(testData);
+  //useLocalStorageWrite(testData);
 
   return (
     <div className="App">
@@ -127,16 +128,8 @@ const App: React.FC = () => {
         selectedWeekday={selectedWeekday}
         setSelectedWeekday={setSelectedWeekday}
       />
-      {exercises.map((exercise, index) => (
-        <SetRepsWeight
-          key={index}
-          exercise={exercise}
-          updateExercise={handleExerciseUpdate}
-          weekday={selectedWeekday}
-        />
-      ))}
+      <SetRepsWeight weekday={selectedWeekday} />
     </div>
   );
 };
-
 export default App;

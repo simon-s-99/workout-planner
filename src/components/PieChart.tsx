@@ -1,14 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import type { Color, ExerciseObject, MuscleGroup, MuscleGroupData, Weekday, WeekdayExerciseMap } from "../types";
+import type { Color, ExerciseObject, MuscleGroup, MuscleGroupData } from "../types";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
-import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 
 const PieChart: React.FC = () => {
   const styles = {
     canvas: {
-      width: "300px",
-      height: "300px",
-    },
+    }
   };
 
   const colors: Color[] = [
@@ -82,9 +79,10 @@ const PieChart: React.FC = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
+
     const canvasContext = canvas.getContext("2d");
     let total: number = 0; // Sum of sets
-    let angle: number = 0; // Where
+    let angle: number = 0;
 
     for (let value of muscleGroupData) {
       total += value.sets;
@@ -97,10 +95,10 @@ const PieChart: React.FC = () => {
       canvasContext.beginPath();
 
       // Move to the center of the canvas
-      canvasContext.moveTo(50, 50);
+      canvasContext.moveTo(150, 150);
 
       // Starting from the center of the canvas, add an arc with a radius of 50 from a start angle of 0 to an angle influenced by the amount of sets
-      canvasContext.arc(50, 50, 50, angle, angle + Math.PI * 2 * (muscleGroupData[i].sets / total));
+      canvasContext.arc(150, 150, 150, angle, angle + Math.PI * 2 * (muscleGroupData[i].sets / total));
 
       // Fill the arc
       canvasContext.fill();
@@ -112,12 +110,11 @@ const PieChart: React.FC = () => {
 
   return (
     <div className="PieChart">
-      <canvas ref={canvasRef} style={styles.canvas} width={100} height={100}></canvas>
+      <canvas ref={canvasRef} style={styles.canvas} width={300} height={300}></canvas>
       {muscleGroupData
         ? muscleGroupData.map((data, index) => {
             return (
               <p key={index}>
-                {data.muscleGroup} {data.sets}
                 <div
                   style={{
                     backgroundColor: data.color,
@@ -126,6 +123,7 @@ const PieChart: React.FC = () => {
                     display: "inline-block",
                     borderRadius: "25px",
                   }}></div>
+                {data.muscleGroup} {data.sets} sets
               </p>
             );
           })

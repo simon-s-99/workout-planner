@@ -27,7 +27,6 @@ const PieChart: React.FC = () => {
   ];
 
   const [muscleGroupData, setMuscleGroupData] = useState<MuscleGroupData[]>([]);
-  const [colorCounter, setColorCounter] = useState<number>(0);
 
   function getExerciseData(): ExerciseObject[] {
     const mondayData = useLocalStorageRead("Monday");
@@ -51,18 +50,21 @@ const PieChart: React.FC = () => {
 
   useEffect(() => {
     const exerciseData = getExerciseData();
+    let dataArr: MuscleGroupData[] = [];
+    let colorCounter: number = 0;
+
     for (const exercise of exerciseData) {
       // If muscle group is not already present
-      if (muscleGroupData.filter((m) => m.muscleGroup === (exercise.muscle as MuscleGroup)).length === 0) {
+      if (dataArr.filter((m) => m.muscleGroup === (exercise.muscle as MuscleGroup)).length === 0) {
         let data: MuscleGroupData = {
           muscleGroup: exercise.muscle as MuscleGroup,
           sets: exercise.sets.length,
           color: colors[colorCounter],
         };
-        setMuscleGroupData([...muscleGroupData, data]);
-        setColorCounter(colorCounter + 1);
+        dataArr.push(data);
+        colorCounter++;
       } else {
-        const duplicateMuscleGroup = muscleGroupData.find((muscle) => muscle.muscleGroup === exercise.muscle);
+        const duplicateMuscleGroup = dataArr.find((muscle) => muscle.muscleGroup === exercise.muscle);
         // To resolve TypeScript undefined error
         if (duplicateMuscleGroup) {
           // Add muscle group's sets to the total amount of sets
@@ -70,7 +72,8 @@ const PieChart: React.FC = () => {
         }
       }
     }
-  }, [muscleGroupData, colorCounter]);
+    setMuscleGroupData(dataArr);
+  }, []);
 
   // Grab the element, the same as doing document.getElementById("canvas")
   const canvasRef = useRef(null);
@@ -109,23 +112,21 @@ const PieChart: React.FC = () => {
   return (
     <div className="PieChart">
       <canvas ref={canvasRef} style={styles.canvas} width={300} height={300}></canvas>
-      {muscleGroupData
-        ? muscleGroupData.map((data, index) => {
-            return (
-              <p key={index}>
-                <div
-                  style={{
-                    backgroundColor: data.color,
-                    height: "20px",
-                    width: "20px",
-                    display: "inline-block",
-                    borderRadius: "25px",
-                  }}></div>
-                {data.muscleGroup} {data.sets} sets
-              </p>
-            );
-          })
-        : null}
+      {muscleGroupData.map((data, index) => {
+        return (
+          <p key={index}>
+            <div
+              style={{
+                backgroundColor: data.color,
+                height: "20px",
+                width: "20px",
+                display: "inline-block",
+                borderRadius: "25px",
+              }}></div>
+            {data.muscleGroup} {data.sets} sets
+          </p>
+        );
+      })}
     </div>
   );
 };

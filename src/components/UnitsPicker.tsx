@@ -5,6 +5,17 @@ interface UnitsPickerProps {
 }
 
 const UnitsPicker: React.FC<UnitsPickerProps> = ({ setSettings }) => {
+  const styles = {
+    main: {
+      display: "inline-block",
+      border: "1px solid rgb(165, 165, 165)",
+      borderRadius: "5px",
+      padding: "1rem",
+    },
+    label: {
+      padding: "1rem",
+    },
+  };
   function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
     // Set the trainingGoal to the radio button's value, leave the rest of the object
     setSettings((current) => ({
@@ -13,11 +24,12 @@ const UnitsPicker: React.FC<UnitsPickerProps> = ({ setSettings }) => {
     }));
   }
   return (
-    <div className="UnitsPicker">
+    <div className="UnitsPicker" style={styles.main}>
       <label>
         <input
           type="radio"
           name="weightUnits"
+          style={styles.label}
           value="kilograms"
           defaultChecked
           onChange={(e) => handleChange(e)}
@@ -25,7 +37,7 @@ const UnitsPicker: React.FC<UnitsPickerProps> = ({ setSettings }) => {
         Kilograms
       </label>
       <label>
-        <input type="radio" name="weightUnits" value="pounds" onChange={(e) => handleChange(e)} />
+        <input type="radio" name="weightUnits" style={styles.label} value="pounds" onChange={(e) => handleChange(e)} />
         Pounds
       </label>
     </div>

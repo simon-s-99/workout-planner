@@ -5,6 +5,7 @@ import type { Settings, Weekday } from "./types";
 import MuscleCategoryList from './components/MuscleCategoryList';
 import WeekdayPicker from "./components/WeekdayPicker";
 import UnitsPicker from "./components/UnitsPicker";
+import PieChart from "./components/PieChart";
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
@@ -52,6 +53,9 @@ const App: React.FC = () => {
           </div>
         )}
       </main>
+
+      <PieChart />
+
     </div>
   );
 };

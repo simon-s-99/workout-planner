@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { ExerciseObject } from "../types";
+import type { ExerciseObject, MuscleGroup } from "../types";
 
 interface MuscleCategoryProps {
-    muscleGroup: string;
+    muscleGroup: MuscleGroup;
     renderList: boolean;
 }
 

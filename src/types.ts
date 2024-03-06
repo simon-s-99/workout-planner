@@ -5,11 +5,60 @@ import type {Type} from ./types;
 export type TrainingGoal = "strength" | "powerlifting" | "cardio";
 export type Unit = "kilograms" | "pounds";
 export type Settings = {
-    units: Unit;
-    trainingGoal: TrainingGoal;
+  units: Unit;
+  trainingGoal: TrainingGoal;
 };
 
-export type Weekday = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday" | "Sunday";
+export type Weekday =
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
+
+export type MuscleGroup =
+  | "Abdominals"
+  | "Biceps"
+  | "Triceps"
+  | "Forearms"
+  | "Chest"
+  | "Lats"
+  | "Traps"
+  | "Lower_back"
+  | "Middle_back"
+  | "Back"
+  | "Glutes"
+  | "Hamstrings"
+  | "Quadriceps"
+  | "Abductors"
+  | "Adductors"
+  | "Calves";
+
+export type Color =
+  | "red"
+  | "green"
+  | "blue"
+  | "yellow"
+  | "purple"
+  | "cyan"
+  | "magenta"
+  | "orange"
+  | "pink"
+  | "brown"
+  | "gray"
+  | "black"
+  | "white"
+  | "teal"
+  | "lime"
+  | "aquamarine";
+
+export type MuscleGroupData = {
+    muscleGroup: MuscleGroup,
+    sets: number,
+    color: Color
+};
 
 // WorkingSet is only used here locally but working around export is a pain apparently
 export type WorkingSet = {

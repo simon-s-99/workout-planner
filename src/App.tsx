@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import SetRepsWeight from "./components/SetRepsWeight";
+import Exercise from "./components/Exercise";
 import type {
   Settings,
   Weekday,
@@ -148,8 +148,7 @@ const App: React.FC = () => {
         setSelectedWeekday={setSelectedWeekday}
       />
 
-      <SetRepsWeight weekday={selectedWeekday} />
-      <PieChart />
+      <Exercise weekday={selectedWeekday} />
 
       {/* The code below shows the "normal" interface with exercise names,
           sets, reps & weight or the add exercise interface where the user

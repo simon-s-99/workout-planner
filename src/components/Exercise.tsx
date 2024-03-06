@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from "react";
-import type {
-  ExerciseObject,
-  Weekday,
-  WeekdayExerciseMap,
-  WorkingSet,
-} from "../types";
+import type { ExerciseObject, Weekday, WeekdayExerciseMap, WorkingSet } from "../types";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 
-type SetRepsWeightProps = {
+type ExerciseProps = {
   // exercise: ExerciseObject;
   weekday: Weekday;
   // updateExercise: (updatedExercise: ExerciseObject) => void;
 };
 
-const SetRepsWeight: React.FC<SetRepsWeightProps> = ({ weekday }) => {
+const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
   // Fetch all exercises for the given weekday from local storage
   const weekdayExercises: ExerciseObject[] = useLocalStorageRead(weekday);
 
@@ -24,39 +19,43 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({ weekday }) => {
   const [exercises, setExercises] = useState(weekdayExercises);
 
   // Function to add a set to an exercise
-  const addSet = (
-    exerciseIndex: number,
-    weekday: Weekday,
-    exercises: ExerciseObject[]
-  ): void => {
-    const newExercises = [...exercises];
+  // CHANGE: Adds new set to selected exercise, and updates the state variable with the updated array
+  const addSet = (exerciseIndex: number, weekday: Weekday): void => {
+    const exercisesCopy = [...exercises];
+    const selectedExercise = exercisesCopy[exerciseIndex];
     const newSet = { repetitions: 0, weight: 0, completed: false };
-    newExercises[exerciseIndex].sets.push(newSet);
+    selectedExercise.sets.push(newSet);
 
-    // Use React's useState hook or a similar state management solution to update exercises
-    // setExercises(newExercises);
+    // Replace the old exercise with updated
+    exercisesCopy.splice(exerciseIndex, 1, selectedExercise);
+    setExercises(exercisesCopy);
 
     // Construct a new WeekdayExerciseMap
-    const weekdayExerciseMap: WeekdayExerciseMap = new Map();
-    weekdayExerciseMap.set(weekday, newExercises);
+    /*const weekdayExerciseMap: WeekdayExerciseMap = new Map();
+    weekdayExerciseMap.set(weekday, se);
 
     // Using the useLocalStorageWrite function with the newly constructed Map
-    useLocalStorageWrite(weekdayExerciseMap);
+    useLocalStorageWrite(weekdayExerciseMap);*/
   };
 
   // Function to remove a set from an exercise
+  // CHANGE: Removes set from selected exercise, and updates the state variable with the new amount of sets
   const removeSet = (exerciseIndex: number, setIndex: number): void => {
-    const newExercises = [...exercises];
-    newExercises[exerciseIndex].sets.splice(setIndex, 1);
-    setExercises(newExercises);
+    const exercisesCopy = [...exercises];
+    const selectedExercise = exercisesCopy[exerciseIndex];
+
+    // Remove selected set
+    selectedExercise.sets.slice(setIndex, 1);
+
+    // Add replace old exercise with updated one
+    exercisesCopy.splice(exerciseIndex, 1, selectedExercise)
+
+    setExercises(exercisesCopy);
     // Update local storage accordingly
   };
 
   // Function to toggle a set as completed
-  const toggleSetCompleted = (
-    exerciseIndex: number,
-    setIndex: number
-  ): void => {
+  const toggleSetCompleted = (exerciseIndex: number, setIndex: number): void => {
     const newExercises = [...exercises];
     const set = newExercises[exerciseIndex].sets[setIndex];
     set.completed = !set.completed;
@@ -80,41 +79,29 @@ const SetRepsWeight: React.FC<SetRepsWeightProps> = ({ weekday }) => {
   // Function to toggle an exercise as completed (assuming you have a completed flag in ExerciseObject)
   const toggleExerciseCompleted = (exerciseIndex: number): void => {
     const newExercises = [...exercises];
-    newExercises[exerciseIndex].completed =
-      !newExercises[exerciseIndex].completed;
+    newExercises[exerciseIndex].completed = !newExercises[exerciseIndex].completed;
     setExercises(newExercises);
     // Update local storage accordingly
   };
 
   return (
-    <ol>
-      {weekdayExercises.map((exerciseObject, index) => (
-        <li key={index} className="exercise-container">
-          <p>{exerciseObject.name}</p>
-          <ol>
-            {exerciseObject.sets.map((set, setIndex) => (
-              <li key={setIndex} className="set-details">
-                <p>
-                  Set {setIndex + 1}: Reps: {set.repetitions} Weight:{" "}
-                  {set.weight}
-                </p>
-              </li>
-            ))}
-            {/* Add Set button for each exercise */}
-            <li>
-              <button onClick={() => addSet(index, weekday, weekdayExercises)}>
-                Add Set
-              </button>
-            </li>
-            <li>
-              <button onClick={() => removeSet(exerciseIndex, setIndex)}>
-                ❌
-              </button>
-            </li>
-          </ol>
-        </li>
+    <div className="Exercise">
+      {exercises.map((exercise, exerciseIndex) => (
+        <div key={exerciseIndex} className="exercise-container">
+          <p>{exercise.name}</p>
+          {exercise.sets.map((set, index) => (
+            <div key={index}>
+              <p className="set-details">
+                Set {index + 1}: Reps: {set.repetitions} Weight: {set.weight}
+              </p>
+              <button onClick={() => removeSet(exerciseIndex, index)}>❌</button>
+            </div>
+          ))}
+          {/* Add Set button for each exercise */}
+          <button onClick={() => addSet(exerciseIndex, weekday)}>Add Set</button>
+        </div>
       ))}
-    </ol>
+    </div>
   );
 };
 
@@ -202,4 +189,4 @@ const styles = {
   },
 };
 
-export default SetRepsWeight;
+export default Exercise;

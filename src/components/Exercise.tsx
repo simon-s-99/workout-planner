@@ -8,6 +8,13 @@ import type {
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 
+// add function to click on exercise in order to show, and hide sets
+// Exercise completed should close the exercise when checked.
+//if already checked and unchecking it (while having the exercise + setmenu open) should not close it
+
+// Restructure positions of buttons, text etc
+//implement weekday logic
+
 type ExerciseProps = {
   // exercise: ExerciseObject;
   weekday: Weekday;
@@ -119,47 +126,104 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
     );
   };
 
+  const updateSetDetails = (
+    exerciseIndex: number,
+    setIndex: number,
+    field: keyof WorkingSet, // Use keyof to ensure field is a valid key
+    value: string
+  ) => {
+    setExercises((currentExercises) => {
+      const updatedExercises = [...currentExercises];
+      const exerciseToUpdate = { ...updatedExercises[exerciseIndex] };
+
+      // Since field is now guaranteed to be a key of WorkingSet, TypeScript knows this indexing is safe
+      const setToUpdate: WorkingSet = { ...exerciseToUpdate.sets[setIndex] };
+
+      // Make sure to handle conversion safely. Since 'completed' is a boolean, it shouldn't be converted to number
+      if (field === "repetitions" || field === "weight") {
+        setToUpdate[field] = Number(value);
+      } else if (field === "completed") {
+        // This assumes value is being passed in a way that represents a boolean, e.g., 'true' or 'false'
+        setToUpdate[field] = value === "true";
+      }
+
+      exerciseToUpdate.sets[setIndex] = setToUpdate;
+      updatedExercises[exerciseIndex] = exerciseToUpdate;
+
+      return updatedExercises;
+    });
+  };
+
   return (
     <div className="Exercise">
       {exercises.map((exercise, exerciseIndex) => (
-        <div
-          key={exerciseIndex}
-          className="exercise-container"
-          style={styles.exerciseBlock}
-        >
-          <div style={styles.flexContainer}>
+        <div key={exerciseIndex} style={styles.exerciseContainer}>
+          <div style={styles.exerciseHeader}>
             <p style={exercise.completed ? styles.h3Hover : styles.h3}>
-              {exercise.name}
+              {exercise.name} -{" "}
+              <strong>Total Sets: {exercise.sets.length}</strong>
             </p>
-            <button
-              onClick={() => toggleExerciseCompleted(exerciseIndex)}
-              style={styles.exerciseCompletedButton}
-            >
-              Exercise Completed
-            </button>
-            <label style={styles.flexLabel}>
-              <input
-                type="checkbox"
-                checked={exercise.sets.every((set) => set.completed)}
-                onChange={() => toggleAllSetsCompleted(exerciseIndex)}
-                style={styles.marginRight5}
-              />
-              Toggle All Sets
-            </label>
+            <div>
+              {/* Toggle All Sets Completed */}
+              <label style={styles.flexLabel}>
+                <input
+                  type="checkbox"
+                  checked={exercise.sets.every((set) => set.completed)}
+                  onChange={() => toggleAllSetsCompleted(exerciseIndex)}
+                />{" "}
+                All Sets Completed
+              </label>
+              {/* Exercise Completed Button */}
+              <button
+                onClick={() => toggleExerciseCompleted(exerciseIndex)}
+                style={styles.exerciseCompletedButton}
+              >
+                Exercise Completed
+              </button>
+            </div>
           </div>
-          {exercise.sets.map((set, index) => (
-            <div key={index} style={styles.inputAndButtonContainer}>
+          {exercise.sets.map((set, setIndex) => (
+            <div key={setIndex} style={styles.inputAndButtonContainer}>
               <label>
                 <input
                   type="checkbox"
                   checked={set.completed}
-                  onChange={() => toggleSetCompleted(exerciseIndex, index)}
+                  onChange={() => toggleSetCompleted(exerciseIndex, setIndex)}
                 />
               </label>
-              <p>
-                Set {index + 1}: Reps: {set.repetitions} Weight: {set.weight}
-              </p>
-              <button onClick={() => removeSet(exerciseIndex, index)}>
+              <span>Set {setIndex + 1}:</span>
+              <input
+                type="number"
+                style={styles.setInput}
+                value={set.repetitions}
+                onChange={(e) =>
+                  updateSetDetails(
+                    exerciseIndex,
+                    setIndex,
+                    "repetitions",
+                    e.target.value
+                  )
+                }
+              />{" "}
+              Reps
+              <input
+                type="number"
+                style={styles.setInput}
+                value={set.weight}
+                onChange={(e) =>
+                  updateSetDetails(
+                    exerciseIndex,
+                    setIndex,
+                    "weight",
+                    e.target.value
+                  )
+                }
+              />{" "}
+              Weight
+              <button
+                onClick={() => removeSet(exerciseIndex, setIndex)}
+                // style={styles.removeButton}
+              >
                 ❌
               </button>
             </div>
@@ -177,11 +241,12 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
 };
 
 const styles = {
-  flexContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    flex: 1,
+  exerciseContainer: {
+    marginBottom: "20px",
+    border: "1px solid #ccc",
+    borderRadius: "8px",
+    padding: "10px",
+    backgroundColor: "#f0f0f0",
   },
   flexLabel: {
     display: "flex",
@@ -189,35 +254,40 @@ const styles = {
     cursor: "pointer",
     marginLeft: "10px",
   },
-
-  marginRight5: {
-    marginRight: "5px",
-  },
-  exerciseBlockBackground: {
-    background: "#ECEAEA",
-  },
-  exerciseBlock: {
-    background: "#f0f0f0",
-    padding: "10px",
-    borderRadius: "8px",
+  exerciseHeader: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: "10px",
-    cursor: "pointer",
+    marginBottom: "15px",
   },
+  setContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: "5px",
+  },
+  setInput: {
+    margin: "0 5px",
+    padding: "5px",
+    width: "60px",
+    borderRadius: "4px",
+    border: "1px solid #ccc",
+  },
+
   inputAndButtonContainer: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     flex: 1,
   },
+
   inputStyle: {
     margin: "0 10px",
     padding: "5px",
     border: "1px solid #ccc",
     borderRadius: "4px",
   },
+
   exerciseCompletedButton: {
     background: "#008CBA",
     color: "white",
@@ -228,24 +298,27 @@ const styles = {
     margin: "0 10px",
     marginRight: "30px",
   },
+
   addButton: {
-    background: "#4CAF50",
+    display: "inline-block",
+    backgroundColor: "#4CAF50",
     color: "white",
-    border: "none",
+    padding: "8px 12px",
     borderRadius: "4px",
-    padding: "5px 10px",
     cursor: "pointer",
-    margin: "0 10px",
+    marginTop: "10px",
   },
+
   // removeButton: {
-  //   background: "#f44336",
-  //   color: "white",
-  //   border: "none",
-  //   borderRadius: "4px",
-  //   padding: "5px 10px",
-  //   cursor: "pointer",
-  //   margin: "0 10px",
+  //   cursor: 'pointer',
+  //   marginLeft: '10px',
+  //   backgroundColor: '#f44336',
+  //   color: 'white',
+  //   border: 'none',
+  //   borderRadius: '4px',
+  //   padding: '5px 10px',
   // },
+
   totalSetsInfo: {
     fontWeight: "bold",
     marginLeft: "50px",

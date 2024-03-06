@@ -23,36 +23,6 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
 
   const [exercises, setExercises] = useState(weekdayExercises);
 
-  const updateSetDetails = (
-    exerciseIndex: string | number,
-    setIndex: string | number,
-    field: keyof WorkingSet,
-    value: any
-  ) => {
-    setExercises((currentExercises) => {
-      const updatedExercises = [...currentExercises];
-      const exerciseIdx = Number(exerciseIndex);
-      const setIdx = Number(setIndex);
-
-      const exerciseToUpdate = { ...updatedExercises[exerciseIdx] };
-      const setToUpdate = { ...exerciseToUpdate.sets[setIdx] };
-
-      // Distinguish between field types to ensure correct assignment
-      if (field === "completed") {
-        // For boolean fields, convert value appropriately
-        setToUpdate[field] = value === true || value === "true";
-      } else {
-        // For numeric fields, ensure value is a number
-        setToUpdate[field] = Number(value);
-      }
-
-      exerciseToUpdate.sets[setIdx] = setToUpdate;
-      updatedExercises[exerciseIdx] = exerciseToUpdate;
-
-      return updatedExercises;
-    });
-  };
-
   // Function to add a set to an exercise
   // CHANGE: Adds new set to selected exercise, and updates the state variable with the updated array
   const addSet = (exerciseIndex: number, weekday: Weekday): void => {
@@ -91,83 +61,113 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
   };
 
   // Function to toggle a set as completed
-  const toggleSetCompleted = (
-    exerciseIndex: number,
-    setIndex: number
-  ): void => {
-    const newExercises = [...exercises];
-    const set = newExercises[exerciseIndex].sets[setIndex];
-    set.completed = !set.completed;
-    setExercises(newExercises);
-    // Update local storage accordingly
+  const toggleSetCompleted = (exerciseIndex: number, setIndex: number) => {
+    setExercises((exercises) =>
+      exercises.map((exercise, eIndex) => {
+        if (eIndex === exerciseIndex) {
+          return {
+            ...exercise,
+            sets: exercise.sets.map((set, sIndex) => {
+              if (sIndex === setIndex) {
+                return { ...set, completed: !set.completed };
+              }
+              return set;
+            }),
+          };
+        }
+        return exercise;
+      })
+    );
   };
 
   // Function to toggle all sets as completed for an exercise
-  const toggleAllSetsCompleted = (exerciseIndex: number): void => {
-    const newExercises = [...exercises];
-    const sets = newExercises[exerciseIndex].sets;
-    const areAllCompleted = sets.every((set) => set.completed);
-    newExercises[exerciseIndex].sets = sets.map((set) => ({
-      ...set,
-      completed: !areAllCompleted,
-    }));
-    setExercises(newExercises);
-    // Update local storage accordingly
+  const toggleAllSetsCompleted = (exerciseIndex: number) => {
+    setExercises((exercises) =>
+      exercises.map((exercise, eIndex) => {
+        if (eIndex === exerciseIndex) {
+          const areAllCompleted = exercise.sets.every((set) => set.completed);
+          return {
+            ...exercise,
+            sets: exercise.sets.map((set) => ({
+              ...set,
+              completed: !areAllCompleted,
+            })),
+          };
+        }
+        return exercise;
+      })
+    );
   };
 
   // Function to toggle an exercise as completed (assuming you have a completed flag in ExerciseObject)
-  const toggleExerciseCompleted = (exerciseIndex: number): void => {
-    const newExercises = [...exercises];
-    newExercises[exerciseIndex].completed =
-      !newExercises[exerciseIndex].completed;
-    setExercises(newExercises);
-    // Update local storage accordingly
+  const toggleExerciseCompleted = (exerciseIndex: number) => {
+    setExercises((exercises) =>
+      exercises.map((exercise, eIndex) => {
+        if (eIndex === exerciseIndex) {
+          const isCompleted = !exercise.completed;
+          return {
+            ...exercise,
+            completed: isCompleted,
+            sets: exercise.sets.map((set) => ({
+              ...set,
+              completed: isCompleted,
+            })),
+          };
+        }
+        return exercise;
+      })
+    );
   };
 
   return (
     <div className="Exercise">
       {exercises.map((exercise, exerciseIndex) => (
-        <div key={exerciseIndex} className="exercise-container">
-          <p>{exercise.name}</p>
+        <div
+          key={exerciseIndex}
+          className="exercise-container"
+          style={styles.exerciseBlock}
+        >
+          <div style={styles.flexContainer}>
+            <p style={exercise.completed ? styles.h3Hover : styles.h3}>
+              {exercise.name}
+            </p>
+            <button
+              onClick={() => toggleExerciseCompleted(exerciseIndex)}
+              style={styles.exerciseCompletedButton}
+            >
+              Exercise Completed
+            </button>
+            <label style={styles.flexLabel}>
+              <input
+                type="checkbox"
+                checked={exercise.sets.every((set) => set.completed)}
+                onChange={() => toggleAllSetsCompleted(exerciseIndex)}
+                style={styles.marginRight5}
+              />
+              Toggle All Sets
+            </label>
+          </div>
           {exercise.sets.map((set, index) => (
-            <div key={index} className="set-details-container">
-              <div className="set-details">
-                Set {index + 1}:
+            <div key={index} style={styles.inputAndButtonContainer}>
+              <label>
                 <input
-                  type="number"
-                  value={set.repetitions}
-                  onChange={(e) =>
-                    updateSetDetails(
-                      exerciseIndex,
-                      index,
-                      "repetitions",
-                      e.target.value
-                    )
-                  }
-                  className="set-input"
-                />{" "}
-                Reps
-                <input
-                  type="number"
-                  value={set.weight}
-                  onChange={(e) =>
-                    updateSetDetails(
-                      exerciseIndex,
-                      index,
-                      "weight",
-                      e.target.value
-                    )
-                  }
-                  className="set-input"
-                />{" "}
-                Weight
-              </div>
+                  type="checkbox"
+                  checked={set.completed}
+                  onChange={() => toggleSetCompleted(exerciseIndex, index)}
+                />
+              </label>
+              <p>
+                Set {index + 1}: Reps: {set.repetitions} Weight: {set.weight}
+              </p>
               <button onClick={() => removeSet(exerciseIndex, index)}>
                 ❌
               </button>
             </div>
           ))}
-          <button onClick={() => addSet(exerciseIndex, weekday)}>
+          <button
+            onClick={() => addSet(exerciseIndex, weekday)}
+            style={styles.addButton}
+          >
             Add Set
           </button>
         </div>
@@ -237,15 +237,15 @@ const styles = {
     cursor: "pointer",
     margin: "0 10px",
   },
-  removeButton: {
-    background: "#f44336",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    padding: "5px 10px",
-    cursor: "pointer",
-    margin: "0 10px",
-  },
+  // removeButton: {
+  //   background: "#f44336",
+  //   color: "white",
+  //   border: "none",
+  //   borderRadius: "4px",
+  //   padding: "5px 10px",
+  //   cursor: "pointer",
+  //   margin: "0 10px",
+  // },
   totalSetsInfo: {
     fontWeight: "bold",
     marginLeft: "50px",

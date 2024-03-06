@@ -22,27 +22,10 @@ const App: React.FC = () => {
 
   const [selectedWeekday, setSelectedWeekday] = useState<Weekday>("Monday");
 
-  const [exercises, setExercises] = useState<ExerciseObject[]>([]);
-
-  useEffect(() => {
-    // Use the hook to fetch data and then set it to state
-    const fetchedExercises = useLocalStorageRead(selectedWeekday);
-    setExercises(fetchedExercises);
-  }, [selectedWeekday]); // Re-fetch when selectedWeekday changes
+  // const [exercises, setExercises] = useState<ExerciseObject[]>([]);
 
   const weekdayExercises: ExerciseObject[] =
     useLocalStorageRead(selectedWeekday);
-
-  function handleExerciseUpdate(updatedExercise: ExerciseObject): void {
-    // Find and update the exercise in `weekdayExercises` or `exercises` state
-    const updatedExercises = exercises.map((ex) =>
-      ex.name === updatedExercise.name ? updatedExercise : ex
-    );
-
-    // Update your state and write back to localStorage
-    setExercises(updatedExercises);
-    useLocalStorageWrite(new Map([[selectedWeekday, updatedExercises]]));
-  }
 
   const testData: WeekdayExerciseMap = new Map<Weekday, ExerciseObject[]>([
     [
@@ -118,7 +101,7 @@ const App: React.FC = () => {
     ],
   ]);
 
-  //useLocalStorageWrite(testData);
+  // useLocalStorageWrite(testData);
 
   // bool to help toggle between the add exercise interface and the main content
   const [showAddExerciseMenu, setShowAddExerciseMenu] =

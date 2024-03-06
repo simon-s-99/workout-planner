@@ -12,6 +12,7 @@ import WeekdayPicker from "./components/WeekdayPicker";
 import UnitsPicker from "./components/UnitsPicker";
 import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
 import { useLocalStorageWrite } from "./hooks/useLocalStorageWrite";
+import PieChart from "./components/PieChart";
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
@@ -129,6 +130,7 @@ const App: React.FC = () => {
         setSelectedWeekday={setSelectedWeekday}
       />
       <SetRepsWeight weekday={selectedWeekday} />
+      <PieChart />
     </div>
   );
 };

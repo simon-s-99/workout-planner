@@ -44,7 +44,7 @@ const App: React.FC = () => {
         {showAddExerciseMenu ? (
           <div className="AddExerciseMenu">
             {AddExerciseOrGoBackButton}
-            <MuscleCategoryList />
+            <MuscleCategoryList weekday={selectedWeekday} />
           </div>
         ) : (
           <div className="AddExerciseMenu">

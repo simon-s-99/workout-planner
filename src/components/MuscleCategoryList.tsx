@@ -1,7 +1,12 @@
 import { useState } from "react";
+import { Weekday } from "../types";
 import MuscleCategoryExercisesList from "./MuscleCategoryExercisesList";
 
-const MuscleCategoryList: React.FC = () => {
+interface MuscleCategoryListProps {
+    weekday: Weekday;
+}
+
+const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday }) => {
     const muscleGroups: string[] = [
         "Abdominals",
         "Biceps",
@@ -33,7 +38,7 @@ const MuscleCategoryList: React.FC = () => {
                         onClick={() => setSelected(!selected)}></input>
                     {/* ^ toggle selected to true if it is false and vice versa */}
                 </label>
-                <MuscleCategoryExercisesList muscleGroup={muscleGroup} renderList={selected} />
+                <MuscleCategoryExercisesList weekday={weekday} muscleGroup={muscleGroup} renderList={selected} />
             </li>
         );
     });

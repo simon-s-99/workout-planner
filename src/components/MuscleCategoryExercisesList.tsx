@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import { ExerciseObject } from "../types";
+import { ExerciseObject, Weekday, WeekdayExerciseMap, WorkingSet } from "../types";
+import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 
 interface MuscleCategoryProps {
+    weekday: Weekday;
     muscleGroup: string;
     renderList: boolean;
 }
 
-const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({ muscleGroup, renderList }) => {
+const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({ muscleGroup, renderList, weekday }) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [exercises, setExercises] = useState<ExerciseObject[]>([]);
 
@@ -34,6 +36,26 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({ muscleGrou
 
     }, [muscleGroup]);
 
+    function AddExerciseToWeekday(weekday: Weekday, exerciseIndex: number): void {
+        // create new ExerciseObject with default set & completed values to put in WeekdayExerciseMap
+        const newExercise: ExerciseObject = exercises[exerciseIndex];
+        const initialSet: WorkingSet = {
+            repetitions: 10,
+            weight: 50,
+            completed: false
+        }
+        newExercise.sets = [initialSet];
+        newExercise.completed = false;
+
+        // new WeekdayExerciseMap to give to useLocalStorageWrite
+        const weekdayExerciseMap: WeekdayExerciseMap = new Map<Weekday, ExerciseObject[]>([
+            [weekday, [newExercise]]
+        ]);
+
+        // write to local storage effectively adding the exercise to the users program
+        useLocalStorageWrite(weekdayExerciseMap);
+    }
+
     if (renderList) {
         // if the api call is ever slow enough to display a "loading" phase
         // then "..." is displayed to the user so that they have some indication that the page is loading
@@ -43,7 +65,15 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({ muscleGrou
                     <li>...</li>
                 ) : (
                     exercises.map((exercise, index) => (
-                        <li key={index}>{exercise.name}</li>
+                        <li key={index}>
+                            <label>
+                                {exercise.name}
+                                <input
+                                    type="button"
+                                    value="+"
+                                    onClick={() => AddExerciseToWeekday(weekday, index)}></input>
+                            </label>
+                        </li>
                     ))
                 )}
             </ul>

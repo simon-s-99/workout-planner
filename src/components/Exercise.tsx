@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import type { ExerciseObject, Weekday, WeekdayExerciseMap, WorkingSet } from "../types";
+import type {
+  ExerciseObject,
+  Weekday,
+  WeekdayExerciseMap,
+  WorkingSet,
+} from "../types";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 
@@ -17,6 +22,36 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
   // pair weekdayexercies with the weekday and send to localstorageWrite
 
   const [exercises, setExercises] = useState(weekdayExercises);
+
+  const updateSetDetails = (
+    exerciseIndex: string | number,
+    setIndex: string | number,
+    field: keyof WorkingSet,
+    value: any
+  ) => {
+    setExercises((currentExercises) => {
+      const updatedExercises = [...currentExercises];
+      const exerciseIdx = Number(exerciseIndex);
+      const setIdx = Number(setIndex);
+
+      const exerciseToUpdate = { ...updatedExercises[exerciseIdx] };
+      const setToUpdate = { ...exerciseToUpdate.sets[setIdx] };
+
+      // Distinguish between field types to ensure correct assignment
+      if (field === "completed") {
+        // For boolean fields, convert value appropriately
+        setToUpdate[field] = value === true || value === "true";
+      } else {
+        // For numeric fields, ensure value is a number
+        setToUpdate[field] = Number(value);
+      }
+
+      exerciseToUpdate.sets[setIdx] = setToUpdate;
+      updatedExercises[exerciseIdx] = exerciseToUpdate;
+
+      return updatedExercises;
+    });
+  };
 
   // Function to add a set to an exercise
   // CHANGE: Adds new set to selected exercise, and updates the state variable with the updated array
@@ -44,18 +79,22 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
     const exercisesCopy = [...exercises];
     const selectedExercise = exercisesCopy[exerciseIndex];
 
-    // Remove selected set
-    selectedExercise.sets.slice(setIndex, 1);
+    // Use splice to remove the selected set
+    selectedExercise.sets.splice(setIndex, 1);
 
-    // Add replace old exercise with updated one
-    exercisesCopy.splice(exerciseIndex, 1, selectedExercise)
+    // Replace the old exercise with the updated one
+    exercisesCopy.splice(exerciseIndex, 1, selectedExercise);
 
     setExercises(exercisesCopy);
-    // Update local storage accordingly
+    // Here, you should also update local storage to reflect the changes
+    // This can be done by calling your useLocalStorageWrite hook or similar functionality
   };
 
   // Function to toggle a set as completed
-  const toggleSetCompleted = (exerciseIndex: number, setIndex: number): void => {
+  const toggleSetCompleted = (
+    exerciseIndex: number,
+    setIndex: number
+  ): void => {
     const newExercises = [...exercises];
     const set = newExercises[exerciseIndex].sets[setIndex];
     set.completed = !set.completed;
@@ -79,7 +118,8 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
   // Function to toggle an exercise as completed (assuming you have a completed flag in ExerciseObject)
   const toggleExerciseCompleted = (exerciseIndex: number): void => {
     const newExercises = [...exercises];
-    newExercises[exerciseIndex].completed = !newExercises[exerciseIndex].completed;
+    newExercises[exerciseIndex].completed =
+      !newExercises[exerciseIndex].completed;
     setExercises(newExercises);
     // Update local storage accordingly
   };
@@ -90,15 +130,46 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
         <div key={exerciseIndex} className="exercise-container">
           <p>{exercise.name}</p>
           {exercise.sets.map((set, index) => (
-            <div key={index}>
-              <p className="set-details">
-                Set {index + 1}: Reps: {set.repetitions} Weight: {set.weight}
-              </p>
-              <button onClick={() => removeSet(exerciseIndex, index)}>❌</button>
+            <div key={index} className="set-details-container">
+              <div className="set-details">
+                Set {index + 1}:
+                <input
+                  type="number"
+                  value={set.repetitions}
+                  onChange={(e) =>
+                    updateSetDetails(
+                      exerciseIndex,
+                      index,
+                      "repetitions",
+                      e.target.value
+                    )
+                  }
+                  className="set-input"
+                />{" "}
+                Reps
+                <input
+                  type="number"
+                  value={set.weight}
+                  onChange={(e) =>
+                    updateSetDetails(
+                      exerciseIndex,
+                      index,
+                      "weight",
+                      e.target.value
+                    )
+                  }
+                  className="set-input"
+                />{" "}
+                Weight
+              </div>
+              <button onClick={() => removeSet(exerciseIndex, index)}>
+                ❌
+              </button>
             </div>
           ))}
-          {/* Add Set button for each exercise */}
-          <button onClick={() => addSet(exerciseIndex, weekday)}>Add Set</button>
+          <button onClick={() => addSet(exerciseIndex, weekday)}>
+            Add Set
+          </button>
         </div>
       ))}
     </div>

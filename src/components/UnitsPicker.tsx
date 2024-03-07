@@ -25,18 +25,11 @@ const UnitsPicker: React.FC<UnitsPickerProps> = ({ setSettings }) => {
   }
   return (
     <div className="UnitsPicker" style={styles.main}>
-      <label>
-        <input
-          type="radio"
-          name="weightUnits"
-          style={styles.label}
-          value="kilograms"
-          defaultChecked
-          onChange={(e) => handleChange(e)}
-        />
+      <label style={styles.label}>
+        <input type="radio" name="weightUnits" value="kilograms" defaultChecked onChange={(e) => handleChange(e)} />
         Kilograms
       </label>
-      <label>
+      <label style={styles.label}>
         <input type="radio" name="weightUnits" style={styles.label} value="pounds" onChange={(e) => handleChange(e)} />
         Pounds
       </label>

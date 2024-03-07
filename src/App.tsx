@@ -13,6 +13,7 @@ import UnitsPicker from "./components/UnitsPicker";
 import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
 import { useLocalStorageWrite } from "./hooks/useLocalStorageWrite";
 import PieChart from "./components/PieChart";
+import TrainingGoalPicker from "./components/TrainingGoalPicker";
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
@@ -108,14 +109,9 @@ const App: React.FC = () => {
     <label>
       <input
         type="button"
-        name={
-          showAddExerciseMenu
-            ? "GoBackFromExerciseMenuButton"
-            : "AddExerciseMenuButton"
-        }
+        name={showAddExerciseMenu ? "GoBackFromExerciseMenuButton" : "AddExerciseMenuButton"}
         value={showAddExerciseMenu ? "<" : "+"}
-        onClick={() => setShowAddExerciseMenu(!showAddExerciseMenu)}
-      ></input>
+        onClick={() => setShowAddExerciseMenu(!showAddExerciseMenu)}></input>
       {/* ^ toggle showAddExerciseMenu to true if it is false and vice versa */}
     </label>
   );
@@ -130,6 +126,12 @@ const App: React.FC = () => {
       />
 
       <Exercise weekday={selectedWeekday} />
+      <div>
+        <h2>Exercises</h2>
+        <h3>What is your training goal?</h3>
+        <TrainingGoalPicker setSettings={setSettings} />
+        <UnitsPicker setSettings={setSettings} />
+      </div>
 
       {/* The code below shows the "normal" interface with exercise names,
           sets, reps & weight or the add exercise interface where the user
@@ -141,7 +143,9 @@ const App: React.FC = () => {
             <MuscleCategoryList weekday={selectedWeekday} />
           </div>
         ) : (
-          <div className="AddExerciseMenu">{AddExerciseOrGoBackButton}</div>
+          <div className="AddExerciseMenu">
+            {AddExerciseOrGoBackButton}
+          </div>
         )}
       </main>
 

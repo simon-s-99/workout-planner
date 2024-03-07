@@ -30,26 +30,20 @@ const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday }) => {
     (muscleGroup, index) => {
       const [selected, setSelected] = useState(false);
 
-      return (
-        <li key={index}>
-          <label>
-            <input
-              type="button"
-              name="categoryDropdown"
-              value={muscleGroup}
-              onClick={() => setSelected(!selected)}
-            ></input>
-            {/* ^ toggle selected to true if it is false and vice versa */}
-          </label>
-          <MuscleCategoryExercisesList
-            weekday={weekday}
-            muscleGroup={muscleGroup}
-            renderList={selected}
-          />
-        </li>
-      );
-    }
-  );
+    return (
+      <li key={index}>
+        <label>
+          <input
+            type="button"
+            name="categoryDropdown"
+            value={muscleGroup}
+            onClick={() => setSelected(!selected)}></input>
+          {/* ^ toggle selected to true if it is false and vice versa */}
+        </label>
+        <MuscleCategoryExercisesList weekday={weekday} muscleGroup={muscleGroup} renderList={selected} />
+      </li>
+    );
+  });
 
   return (
     <ul className="muscleGroupsCategoriesList">{muscleGroupsListItems}</ul>

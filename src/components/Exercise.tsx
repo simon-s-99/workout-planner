@@ -23,14 +23,15 @@ interface ExerciseProps {
 
 const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
   // Fetch all exercises for the given weekday from local storage
-  const weekdayExercises: ExerciseObject[] = useLocalStorageRead(weekday);
+  let weekdayExercises: ExerciseObject[] = [];
 
   //form, when submitted send to localstorage. Give write an exercisemap,
   // pair weekdayexercies with the weekday and send to localstorageWrite
 
   const [exercises, setExercises] = useState(weekdayExercises);
+  
   useEffect(() => {
-    const weekdayExercises = useLocalStorageRead(weekday);
+    weekdayExercises = useLocalStorageRead(weekday);
     setExercises(weekdayExercises);
   }, [weekday]); // Dependency array includes 'weekday' to re-run the effect when it changes
   
@@ -47,6 +48,8 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
     // Replace the old exercise with updated
     exercisesCopy.splice(exerciseIndex, 1, selectedExercise);
     setExercises(exercisesCopy);
+
+    // save new sets to localstorage
   };
 
   // Function to remove a set from an exercise

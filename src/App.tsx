@@ -1,12 +1,13 @@
 // App component
 import { useState } from "react";
 import "./App.css";
-import type { Settings, Weekday } from "./types";
+import type { ExerciseObject, Settings, Weekday } from "./types";
 import MuscleCategoryList from './components/MuscleCategoryList';
 import WeekdayPicker from "./components/WeekdayPicker";
 import UnitsPicker from "./components/UnitsPicker";
 import PieChart from "./components/PieChart";
 import TrainingGoalPicker from "./components/TrainingGoalPicker";
+import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
@@ -14,6 +15,8 @@ const App: React.FC = () => {
     trainingGoal: "powerlifting",
   });
 
+  const [data, setData] = useState<ExerciseObject[]>([]);
+  
   // Currently selected weekday, initialized to "Monday" in case we want a start value.
   const [selectedWeekday, setSelectedWeekday] = useState<Weekday>("Monday");
 
@@ -29,6 +32,28 @@ const App: React.FC = () => {
       {/* ^ toggle showAddExerciseMenu to true if it is false and vice versa */}
     </label>
   );
+
+  function getExerciseData(): void {
+    const mondayData = useLocalStorageRead("Monday");
+    const tuesdayData = useLocalStorageRead("Tuesday");
+    const wednesdayData = useLocalStorageRead("Wednesday");
+    const thursdayData = useLocalStorageRead("Thursday");
+    const fridayData = useLocalStorageRead("Friday");
+    const saturdayData = useLocalStorageRead("Saturday");
+    const sundayData = useLocalStorageRead("Sunday");
+
+    // Combine all arrays into one
+    const exerciseData = mondayData
+      .concat(tuesdayData)
+      .concat(wednesdayData)
+      .concat(thursdayData)
+      .concat(fridayData)
+      .concat(saturdayData)
+      .concat(sundayData);
+
+    setData(exerciseData);
+
+  }
 
   return (
     <div className="App">
@@ -50,7 +75,7 @@ const App: React.FC = () => {
         {showAddExerciseMenu ? (
           <div className="AddExerciseMenu">
             {AddExerciseOrGoBackButton}
-            <MuscleCategoryList weekday={selectedWeekday} />
+            <MuscleCategoryList weekday={selectedWeekday} getExerciseData={getExerciseData}/>
           </div>
         ) : (
           <div className="AddExerciseMenu">
@@ -59,7 +84,7 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <PieChart />
+      <PieChart data={data} getExerciseData={getExerciseData}/>
 
     </div>
   );

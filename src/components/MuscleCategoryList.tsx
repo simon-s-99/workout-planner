@@ -5,9 +5,10 @@ import type { MuscleGroup } from "../types";
 
 interface MuscleCategoryListProps {
   weekday: Weekday;
+  getExerciseData: () => void;
 }
 
-const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday }) => {
+const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday, getExerciseData }) => {
   const muscleGroups: MuscleGroup[] = [
     "Abdominals",
     "Biceps",
@@ -39,7 +40,7 @@ const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday }) => {
             onClick={() => setSelected(!selected)}></input>
           {/* ^ toggle selected to true if it is false and vice versa */}
         </label>
-        <MuscleCategoryExercisesList weekday={weekday} muscleGroup={muscleGroup} renderList={selected} />
+        <MuscleCategoryExercisesList getExerciseData={getExerciseData} weekday={weekday} muscleGroup={muscleGroup} renderList={selected} />
       </li>
     );
   });

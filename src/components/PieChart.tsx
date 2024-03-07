@@ -27,8 +27,10 @@ const PieChart: React.FC = () => {
   ];
 
   const [muscleGroupData, setMuscleGroupData] = useState<MuscleGroupData[]>([]);
+  const [totalSets, setTotalSets] = useState<number>(0);
+  const [data, setData] = useState<ExerciseObject[] | null>(null);
 
-  function getExerciseData(): ExerciseObject[] {
+  function getExerciseData() {
     const mondayData = useLocalStorageRead("Monday");
     const tuesdayData = useLocalStorageRead("Tuesday");
     const wednesdayData = useLocalStorageRead("Wednesday");
@@ -45,23 +47,29 @@ const PieChart: React.FC = () => {
       .concat(fridayData)
       .concat(saturdayData)
       .concat(sundayData);
-    return exerciseData;
+    console.log(data?.length, exerciseData.length)
+    if (exerciseData.length !== data?.length) {
+      setData(exerciseData);
+    }
   }
 
   useEffect(() => {
-    const exerciseData = getExerciseData();
+    getExerciseData();
     let dataArr: MuscleGroupData[] = [];
     let colorCounter: number = 0;
 
-    for (const exercise of exerciseData) {
+    if (!data) {
+      return;
+    }
+    for (const exercise of data) {
       // If muscle group is not already present
       if (dataArr.filter((m) => m.muscleGroup === (exercise.muscle as MuscleGroup)).length === 0) {
-        let data: MuscleGroupData = {
+        let dataa: MuscleGroupData = {
           muscleGroup: exercise.muscle as MuscleGroup,
           sets: exercise.sets.length,
           color: colors[colorCounter],
         };
-        dataArr.push(data);
+        dataArr.push(dataa);
         colorCounter++;
       } else {
         const duplicateMuscleGroup = dataArr.find((muscle) => muscle.muscleGroup === exercise.muscle);
@@ -73,7 +81,7 @@ const PieChart: React.FC = () => {
       }
     }
     setMuscleGroupData(dataArr);
-  }, [getExerciseData]);
+  }, []);
 
   // Grab the element, the same as doing document.getElementById("canvas")
   const canvasRef = useRef(null);
@@ -107,6 +115,7 @@ const PieChart: React.FC = () => {
       // Add the end angle to the angle, thus making the next arc's start angle equal to the current arc's end angle
       angle += Math.PI * 2 * (muscleGroupData[i].sets / total);
     }
+    setTotalSets(total);
   });
 
   return (
@@ -123,7 +132,9 @@ const PieChart: React.FC = () => {
                 display: "inline-block",
                 borderRadius: "25px",
               }}></div>
-            {data.muscleGroup} {data.sets} sets
+            {Math.round((data.sets / totalSets) * 100)}% -{" "}
+            {data.muscleGroup.charAt(0).toUpperCase() + data.muscleGroup.slice(1)}, {data.sets}{" "}
+            {data.sets === 1 ? "set" : "sets"}
           </p>
         );
       })}

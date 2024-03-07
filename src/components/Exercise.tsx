@@ -29,6 +29,12 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
   // pair weekdayexercies with the weekday and send to localstorageWrite
 
   const [exercises, setExercises] = useState(weekdayExercises);
+  useEffect(() => {
+    const weekdayExercises = useLocalStorageRead(weekday);
+    setExercises(weekdayExercises);
+  }, [weekday]); // Dependency array includes 'weekday' to re-run the effect when it changes
+  
+  // setExercises(weekdayExercises);
 
   // Function to add a set to an exercise
   // CHANGE: Adds new set to selected exercise, and updates the state variable with the updated array
@@ -100,17 +106,17 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
   };
 
   // Function to toggle an exercise as completed (assuming you have a completed flag in ExerciseObject)
-  const toggleExercise = (exerciseIndex: number) => {
-    setExercises((currentExercises) => 
-      currentExercises.map((exercise, index) => {
-        if (index === exerciseIndex) {
-          // Toggle the visibility
-          return { ...exercise, isVisible: !exercise.isVisible };
-        }
-        return exercise;
-      })
-    );
-  };
+  // const toggleExercise = (exerciseIndex: number) => {
+  //   setExercises((currentExercises) => 
+  //     currentExercises.map((exercise, index) => {
+  //       if (index === exerciseIndex) {
+  //         // Toggle the visibility
+  //         return { ...exercise, isVisible: !exercise.isVisible };
+  //       }
+  //       return exercise;
+  //     })
+  //   );
+  // };
   
     
   const updateSetDetails = (
@@ -151,7 +157,7 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
               <strong>Total Sets: {exercise.sets.length}</strong>
             <div>
             <button
-                onClick={() => toggleExercise(exerciseIndex)}
+                // onClick={() => toggleExercise(exerciseIndex)}
                 // style={styles.exerciseButton}
               >
                 🔽

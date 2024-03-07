@@ -6,6 +6,7 @@ import MuscleCategoryList from './components/MuscleCategoryList';
 import WeekdayPicker from "./components/WeekdayPicker";
 import UnitsPicker from "./components/UnitsPicker";
 import PieChart from "./components/PieChart";
+import TrainingGoalPicker from "./components/TrainingGoalPicker";
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
@@ -31,12 +32,16 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <h1>Workout Planner</h1>
-      <UnitsPicker setSettings={setSettings} />
       <WeekdayPicker
         selectedWeekday={selectedWeekday}
         setSelectedWeekday={setSelectedWeekday as React.Dispatch<React.SetStateAction<Weekday>>}
       />
+      <div>
+        <h2>Exercises</h2>
+        <h3>What is your training goal?</h3>
+        <TrainingGoalPicker setSettings={setSettings} />
+        <UnitsPicker setSettings={setSettings} />
+      </div>
 
       {/* The code below shows the "normal" interface with exercise names,
           sets, reps & weight or the add exercise interface where the user

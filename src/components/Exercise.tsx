@@ -17,7 +17,7 @@ import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 
 //details + summary to show and hide
 
-type ExerciseProps = {
+interface ExerciseProps {
   weekday: Weekday;
 };
 
@@ -167,8 +167,8 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
               </label>
             </div>
           </div>
-          {exercise.isVisible && exercise.sets.map((set, setIndex) => (
-    ))}
+          {/* {exercise.isVisible && exercise.sets.map((set, setIndex) => (
+    ))} */}
           {exercise.sets.map((set, setIndex) => (
             <div key={setIndex} style={styles.inputAndButtonContainer}>
               <button

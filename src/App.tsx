@@ -22,84 +22,82 @@ const App: React.FC = () => {
 
   const [selectedWeekday, setSelectedWeekday] = useState<Weekday>("Monday");
 
-  // const [exercises, setExercises] = useState<ExerciseObject[]>([]);
+   const [exercises, setExercises] = useState<ExerciseObject[]>([]);
 
-  const weekdayExercises: ExerciseObject[] =
-    useLocalStorageRead(selectedWeekday);
-
-  const testData: WeekdayExerciseMap = new Map<Weekday, ExerciseObject[]>([
-    [
-      "Monday",
-      [
-        {
-          name: "Bench Press",
-          type: "Strength",
-          muscle: "Chest",
-          equipment: "Barbell",
-          difficulty: "Intermediate",
-          instructions:
-            "Lie on the bench, lift the barbell, keep your feet flat on the ground.",
-          sets: [
-            {
-              repetitions: 10,
-              weight: 200,
-              completed: false,
-            },
-            {
-              repetitions: 8,
-              weight: 220,
-              completed: false,
-            },
-          ],
-          completed: false,
-        },
-        {
-          name: "Bench Press",
-          type: "Strength",
-          muscle: "Chest",
-          equipment: "Barbell",
-          difficulty: "Intermediate",
-          instructions:
-            "Lie on the bench, lift the barbell, keep your feet flat on the ground.",
-          sets: [
-            {
-              repetitions: 10,
-              weight: 200,
-              completed: false,
-            },
-            {
-              repetitions: 8,
-              weight: 220,
-              completed: false,
-            },
-          ],
-          completed: false,
-        },
-        {
-          name: "Bench Press",
-          type: "Strength",
-          muscle: "Chest",
-          equipment: "Barbell",
-          difficulty: "Intermediate",
-          instructions:
-            "Lie on the bench, lift the barbell, keep your feet flat on the ground.",
-          sets: [
-            {
-              repetitions: 10,
-              weight: 200,
-              completed: false,
-            },
-            {
-              repetitions: 8,
-              weight: 220,
-              completed: false,
-            },
-          ],
-          completed: false,
-        },
-      ],
-    ],
-  ]);
+ 
+  // const testData: WeekdayExerciseMap = new Map<Weekday, ExerciseObject[]>([
+  //   [
+  //     "Monday",
+  //     [
+  //       {
+  //         name: "Bench Press",
+  //         type: "Strength",
+  //         muscle: "Chest",
+  //         equipment: "Barbell",
+  //         difficulty: "Intermediate",
+  //         instructions:
+  //           "Lie on the bench, lift the barbell, keep your feet flat on the ground.",
+  //         sets: [
+  //           {
+  //             repetitions: 10,
+  //             weight: 200,
+  //             completed: false,
+  //           },
+  //           {
+  //             repetitions: 8,
+  //             weight: 220,
+  //             completed: false,
+  //           },
+  //         ],
+  //         completed: false,
+  //       },
+  //       {
+  //         name: "Bench Press",
+  //         type: "Strength",
+  //         muscle: "Chest",
+  //         equipment: "Barbell",
+  //         difficulty: "Intermediate",
+  //         instructions:
+  //           "Lie on the bench, lift the barbell, keep your feet flat on the ground.",
+  //         sets: [
+  //           {
+  //             repetitions: 10,
+  //             weight: 200,
+  //             completed: false,
+  //           },
+  //           {
+  //             repetitions: 8,
+  //             weight: 220,
+  //             completed: false,
+  //           },
+  //         ],
+  //         completed: false,
+  //       },
+  //       {
+  //         name: "Bench Press",
+  //         type: "Strength",
+  //         muscle: "Chest",
+  //         equipment: "Barbell",
+  //         difficulty: "Intermediate",
+  //         instructions:
+  //           "Lie on the bench, lift the barbell, keep your feet flat on the ground.",
+  //         sets: [
+  //           {
+  //             repetitions: 10,
+  //             weight: 200,
+  //             completed: false,
+  //           },
+  //           {
+  //             repetitions: 8,
+  //             weight: 220,
+  //             completed: false,
+  //           },
+  //         ],
+  //         completed: false,
+  //       },
+  //     ],
+  //   ],
+  // ]);
 
   //  useLocalStorageWrite(testData);
 

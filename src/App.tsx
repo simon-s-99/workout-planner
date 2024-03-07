@@ -101,7 +101,7 @@ const App: React.FC = () => {
     ],
   ]);
 
-  // useLocalStorageWrite(testData);
+  //  useLocalStorageWrite(testData);
 
   // bool to help toggle between the add exercise interface and the main content
   const [showAddExerciseMenu, setShowAddExerciseMenu] =

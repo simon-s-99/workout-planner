@@ -15,6 +15,8 @@ import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 // Restructure positions of buttons, text etc
 //implement weekday logic
 
+//details + summary to show and hide
+
 type ExerciseProps = {
   // exercise: ExerciseObject;
   weekday: Weekday;
@@ -41,13 +43,6 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
     // Replace the old exercise with updated
     exercisesCopy.splice(exerciseIndex, 1, selectedExercise);
     setExercises(exercisesCopy);
-
-    // Construct a new WeekdayExerciseMap
-    /*const weekdayExerciseMap: WeekdayExerciseMap = new Map();
-    weekdayExerciseMap.set(weekday, se);
-
-    // Using the useLocalStorageWrite function with the newly constructed Map
-    useLocalStorageWrite(weekdayExerciseMap);*/
   };
 
   // Function to remove a set from an exercise
@@ -107,24 +102,11 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
   };
 
   // Function to toggle an exercise as completed (assuming you have a completed flag in ExerciseObject)
-  const toggleExerciseCompleted = (exerciseIndex: number) => {
-    setExercises((exercises) =>
-      exercises.map((exercise, eIndex) => {
-        if (eIndex === exerciseIndex) {
-          const isCompleted = !exercise.completed;
-          return {
-            ...exercise,
-            completed: isCompleted,
-            sets: exercise.sets.map((set) => ({
-              ...set,
-              completed: isCompleted,
-            })),
-          };
-        }
-        return exercise;
-      })
-    );
-  };
+  const toggleExercise = (exerciseIndex: number) => {
+    //when pressing the dropdown arrow, the sets of the exercise should show
+
+  }
+    
 
   const updateSetDetails = (
     exerciseIndex: number,
@@ -143,7 +125,6 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
       if (field === "repetitions" || field === "weight") {
         setToUpdate[field] = Number(value);
       } else if (field === "completed") {
-        // This assumes value is being passed in a way that represents a boolean, e.g., 'true' or 'false'
         setToUpdate[field] = value === "true";
       }
 
@@ -159,38 +140,36 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
       {exercises.map((exercise, exerciseIndex) => (
         <div key={exerciseIndex} style={styles.exerciseContainer}>
           <div style={styles.exerciseHeader}>
-            <p style={exercise.completed ? styles.h3Hover : styles.h3}>
-              {exercise.name} -{" "}
+            <h3 style={exercise.completed ? styles.h3Hover : styles.h3}>
+              {exercise.name} {" "}
+            </h3>
               <strong>Total Sets: {exercise.sets.length}</strong>
-            </p>
             <div>
-              {/* Toggle All Sets Completed */}
+            <button
+                onClick={() => toggleExercise(exerciseIndex)}
+                // style={styles.exerciseButton}
+              >
+                🔽
+              </button>
+              
               <label style={styles.flexLabel}>
+                All sets completed
                 <input
                   type="checkbox"
                   checked={exercise.sets.every((set) => set.completed)}
                   onChange={() => toggleAllSetsCompleted(exerciseIndex)}
                 />{" "}
-                All Sets Completed
               </label>
-              {/* Exercise Completed Button */}
-              <button
-                onClick={() => toggleExerciseCompleted(exerciseIndex)}
-                style={styles.exerciseCompletedButton}
-              >
-                Exercise Completed
-              </button>
             </div>
           </div>
           {exercise.sets.map((set, setIndex) => (
             <div key={setIndex} style={styles.inputAndButtonContainer}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={set.completed}
-                  onChange={() => toggleSetCompleted(exerciseIndex, setIndex)}
-                />
-              </label>
+              <button
+                onClick={() => removeSet(exerciseIndex, setIndex)}
+                // style={styles.removeButton}
+              >
+                ❌
+              </button>             
               <span>Set {setIndex + 1}:</span>
               <input
                 type="number"
@@ -220,20 +199,26 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
                 }
               />{" "}
               Weight
-              <button
-                onClick={() => removeSet(exerciseIndex, setIndex)}
-                // style={styles.removeButton}
-              >
-                ❌
-              </button>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={set.completed}
+                  onChange={() => toggleSetCompleted(exerciseIndex, setIndex)}
+                />
+              </label>
             </div>
           ))}
-          <button
-            onClick={() => addSet(exerciseIndex, weekday)}
-            style={styles.addButton}
-          >
-            Add Set
-          </button>
+           <button
+
+onClick={() => addSet(exerciseIndex, weekday)}
+
+style={styles.addButton}
+
+>
+
+Add Set
+
+</button>
         </div>
       ))}
     </div>
@@ -242,11 +227,12 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
 
 const styles = {
   exerciseContainer: {
+    marginTop: "10px",
     marginBottom: "20px",
     border: "1px solid #ccc",
     borderRadius: "8px",
     padding: "10px",
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#FFFAFA",
   },
   flexLabel: {
     display: "flex",
@@ -288,16 +274,16 @@ const styles = {
     borderRadius: "4px",
   },
 
-  exerciseCompletedButton: {
-    background: "#008CBA",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    padding: "5px 10px",
-    cursor: "pointer",
-    margin: "0 10px",
-    marginRight: "30px",
-  },
+  // exerciseButton: {
+  //   background: "#008CBA",
+  //   color: "white",
+  //   border: "none",
+  //   borderRadius: "4px",
+  //   padding: "5px 10px",
+  //   cursor: "pointer",
+  //   margin: "0 10px",
+  //   marginRight: "30px",
+  // },
 
   addButton: {
     display: "inline-block",

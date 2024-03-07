@@ -9,35 +9,8 @@
   display: flex;
   flex-direction: row;
 }
-.WeekdayPicker {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-.weekdays-heading {
-  text-align: center;
-  margin-bottom: 10px;
-  color: #333;
-  font-size: 40px;
-}
 
-.weekday {
-  opacity: 0;
-  width: 0;
-  height: 0;
-  position: absolute;
-}
-
-.weekday-label {
-  display: inline-block;
-  padding: 10px 20px;
-  cursor: pointer;
-  border: 1px solid #ddd;
-  transition: all 0.3s ease;
-  width: 60%;
-  font-weight: bold;
-}
 
 .weekday-label:hover {
   background-color: rgb(240, 230, 230);

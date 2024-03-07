@@ -32,8 +32,6 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <h1>Workout Planner</h1>
-      <UnitsPicker setSettings={setSettings} />
       <WeekdayPicker
         selectedWeekday={selectedWeekday}
         setSelectedWeekday={setSelectedWeekday as React.Dispatch<React.SetStateAction<Weekday>>}

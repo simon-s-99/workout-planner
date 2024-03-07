@@ -8,6 +8,7 @@ import UnitsPicker from "./components/UnitsPicker";
 import PieChart from "./components/PieChart";
 import TrainingGoalPicker from "./components/TrainingGoalPicker";
 import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
+import MuscleAnatomyChart from "./components/MuscleAnatomyChart";
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
@@ -16,7 +17,7 @@ const App: React.FC = () => {
   });
 
   const [data, setData] = useState<ExerciseObject[]>([]);
-  
+
   // Currently selected weekday, initialized to "Monday" in case we want a start value.
   const [selectedWeekday, setSelectedWeekday] = useState<Weekday>("Monday");
 
@@ -75,7 +76,7 @@ const App: React.FC = () => {
         {showAddExerciseMenu ? (
           <div className="AddExerciseMenu">
             {AddExerciseOrGoBackButton}
-            <MuscleCategoryList weekday={selectedWeekday} getExerciseData={getExerciseData}/>
+            <MuscleCategoryList weekday={selectedWeekday} getExerciseData={getExerciseData} />
           </div>
         ) : (
           <div className="AddExerciseMenu">
@@ -84,7 +85,9 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <PieChart data={data} getExerciseData={getExerciseData}/>
+      <PieChart data={data} getExerciseData={getExerciseData} />
+
+      <MuscleAnatomyChart weekday={selectedWeekday} />
 
     </div>
   );

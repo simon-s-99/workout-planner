@@ -73,7 +73,7 @@ const PieChart: React.FC = () => {
       }
     }
     setMuscleGroupData(dataArr);
-  }, []);
+  }, [getExerciseData]);
 
   // Grab the element, the same as doing document.getElementById("canvas")
   const canvasRef = useRef(null);

@@ -10,8 +10,6 @@
   flex-direction: row;
 }
 
-
-
 .weekday-label:hover {
   background-color: rgb(240, 230, 230);
 }
@@ -19,17 +17,6 @@
 .weekday-label.selected {
   border-color: #051007;
   background-color: #8beb7f;
-}
-
-.UnitsPicker, .TrainingGoalPicker {
-  display: block;
-  border: 1px solid rgb(165, 165, 165);
-  border-radius: 5px;
-  padding: 1rem;
-}
-
-.UnitsPicker label, .TrainingGoalPicker label {
-  padding: 1rem;
 }
 
 .UnitsPicker label:first-of-type, .TrainingGoalPicker label:first-of-type {

@@ -12,29 +12,25 @@ const TrainingGoalPicker: React.FC<TrainingGoalPickerProps> = ({ setSettings }) 
       trainingGoal: e.target.value as TrainingGoal,
     }));
   }
+
+  const styles = {
+    main: { display: "block", border: "1px solid rgb(165, 165, 165)", borderRadius: "5px", padding: "1rem" },
+    label: {
+      padding: "1rem",
+    },
+  };
   return (
-    <div className="TrainingGoalPicker">
-      <label>
-        <input
-          type="radio"
-          name="trainingGoal"
-          value="strength"
-          defaultChecked
-          onChange={(e) => handleChange(e)}
-        />
+    <div className="TrainingGoalPicker" style={styles.main}>
+      <label style={styles.label}>
+        <input type="radio" name="trainingGoal" value="strength" defaultChecked onChange={(e) => handleChange(e)} />
         Bodybuilding
       </label>
-      <label>
+      <label style={styles.label}>
         <input type="radio" name="trainingGoal" value="cardio" onChange={(e) => handleChange(e)} />
         Cardio
       </label>
-      <label>
-        <input
-          type="radio"
-          name="trainingGoal"
-          value="powerlifting"
-          onChange={(e) => handleChange(e)}
-        />
+      <label style={styles.label}>
+        <input type="radio" name="trainingGoal" value="powerlifting" onChange={(e) => handleChange(e)} />
         Powerlifting
       </label>
     </div>

@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import type { Color, ExerciseObject, MuscleGroup, MuscleGroupData } from "../types";
-import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 
-const PieChart: React.FC = () => {
+interface PieChartProps {
+  data: ExerciseObject[];
+  getExerciseData: () => void;
+}
+const PieChart: React.FC<PieChartProps> = ({data, getExerciseData}) => {
   const styles = {
     canvas: {},
   };
@@ -28,31 +31,35 @@ const PieChart: React.FC = () => {
 
   const [muscleGroupData, setMuscleGroupData] = useState<MuscleGroupData[]>([]);
   const [totalSets, setTotalSets] = useState<number>(0);
-  const [data, setData] = useState<ExerciseObject[] | null>(null);
 
-  function getExerciseData() {
-    const mondayData = useLocalStorageRead("Monday");
-    const tuesdayData = useLocalStorageRead("Tuesday");
-    const wednesdayData = useLocalStorageRead("Wednesday");
-    const thursdayData = useLocalStorageRead("Thursday");
-    const fridayData = useLocalStorageRead("Friday");
-    const saturdayData = useLocalStorageRead("Saturday");
-    const sundayData = useLocalStorageRead("Sunday");
+  useEffect(() => {
+    let dataArr: MuscleGroupData[] = [];
+    let colorCounter: number = 0;
 
-    // Combine all arrays into one
-    const exerciseData = mondayData
-      .concat(tuesdayData)
-      .concat(wednesdayData)
-      .concat(thursdayData)
-      .concat(fridayData)
-      .concat(saturdayData)
-      .concat(sundayData);
-    console.log(data?.length, exerciseData.length)
-    if (exerciseData.length !== data?.length) {
-      setData(exerciseData);
+    for (const exercise of data) {
+      // If muscle group is not already present
+      if (dataArr.filter((m) => m.muscleGroup === (exercise.muscle as MuscleGroup)).length === 0) {
+        let exerciseData: MuscleGroupData = {
+          muscleGroup: exercise.muscle as MuscleGroup,
+          sets: exercise.sets.length,
+          color: colors[colorCounter],
+        };
+        dataArr.push(exerciseData);
+        colorCounter++;
+      } else {
+        const duplicateMuscleGroup = dataArr.find((muscle) => muscle.muscleGroup === exercise.muscle);
+        // To resolve TypeScript undefined error
+        if (duplicateMuscleGroup) {
+          // Add muscle group's sets to the total amount of sets
+          duplicateMuscleGroup.sets += exercise.sets.length;
+        }
+      }
     }
-  }
+    setMuscleGroupData(dataArr);
+  }, [data]);
 
+  // Ugly solution: does exactly the same thing as the useEffect above, but only runs once
+  // Its purpose is to display the graph when the user first loads the app
   useEffect(() => {
     getExerciseData();
     let dataArr: MuscleGroupData[] = [];
@@ -61,15 +68,16 @@ const PieChart: React.FC = () => {
     if (!data) {
       return;
     }
+
     for (const exercise of data) {
       // If muscle group is not already present
       if (dataArr.filter((m) => m.muscleGroup === (exercise.muscle as MuscleGroup)).length === 0) {
-        let dataa: MuscleGroupData = {
+        let exerciseData: MuscleGroupData = {
           muscleGroup: exercise.muscle as MuscleGroup,
           sets: exercise.sets.length,
           color: colors[colorCounter],
         };
-        dataArr.push(dataa);
+        dataArr.push(exerciseData);
         colorCounter++;
       } else {
         const duplicateMuscleGroup = dataArr.find((muscle) => muscle.muscleGroup === exercise.muscle);
@@ -115,6 +123,7 @@ const PieChart: React.FC = () => {
       // Add the end angle to the angle, thus making the next arc's start angle equal to the current arc's end angle
       angle += Math.PI * 2 * (muscleGroupData[i].sets / total);
     }
+    // To calculate percentages
     setTotalSets(total);
   });
 
@@ -133,7 +142,7 @@ const PieChart: React.FC = () => {
                 borderRadius: "25px",
               }}></div>
             {Math.round((data.sets / totalSets) * 100)}% -{" "}
-            {data.muscleGroup.charAt(0).toUpperCase() + data.muscleGroup.slice(1)}, {data.sets}{" "}
+            {data.muscleGroup.charAt(0).toUpperCase() + data.muscleGroup.slice(1).replace("_", " ")}, {data.sets}{" "}
             {data.sets === 1 ? "set" : "sets"}
           </p>
         );

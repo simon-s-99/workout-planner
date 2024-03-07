@@ -18,9 +18,7 @@ import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 //details + summary to show and hide
 
 type ExerciseProps = {
-  // exercise: ExerciseObject;
   weekday: Weekday;
-  // updateExercise: (updatedExercise: ExerciseObject) => void;
 };
 
 const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
@@ -103,11 +101,18 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
 
   // Function to toggle an exercise as completed (assuming you have a completed flag in ExerciseObject)
   const toggleExercise = (exerciseIndex: number) => {
-    //when pressing the dropdown arrow, the sets of the exercise should show
-
-  }
+    setExercises((currentExercises) => 
+      currentExercises.map((exercise, index) => {
+        if (index === exerciseIndex) {
+          // Toggle the visibility
+          return { ...exercise, isVisible: !exercise.isVisible };
+        }
+        return exercise;
+      })
+    );
+  };
+  
     
-
   const updateSetDetails = (
     exerciseIndex: number,
     setIndex: number,
@@ -162,6 +167,8 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
               </label>
             </div>
           </div>
+          {exercise.isVisible && exercise.sets.map((set, setIndex) => (
+    ))}
           {exercise.sets.map((set, setIndex) => (
             <div key={setIndex} style={styles.inputAndButtonContainer}>
               <button

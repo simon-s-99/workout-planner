@@ -34,8 +34,30 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
     weekdayExercises = useLocalStorageRead(weekday);
     setExercises(weekdayExercises);
   }, [weekday]); // Dependency array includes 'weekday' to re-run the effect when it changes
+  // -------------------------------------------------------------------------------------------
+
+  useEffect(() => {
+    const newExercises = useLocalStorageRead(weekday);
+    setExercises(newExercises);
+  }, [weekday]);
+
+  useEffect(() => {
+    useLocalStorageWrite(exercises);
+
+  }, [exercises, weekday]);
+
+  useEffect(() => {
+    // Use the key 'exercises-{weekday}' to store exercises data for different weekdays separately
+    useLocalStorageWrite(`exercises-${weekday}`, exercises);
+  }, [exercises, weekday]);
+
+
+
+// save new sets to localstorage
+    // when adding a new set, make the update show directly.
+    // currently only updates the page if switching day and then returning.
+
   
-  // setExercises(weekdayExercises);
 
   // Function to add a set to an exercise
   // CHANGE: Adds new set to selected exercise, and updates the state variable with the updated array
@@ -48,10 +70,9 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
     // Replace the old exercise with updated
     exercisesCopy.splice(exerciseIndex, 1, selectedExercise);
     setExercises(exercisesCopy);
-
-    // save new sets to localstorage
   };
 
+  
   // Function to remove a set from an exercise
   // CHANGE: Removes set from selected exercise, and updates the state variable with the new amount of sets
   const removeSet = (exerciseIndex: number, setIndex: number): void => {

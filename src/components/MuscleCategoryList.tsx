@@ -27,8 +27,9 @@ const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday, getExe
     "Calves",
   ];
 
-  const muscleGroupsListItems: JSX.Element[] = muscleGroups.map((muscleGroup, index) => {
-    const [selected, setSelected] = useState(false);
+  const muscleGroupsListItems: JSX.Element[] = muscleGroups.map(
+    (muscleGroup, index) => {
+      const [selected, setSelected] = useState(false);
 
     return (
       <li key={index}>
@@ -45,7 +46,9 @@ const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday, getExe
     );
   });
 
-  return <ul className="muscleGroupsCategoriesList">{muscleGroupsListItems}</ul>;
+  return (
+    <ul className="muscleGroupsCategoriesList">{muscleGroupsListItems}</ul>
+  );
 };
 
 export default MuscleCategoryList;

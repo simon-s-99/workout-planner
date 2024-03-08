@@ -60,6 +60,8 @@ export type MuscleGroupData = {
     color: Color
 };
 
+
+
 // WorkingSet is only used here locally but working around export is a pain apparently
 export type WorkingSet = {
     repetitions: number,
@@ -81,3 +83,4 @@ export type ExerciseObject = {
 // this will be the json structure of the localstorage file (technically SQLite in most cases)
 // access a weekdays planned exercises by retrieving the value of that particular weekday (weekday=key)
 export type WeekdayExerciseMap = Map<Weekday, ExerciseObject[]>;
+

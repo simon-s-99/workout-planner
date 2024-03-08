@@ -19,7 +19,7 @@ import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 
 interface ExerciseProps {
   weekday: Weekday;
-};
+}
 
 const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
   // Fetch all exercises for the given weekday from local storage
@@ -29,7 +29,7 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
   // pair weekdayexercies with the weekday and send to localstorageWrite
 
   const [exercises, setExercises] = useState(weekdayExercises);
-  
+
   useEffect(() => {
     weekdayExercises = useLocalStorageRead(weekday);
     setExercises(weekdayExercises);
@@ -41,23 +41,19 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
     setExercises(newExercises);
   }, [weekday]);
 
-  useEffect(() => {
-    useLocalStorageWrite(exercises);
+  // useEffect(() => {
+  //   useLocalStorageWrite(exercises);
 
-  }, [exercises, weekday]);
+  // }, [exercises, weekday]);
 
-  useEffect(() => {
-    // Use the key 'exercises-{weekday}' to store exercises data for different weekdays separately
-    useLocalStorageWrite(`exercises-${weekday}`, exercises);
-  }, [exercises, weekday]);
+  // useEffect(() => {
+  //   // Use the key 'exercises-{weekday}' to store exercises data for different weekdays separately
+  //   useLocalStorageWrite(`exercises-${weekday}`, exercises);
+  // }, [exercises, weekday]);
 
-
-
-// save new sets to localstorage
-    // when adding a new set, make the update show directly.
-    // currently only updates the page if switching day and then returning.
-
-  
+  // save new sets to localstorage
+  // when adding a new set, make the update show directly.
+  // currently only updates the page if switching day and then returning.
 
   // Function to add a set to an exercise
   // CHANGE: Adds new set to selected exercise, and updates the state variable with the updated array
@@ -72,7 +68,6 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
     setExercises(exercisesCopy);
   };
 
-  
   // Function to remove a set from an exercise
   // CHANGE: Removes set from selected exercise, and updates the state variable with the new amount of sets
   const removeSet = (exerciseIndex: number, setIndex: number): void => {
@@ -131,7 +126,7 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
 
   // Function to toggle an exercise as completed (assuming you have a completed flag in ExerciseObject)
   // const toggleExercise = (exerciseIndex: number) => {
-  //   setExercises((currentExercises) => 
+  //   setExercises((currentExercises) =>
   //     currentExercises.map((exercise, index) => {
   //       if (index === exerciseIndex) {
   //         // Toggle the visibility
@@ -141,8 +136,7 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
   //     })
   //   );
   // };
-  
-    
+
   const updateSetDetails = (
     exerciseIndex: number,
     setIndex: number,
@@ -176,17 +170,17 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
         <div key={exerciseIndex} style={styles.exerciseContainer}>
           <div style={styles.exerciseHeader}>
             <h3 style={exercise.completed ? styles.h3Hover : styles.h3}>
-              {exercise.name} {" "}
+              {exercise.name}{" "}
             </h3>
-              <strong>Total Sets: {exercise.sets.length}</strong>
+            <strong>Total Sets: {exercise.sets.length}</strong>
             <div>
-            <button
-                // onClick={() => toggleExercise(exerciseIndex)}
-                // style={styles.exerciseButton}
+              <button
+              // onClick={() => toggleExercise(exerciseIndex)}
+              // style={styles.exerciseButton}
               >
                 🔽
               </button>
-              
+
               <label style={styles.flexLabel}>
                 All sets completed
                 <input
@@ -206,7 +200,7 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
                 // style={styles.removeButton}
               >
                 ❌
-              </button>             
+              </button>
               <span>Set {setIndex + 1}:</span>
               <input
                 type="number"
@@ -245,17 +239,12 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
               </label>
             </div>
           ))}
-           <button
-
-onClick={() => addSet(exerciseIndex, weekday)}
-
-style={styles.addButton}
-
->
-
-Add Set
-
-</button>
+          <button
+            onClick={() => addSet(exerciseIndex, weekday)}
+            style={styles.addButton}
+          >
+            Add Set
+          </button>
         </div>
       ))}
     </div>

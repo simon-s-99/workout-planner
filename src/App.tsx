@@ -14,7 +14,7 @@ import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
 import { useLocalStorageWrite } from "./hooks/useLocalStorageWrite";
 import PieChart from "./components/PieChart";
 import TrainingGoalPicker from "./components/TrainingGoalPicker";
-import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
+import ResetLocalStorage from "./components/ResetLocalStorage";
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({
@@ -149,6 +149,7 @@ const App: React.FC = () => {
     <div className="App">
       <h1>Workout Planner</h1>
       <UnitsPicker setSettings={setSettings} />
+      <ResetLocalStorage />
       <WeekdayPicker
         selectedWeekday={selectedWeekday}
         setSelectedWeekday={setSelectedWeekday}

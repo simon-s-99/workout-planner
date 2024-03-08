@@ -8,7 +8,7 @@ import UnitsPicker from "./components/UnitsPicker";
 import PieChart from "./components/PieChart";
 import TrainingGoalPicker from "./components/TrainingGoalPicker";
 import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
-import MuscleAnatomyChart from "./components/MuscleAnatomy/MuscleAnatomyChart";
+import MuscleAnatomyChart from "./components/MuscleAnatomyChart";
 
 const App: React.FC = () => {
   const [settings, setSettings] = useState<Settings>({

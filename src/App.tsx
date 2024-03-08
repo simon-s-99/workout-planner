@@ -16,6 +16,10 @@ const App: React.FC = () => {
     trainingGoal: "powerlifting",
   });
 
+  /*
+    Change name of this variable
+    "data" means nothing in this context 
+  */
   const [data, setData] = useState<ExerciseObject[]>([]);
 
   // Currently selected weekday, initialized to "Monday" in case we want a start value.
@@ -53,7 +57,6 @@ const App: React.FC = () => {
       .concat(sundayData);
 
     setData(exerciseData);
-
   }
 
   return (
@@ -87,7 +90,7 @@ const App: React.FC = () => {
 
       <PieChart data={data} getExerciseData={getExerciseData} />
 
-      <MuscleAnatomyChart weekday={selectedWeekday} />
+      <MuscleAnatomyChart weekday={selectedWeekday} weekExerciseListLength={data.length} />
 
     </div>
   );

@@ -34,7 +34,23 @@ export type MuscleGroup =
   | "Quadriceps"
   | "Abductors"
   | "Adductors"
-  | "Calves";
+  | "Calves"
+  | "abdominals"
+  | "biceps"
+  | "triceps"
+  | "forearms"
+  | "chest"
+  | "lats"
+  | "traps"
+  | "lower_back"
+  | "middle_back"
+  | "back"
+  | "glutes"
+  | "hamstrings"
+  | "quadriceps"
+  | "abductors"
+  | "adductors"
+  | "calves";
 
 export type Color =
   | "red"

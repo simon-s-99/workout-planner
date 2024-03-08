@@ -1,10 +1,33 @@
-import { Weekday } from "../types";
+import { useEffect, useState } from "react";
+import { ExerciseObject, Weekday, MuscleGroup } from "../types";
+import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
+import { Console } from "console";
 
 interface MuscleAnatomyChartProps {
 	weekday: Weekday;
+
+	// used only in the dependencies of the useEffect hook so that the anatomy chart
+	// updates when the user adds another exercise 
+	weekExerciseListLength: number;
 }
 
-const MuscleAnatomyChart: React.FC<MuscleAnatomyChartProps> = ({ weekday }) => {
+const MuscleAnatomyChart: React.FC<MuscleAnatomyChartProps> = ({ weekday, weekExerciseListLength: weekExerciseListLength }) => {
+	// get muscle groups from exercises to determine which muscles to mark as being activated 
+	const [rawExerciseData, setExercises] = useState<ExerciseObject[]>(useLocalStorageRead(weekday));
+
+	// update exercises if weekday changes, i.e. when user switches weekday
+	useEffect(() => {
+		setExercises(useLocalStorageRead(weekday));
+	}, [weekday, weekExerciseListLength]);
+
+	const activatedMuscleGroupsMap: Map<MuscleGroup, boolean> = new Map<MuscleGroup, boolean>();
+	rawExerciseData.forEach((exercise) => {
+		const muscle: MuscleGroup = exercise.muscle as MuscleGroup;
+		if (activatedMuscleGroupsMap.get(muscle) === undefined) {
+			activatedMuscleGroupsMap.set(muscle, true);
+		}
+	});
+
 	// hex color codes used to display a muscle as being activated or not 
 	const red: string = "#FF0000";
 	const white: string = "#FFFFFF";
@@ -364,7 +387,8 @@ z"/>
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Abdominal muscles ============================== */}
 				{/* Abs  */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("abdominals") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M110.864876,207.476196 
 	C107.189400,208.336136 103.293808,208.436371 102.963760,213.931686 
 	C101.951271,230.789658 105.834503,246.634079 112.226044,262.013794 
@@ -434,7 +458,8 @@ M108.680565,193.024460
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Bicep muscles ============================== */}
 				{/* biceps brachii  */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("biceps") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M185.102112,180.145966 
 	C189.259735,173.798279 191.002167,167.409576 186.915115,160.121201 
 	C185.173676,157.015717 184.758270,153.170502 183.713486,149.669434 
@@ -465,7 +490,8 @@ M66.179062,167.745544
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Tricep muscles ============================== */}
 				{/* tricep */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("triceps") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M276.433258,152.031219 
 	C275.651031,152.886826 274.483398,153.613266 274.146606,154.618149 
 	C271.027771,163.924347 269.682343,173.592987 268.710938,183.309677 
@@ -509,7 +535,8 @@ M394.588440,142.854614
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Forearm muscles ============================== */}
 				{/* Forearms front (brachioradialis) */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("forearms") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M189.159943,182.713318 
 	C188.673615,185.324509 188.215652,187.941345 187.696426,190.545975 
 	C183.985321,209.162491 186.797623,226.569855 197.367859,242.517212 
@@ -536,7 +563,8 @@ M407.036652,220.562042
 	C404.530396,210.743591 405.752075,215.242691 407.036652,220.562042 
 	" />
 				{/* flexor carpi */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("forearms") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M54.131634,200.670990 
 	C53.077599,204.968079 53.248608,209.243484 54.268593,213.547043 
 	C56.812569,207.726959 58.944096,201.886887 58.872383,194.940643 
@@ -551,7 +579,8 @@ M181.944702,198.738007
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Chest muscles ============================== */}
 				{/* pectoralis major */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("chest") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M116.916000,143.181152 
     C116.458221,134.571259 116.107056,125.953667 115.485687,117.355598 
     C115.263756,114.284744 115.099770,110.806122 110.789406,110.230080 
@@ -572,11 +601,34 @@ M162.633591,119.867378
     C160.929550,141.885330 161.046188,135.613464 164.680939,130.598267 
     C167.549973,126.639610 167.197891,123.239502 162.633591,119.867378 
 " />
+				{/* Front delts  */}
+				<path fill={activatedMuscleGroupsMap.get("chest") ? red : white}
+					opacity="1.000000" stroke="black" d="
+M179.994644,135.555969 
+	C182.148209,137.846191 183.310852,140.781921 184.907516,143.853531 
+	C187.694901,137.043976 186.688614,130.480881 185.423645,124.297958 
+	C180.109879,98.325157 164.854050,99.065338 145.433655,108.105072 
+	C148.838425,109.512604 152.136719,110.678764 155.257751,112.206955 
+	C161.995926,115.506241 169.035751,118.565262 170.557800,127.251488 
+	C170.802063,128.645462 172.240128,129.226532 173.284210,130.041656 
+	C175.379364,131.677368 177.436081,133.362381 179.994644,135.555969 
+
+M57.012863,135.573364 
+	C58.487591,134.237244 59.933773,132.867783 61.444790,131.574051 
+	C63.068039,130.184219 66.061012,129.798538 66.414200,127.655045 
+	C68.049561,117.730148 76.129082,114.954239 83.606720,111.346741 
+	C86.206970,110.092285 89.305336,109.806229 91.910362,107.436661 
+	C86.016830,104.521622 79.940285,104.249725 74.213158,102.703346 
+	C69.823196,101.518013 66.275673,102.866241 62.435570,105.005730 
+	C52.128513,110.748268 48.356876,133.497940 52.198120,143.396683 
+	C53.660713,140.963684 55.110828,138.551453 57.012863,135.573364 
+" />
 				{/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Chest muscles ============================== */}
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Lat muscles ============================== */}
 				{/* latissimus dorsi */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("lats") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M354.354156,203.245514 
 	C355.219208,205.163986 354.713806,207.552017 356.615906,209.603653 
 	C360.892273,206.977463 366.727203,205.657257 366.559998,199.217636 
@@ -603,7 +655,8 @@ M293.004700,177.710419
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Trap muscles ============================== */}
 				{/* trapezius */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("traps") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M342.306152,71.286392 
 	C341.953522,70.932617 341.627533,70.546448 341.243866,70.230347 
 	C338.884857,68.286873 336.843781,64.415489 333.550415,65.857208 
@@ -642,7 +695,8 @@ M316.315308,84.433044
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Lower_back muscles ============================== */}
 				{/* erector spinae | lumbosacral aponeurosis */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("lower_back") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M328.940369,240.062286 
 	C328.913727,219.735062 328.855438,199.407791 328.889648,179.080658 
 	C328.895782,175.430664 328.025940,172.342484 324.718262,169.654831 
@@ -667,7 +721,8 @@ M333.196777,199.499008
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Middle_back muscles ============================== */}
 				{/* rear delts */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("middle_back") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M386.817871,130.661270 
 	C389.637299,133.117310 392.039520,136.183502 396.853333,137.437546 
 	C396.209320,127.531540 396.734955,117.896141 389.384918,110.529747 
@@ -697,7 +752,8 @@ M265.020752,134.703308
 	C265.632507,126.301346 264.798615,130.050751 265.020752,134.703308 
 " />
 				{/* rhomboideus */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("middle_back") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M375.846313,116.364586 
 	C372.799225,114.709244 369.775421,113.008957 366.696564,111.414948 
 	C364.762726,110.413765 363.053040,110.809486 362.213409,112.919373 
@@ -729,7 +785,8 @@ M373.099823,130.649536
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Glute muscles ============================== */}
 				{/* gluteus maximus */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("glutes") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M356.228424,234.266006 
 	C355.527344,233.817627 354.835938,233.353256 354.123749,232.923294 
 	C343.531067,226.528595 343.307587,226.645767 340.125732,238.778778 
@@ -754,7 +811,8 @@ M318.683350,229.978348
 	C321.468719,238.592255 320.195160,234.634384 318.683350,229.978348 
 " />
 				{/* gluteus medius | gluteus minimus */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("glutes") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M302.991364,232.429810 
 	C306.003937,230.472061 309.016510,228.514328 312.292023,226.385696 
 	C298.394623,222.593521 291.088318,228.632446 292.602112,242.101883 
@@ -769,7 +827,8 @@ M358.361298,226.081009
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Hamstring muscles ============================== */}
 				{/* biceps femoris */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("hamstrings") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M360.815552,288.808624 
 	C357.151886,290.909790 357.728424,294.472534 358.011871,297.711823 
 	C359.400940,313.585968 360.731018,329.470581 362.517548,345.302338 
@@ -787,7 +846,8 @@ M302.951233,303.576813
 	C301.580170,347.337158 300.155304,325.548676 302.951233,303.576813 
 " />
 				{/* semitendinosus */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("hamstrings") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M354.024689,354.121552 
 	C354.538239,355.220306 354.143188,356.829315 356.128082,357.450684 
 	C357.472839,351.401123 359.308716,345.394531 358.856262,339.317047 
@@ -809,7 +869,8 @@ M313.841492,329.454742
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Quad muscles ============================== */}
 				{/* rectus femoris */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("quadriceps") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M139.089340,299.449799 
 	C137.899582,304.261597 135.428436,308.984680 136.519150,314.033569 
 	C138.234848,321.975494 139.857178,329.963959 142.851044,337.589417 
@@ -833,7 +894,8 @@ M96.189278,293.173859
 	C99.962669,322.155701 102.808838,308.230347 96.189278,293.173859 
 	" />
 				{/* vastus lateralis */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("quadriceps") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M163.140442,342.893311 
 	C167.761261,327.454468 168.190521,311.662659 167.006302,295.678772 
 	C165.771469,298.871521 164.936188,302.143005 164.286148,305.450867 
@@ -861,7 +923,8 @@ M376.590485,303.355652
 	C375.498352,316.835968 375.844269,310.507172 376.590485,303.355652 
 	" />
 				{/* vastus medialis */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("quadriceps") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M131.266830,341.307892 
 	C132.063828,347.229462 132.780151,353.163574 133.696640,359.066589 
 	C134.074738,361.501953 135.699692,362.889923 138.288757,362.664276 
@@ -878,7 +941,8 @@ M104.789757,328.735687
 	C104.827660,349.037354 107.044533,339.426239 104.789757,328.735687 
 	" />
 				{/* sartorius */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("quadriceps") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M104.371803,299.049835 
 	C100.414978,286.375641 96.458145,273.701447 92.501312,261.027252 
 	C95.897034,284.060944 103.882927,305.999969 107.935753,329.616608 
@@ -910,7 +974,8 @@ M315.474701,372.665649
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Abductors muscles ============================== */}
 				{/* tensor fasciae */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("abductors") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M84.978951,247.397354 
 	C87.855888,241.729248 86.286301,235.004135 80.621925,229.112991 
 	C73.489464,243.324173 69.067642,258.052002 70.432838,274.137299 
@@ -940,7 +1005,8 @@ M373.793335,279.442688
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Adductors muscles ============================== */}
 				{/* adductor longus */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("adductors") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M104.598923,290.877136 
 	C106.377884,295.625519 108.156845,300.373871 109.935799,305.122253 
 	C111.613152,285.880066 104.829613,269.293304 94.097321,253.906830 
@@ -952,7 +1018,8 @@ M127.905624,287.180511
 	C135.773514,263.903198 130.078323,274.324249 127.905624,287.180511 
 " />
 				{/* gracilis */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("adductors") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M128.773773,268.606262 
 	C123.771477,274.707855 123.771477,274.707855 125.695877,282.804871 
 	C126.142601,279.861328 126.843948,277.153961 128.058670,274.566193 
@@ -983,7 +1050,8 @@ M319.223236,313.599548
 
 				{/* VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV Calf muscles ============================== */}
 				{/* soleus */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("calves") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M152.889984,382.509186 
 	C154.616211,378.216339 156.342438,373.923523 158.174286,369.368011 
 	C152.349472,365.571869 150.862122,359.700623 151.637589,353.318207 
@@ -1005,7 +1073,8 @@ M98.242294,366.000031
 	C101.203392,368.553162 102.118309,366.551514 98.242294,366.000031 
 	" />
 				{/* tibialis */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("calves") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M155.723740,426.243439 
 	C160.026962,404.284576 161.087891,383.896484 158.184952,378.945496 
 	C149.696579,395.136963 142.371811,444.914276 146.887054,460.005188 
@@ -1017,7 +1086,8 @@ M77.199776,385.483032
 	C76.931145,380.647766 77.492645,382.708954 77.199776,385.483032 
 	"/>
 				{/* gastrocnemius */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("calves") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M105.585678,388.975372 
 	C104.165215,384.450653 102.744751,379.925934 101.324287,375.401215 
 	C95.653214,389.293610 99.016563,402.746185 102.470993,416.236725 
@@ -1058,7 +1128,8 @@ M310.931854,408.498230
 	C310.916382,424.369812 311.039703,416.947113 310.931854,408.498230 
 	" />
 				{/* peroneus longus */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={activatedMuscleGroupsMap.get("calves") ? red : white}
+					opacity="1.000000" stroke="black" d="
 M158.889801,434.571808 
 	C159.286957,432.139893 160.148590,429.724213 159.150833,426.079956 
 	C155.959763,438.653717 153.047729,450.128052 150.106873,461.715881 
@@ -1082,30 +1153,8 @@ M80.700066,437.750397
 	where they may be included in a stabilizing or assisting capacity. 
 */}
 
-				{/* Front delts  */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
-M179.994644,135.555969 
-	C182.148209,137.846191 183.310852,140.781921 184.907516,143.853531 
-	C187.694901,137.043976 186.688614,130.480881 185.423645,124.297958 
-	C180.109879,98.325157 164.854050,99.065338 145.433655,108.105072 
-	C148.838425,109.512604 152.136719,110.678764 155.257751,112.206955 
-	C161.995926,115.506241 169.035751,118.565262 170.557800,127.251488 
-	C170.802063,128.645462 172.240128,129.226532 173.284210,130.041656 
-	C175.379364,131.677368 177.436081,133.362381 179.994644,135.555969 
-
-M57.012863,135.573364 
-	C58.487591,134.237244 59.933773,132.867783 61.444790,131.574051 
-	C63.068039,130.184219 66.061012,129.798538 66.414200,127.655045 
-	C68.049561,117.730148 76.129082,114.954239 83.606720,111.346741 
-	C86.206970,110.092285 89.305336,109.806229 91.910362,107.436661 
-	C86.016830,104.521622 79.940285,104.249725 74.213158,102.703346 
-	C69.823196,101.518013 66.275673,102.866241 62.435570,105.005730 
-	C52.128513,110.748268 48.356876,133.497940 52.198120,143.396683 
-	C53.660713,140.963684 55.110828,138.551453 57.012863,135.573364 
-" />
-
 				{/* obliques */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={white} opacity="1.000000" stroke="black" d="
 M145.051117,216.564987 
 	C138.549057,223.373169 137.042587,234.518692 141.409744,243.505661 
 	C151.563339,233.184921 158.439926,218.095810 152.818817,210.205948 
@@ -1153,7 +1202,7 @@ M357.073181,214.154846
 	" />
 
 				{/* serratus anterior */}
-				<path fill={red} opacity="1.000000" stroke="black" d="
+				<path fill={white} opacity="1.000000" stroke="black" d="
 M142.392578,169.296127 
 	C144.012711,174.120193 148.021576,174.066910 151.788773,173.351883 
 	C155.643616,172.620255 158.339294,170.179764 158.963120,165.509811 

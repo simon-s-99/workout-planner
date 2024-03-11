@@ -8,6 +8,7 @@ import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
 import PieChart from "./components/PieChart";
 import MuscleAnatomyChart from "./components/MuscleAnatomyChart";
 import UnitsPicker from "./components/UnitsPicker";
+import ClearDay from "./components/ClearDay";
 
 const App: React.FC = () => {
   const [weightUnit, setWeightUnit] = useState<Unit>("kilograms");
@@ -68,6 +69,7 @@ const App: React.FC = () => {
         selectedWeekday={selectedWeekday}
         setSelectedWeekday={setSelectedWeekday}
       />
+      <ClearDay getExerciseData={getExerciseData} />
 
       <Exercise
         weightUnit={weightUnit}

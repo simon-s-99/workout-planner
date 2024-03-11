@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
-import type {
-  ExerciseObject,
-  Weekday,
-  WeekdayExerciseMap,
-  WorkingSet,
-} from "../types";
+import type { ExerciseObject, Unit, Weekday, WorkingSet } from "../types";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
-import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 
 // add function to click on exercise in order to show, and hide sets
@@ -19,14 +13,15 @@ import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 //details + summary to show and hide
 
 interface ExerciseProps {
+  weightUnit: Unit;
   weekday: Weekday;
-  weekExerciseListLength: number;
+  exerciseData: ExerciseObject[];
   getExerciseData: () => void;
 }
 
 const Exercise: React.FC<ExerciseProps> = ({
   weekday,
-  weekExerciseListLength,
+  exerciseData: weekExerciseListLength,
   getExerciseData,
 }) => {
   // Fetch all exercises for the given weekday from local storage
@@ -181,9 +176,30 @@ const Exercise: React.FC<ExerciseProps> = ({
       exerciseToUpdate.sets[setIndex] = setToUpdate;
       updatedExercises[exerciseIndex] = exerciseToUpdate;
 
+      // clears localStorage of selected day and writes new exercises to it
+      // runs getExerciseData to make sure every other component based on data in localStorage re-renders
+      useLocalStorageOverwrite(
+        new Map<Weekday, ExerciseObject[]>([[weekday, exercises]])
+      );
+      getExerciseData();
+
       return updatedExercises;
     });
   };
+
+  // removes the selected exercise from current weekday
+  function removeExercise(exerciseIndex: number): void {
+    const updatedExercises = [...exercises];
+
+    // Use splice to remove the selected exercise
+    updatedExercises.splice(exerciseIndex, 1);
+
+    // Update local storage with the new set of exercises
+    useLocalStorageOverwrite(
+      new Map<Weekday, ExerciseObject[]>([[weekday, updatedExercises]])
+    );
+    getExerciseData();
+  }
 
   return (
     <div className="Exercise">
@@ -206,6 +222,13 @@ const Exercise: React.FC<ExerciseProps> = ({
                 checked={exercise.sets.every((set) => set.completed)}
                 onChange={() => toggleAllSetsCompleted(exerciseIndex)}
               />
+            </label>
+            <label>
+              <input
+                type="button"
+                value="del"
+                onClick={() => removeExercise(exerciseIndex)}
+              ></input>
             </label>
           </div>
           {!hiddenExercises.has(exerciseIndex) && (

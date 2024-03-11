@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import type { Color, ExerciseObject, MuscleGroup, MuscleGroupData } from "../types";
 
 interface PieChartProps {
-  data: ExerciseObject[];
+  exerciseData: ExerciseObject[];
   getExerciseData: () => void;
 }
-const PieChart: React.FC<PieChartProps> = ({data, getExerciseData}) => {
+const PieChart: React.FC<PieChartProps> = ({exerciseData, getExerciseData}) => {
   const styles = {
     canvas: {},
   };
@@ -36,7 +36,7 @@ const PieChart: React.FC<PieChartProps> = ({data, getExerciseData}) => {
     let dataArr: MuscleGroupData[] = [];
     let colorCounter: number = 0;
 
-    for (const exercise of data) {
+    for (const exercise of exerciseData) {
       // If muscle group is not already present
       if (dataArr.filter((m) => m.muscleGroup === (exercise.muscle as MuscleGroup)).length === 0) {
         let exerciseData: MuscleGroupData = {
@@ -56,7 +56,7 @@ const PieChart: React.FC<PieChartProps> = ({data, getExerciseData}) => {
       }
     }
     setMuscleGroupData(dataArr);
-  }, [data]);
+  }, [exerciseData]);
 
   // Ugly solution: does exactly the same thing as the useEffect above, but only runs once
   // Its purpose is to display the graph when the user first loads the app
@@ -65,11 +65,11 @@ const PieChart: React.FC<PieChartProps> = ({data, getExerciseData}) => {
     let dataArr: MuscleGroupData[] = [];
     let colorCounter: number = 0;
 
-    if (!data) {
+    if (!exerciseData) {
       return;
     }
 
-    for (const exercise of data) {
+    for (const exercise of exerciseData) {
       // If muscle group is not already present
       if (dataArr.filter((m) => m.muscleGroup === (exercise.muscle as MuscleGroup)).length === 0) {
         let exerciseData: MuscleGroupData = {

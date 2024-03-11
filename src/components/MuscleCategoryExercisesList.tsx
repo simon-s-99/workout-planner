@@ -24,7 +24,7 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({
     // there is also the possibility to allow the user to search for specific types of exercises
     // ex.: "press" search would give us all exercises with the word "press" in the name
     const url: URL = new URL("https://api.api-ninjas.com/v1/exercises");
-    url.searchParams.set("muscle", muscleGroup);
+    url.searchParams.append("muscle", muscleGroup);
 
     // Note that the below api call runs twice in development mode
     // this is intended React behaviour to help us catch bugs.

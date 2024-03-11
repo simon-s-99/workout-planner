@@ -19,10 +19,3 @@ export function useLocalStorageWrite(
     localStorage.setItem(day, JSON.stringify(newData));
   });
 }
-
-// export function useLocalStorageWrite(
-//   weekday: Weekday,
-//   exercises: ExerciseObject[]
-// ): void {
-//   localStorage.setItem(weekday, JSON.stringify(exercises));
-// }

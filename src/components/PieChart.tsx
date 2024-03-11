@@ -133,15 +133,15 @@ const PieChart: React.FC<PieChartProps> = ({data, getExerciseData}) => {
       {muscleGroupData.map((data, index) => {
         return (
           <p key={index}>
-            <div
+            <span
               style={{
                 backgroundColor: data.color,
                 height: "20px",
                 width: "20px",
                 display: "inline-block",
                 borderRadius: "25px",
-              }}></div>
-            {Math.round((data.sets / totalSets) * 100)}% -{" "}
+              }}></span>
+            {Math.floor(Math.round((data.sets / totalSets) * 100))}% -{" "}
             {data.muscleGroup.charAt(0).toUpperCase() + data.muscleGroup.slice(1).replace("_", " ")}, {data.sets}{" "}
             {data.sets === 1 ? "set" : "sets"}
           </p>

@@ -141,7 +141,7 @@ const PieChart: React.FC<PieChartProps> = ({data, getExerciseData}) => {
                 display: "inline-block",
                 borderRadius: "25px",
               }}></span>
-            {Math.round((data.sets / totalSets) * 100)}% -{" "}
+            {Math.floor(Math.round((data.sets / totalSets) * 100))}% -{" "}
             {data.muscleGroup.charAt(0).toUpperCase() + data.muscleGroup.slice(1).replace("_", " ")}, {data.sets}{" "}
             {data.sets === 1 ? "set" : "sets"}
           </p>

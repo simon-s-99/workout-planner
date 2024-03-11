@@ -7,6 +7,7 @@ import type {
 } from "../types";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
+import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 
 // add function to click on exercise in order to show, and hide sets
 // Exercise completed should close the exercise when checked.
@@ -19,9 +20,11 @@ import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 
 interface ExerciseProps {
   weekday: Weekday;
+  weekExerciseListLength: number;
+  getExerciseData: () => void;
 }
 
-const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
+const Exercise: React.FC<ExerciseProps> = ({ weekday, weekExerciseListLength, getExerciseData }) => {
   // Fetch all exercises for the given weekday from local storage
   let weekdayExercises: ExerciseObject[] = [];
 
@@ -34,7 +37,7 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
   useEffect(() => {
     weekdayExercises = useLocalStorageRead(weekday);
     setExercises(weekdayExercises);
-  }, [weekday]); // Dependency array includes 'weekday' to re-run the effect when it changes
+  }, [weekday, weekExerciseListLength]); // Dependency array includes 'weekday' to re-run the effect when it changes
 
   // save new sets to localstorage
   // when adding a new set, make the update show directly.
@@ -50,6 +53,11 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
     // Replace the old exercise with updated
     exercisesCopy.splice(exerciseIndex, 1, selectedExercise);
     setExercises(exercisesCopy);
+
+    // clears localStorage of selected day and writes new exercises to it
+    // runs getExerciseData to make sure every other component based on data in localStorage re-renders
+    useLocalStorageOverwrite(new Map<Weekday, ExerciseObject[]>([[weekday, exercises]]));
+    getExerciseData();
   };
 
   // Function to remove a set from an exercise
@@ -67,45 +75,61 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
     setExercises(exercisesCopy);
     // Here, you should also update local storage to reflect the changes
     // This can be done by calling your useLocalStorageWrite hook or similar functionality
+
+    // clears localStorage of selected day and writes new exercises to it
+    // runs getExerciseData to make sure every other component based on data in localStorage re-renders
+    useLocalStorageOverwrite(new Map<Weekday, ExerciseObject[]>([[weekday, exercises]]));
+    getExerciseData();
   };
 
   // Function to toggle a set as completed
   const toggleSetCompleted = (exerciseIndex: number, setIndex: number) => {
-    setExercises((exercises) =>
-      exercises.map((exercise, eIndex) => {
-        if (eIndex === exerciseIndex) {
-          return {
-            ...exercise,
-            sets: exercise.sets.map((set, sIndex) => {
-              if (sIndex === setIndex) {
-                return { ...set, completed: !set.completed };
-              }
-              return set;
-            }),
-          };
-        }
-        return exercise;
-      })
-    );
+    const exercisesCopy = [...exercises];
+    const selectedExercise = exercisesCopy[exerciseIndex];
+    const selectedSet = selectedExercise.sets[setIndex];
+
+    selectedSet.completed = !selectedSet.completed;
+
+    exercisesCopy[exerciseIndex].sets.splice(setIndex, 1, selectedSet);
+    setExercises(exercisesCopy);
+
+    // clears localStorage of selected day and writes new exercises to it
+    // runs getExerciseData to make sure every other component based on data in localStorage re-renders
+    useLocalStorageOverwrite(new Map<Weekday, ExerciseObject[]>([[weekday, exercises]]));
+    getExerciseData();
   };
 
   // Function to toggle all sets as completed for an exercise
   const toggleAllSetsCompleted = (exerciseIndex: number) => {
-    setExercises((exercises) =>
-      exercises.map((exercise, eIndex) => {
-        if (eIndex === exerciseIndex) {
-          const areAllCompleted = exercise.sets.every((set) => set.completed);
-          return {
-            ...exercise,
-            sets: exercise.sets.map((set) => ({
-              ...set,
-              completed: !areAllCompleted,
-            })),
-          };
-        }
-        return exercise;
-      })
-    );
+    const exercisesCopy: ExerciseObject[] = [...exercises];
+
+    const completed: boolean[] = [];
+
+    exercisesCopy[exerciseIndex].sets.forEach((set) => {
+      if (set.completed) {
+        completed.push(true);
+      }
+    });
+
+    // this logic ensures that all sets are marked as complete if one or more sets are marked as complete
+    // if all sets are marked as complete they are marked as incomplete by this toggle 
+    if (completed.length === exercisesCopy[exerciseIndex].sets.length) {
+      for (const set of exercisesCopy[exerciseIndex].sets) {
+        set.completed = false;
+      }
+    }
+    else {
+      for (const set of exercisesCopy[exerciseIndex].sets) {
+        set.completed = true;
+      }
+    }
+
+    setExercises(exercisesCopy);
+
+    // clears localStorage of selected day and writes new exercises to it
+    // runs getExerciseData to make sure every other component based on data in localStorage re-renders
+    useLocalStorageOverwrite(new Map<Weekday, ExerciseObject[]>([[weekday, exercises]]));
+    getExerciseData();
   };
 
   const [hiddenExercises, setHiddenExercises] = useState(new Set<number>());
@@ -213,9 +237,9 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday }) => {
                     <input
                       type="checkbox"
                       checked={set.completed}
-                      onChange={() =>
-                        toggleSetCompleted(exerciseIndex, setIndex)
-                      }
+                      onChange={() => {
+                        toggleSetCompleted(exerciseIndex, setIndex);
+                      }}
                     />
                   </label>
                   {/* Completed */}
@@ -317,7 +341,7 @@ const styles = {
   },
 
   labelSpan: {
-    marginRight: "20px", // Adjust as needed
+    marginRight: "20px",
   },
 };
 

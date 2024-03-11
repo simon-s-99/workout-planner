@@ -157,6 +157,7 @@ const App: React.FC = () => {
         selectedWeekday={selectedWeekday}
         setSelectedWeekday={setSelectedWeekday}
       />
+      <ResetLocalStorage />
 
       <Exercise
         weekday={selectedWeekday}

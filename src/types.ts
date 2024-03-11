@@ -2,12 +2,7 @@
 import type {Type} from ./types; 
 */
 
-export type TrainingGoal = "strength" | "powerlifting" | "cardio";
 export type Unit = "kilograms" | "pounds";
-export type Settings = {
-  units: Unit;
-  trainingGoal: TrainingGoal;
-};
 
 export type Weekday =
   | "Monday"

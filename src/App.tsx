@@ -1,115 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Exercise from "./components/Exercise";
 import type {
-  Settings,
   Weekday,
   ExerciseObject,
-  WeekdayExerciseMap,
+  Unit,
 } from "./types";
 import MuscleCategoryList from "./components/MuscleCategoryList";
 import WeekdayPicker from "./components/WeekdayPicker";
-import UnitsPicker from "./components/UnitsPicker";
 import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
-import { useLocalStorageWrite } from "./hooks/useLocalStorageWrite";
 import PieChart from "./components/PieChart";
-import TrainingGoalPicker from "./components/TrainingGoalPicker";
 import MuscleAnatomyChart from "./components/MuscleAnatomyChart";
+import UnitsPicker from "./components/UnitsPicker";
 
 const App: React.FC = () => {
-  const [settings, setSettings] = useState<Settings>({
-    units: "kilograms",
-    trainingGoal: "powerlifting",
-  });
+  const [weightUnit, setWeightUnit] = useState<Unit>("kilograms");
 
   /*
     Change name of this variable
     "data" means nothing in this context 
   */
-  const [data, setData] = useState<ExerciseObject[]>([]);
+  const [exerciseData, setExerciseData] = useState<ExerciseObject[]>([]);
 
   // Currently selected weekday, initialized to "Monday" in case we want a start value.
   const [selectedWeekday, setSelectedWeekday] = useState<Weekday>("Monday");
-
-   const [exercises, setExercises] = useState<ExerciseObject[]>([]);
-
- 
-  // const testData: WeekdayExerciseMap = new Map<Weekday, ExerciseObject[]>([
-  //   [
-  //     "Monday",
-  //     [
-  //       {
-  //         name: "Bench Press",
-  //         type: "Strength",
-  //         muscle: "Chest",
-  //         equipment: "Barbell",
-  //         difficulty: "Intermediate",
-  //         instructions:
-  //           "Lie on the bench, lift the barbell, keep your feet flat on the ground.",
-  //         sets: [
-  //           {
-  //             repetitions: 10,
-  //             weight: 200,
-  //             completed: false,
-  //           },
-  //           {
-  //             repetitions: 8,
-  //             weight: 220,
-  //             completed: false,
-  //           },
-  //         ],
-  //         completed: false,
-  //       },
-  //       {
-  //         name: "Bench Press",
-  //         type: "Strength",
-  //         muscle: "Chest",
-  //         equipment: "Barbell",
-  //         difficulty: "Intermediate",
-  //         instructions:
-  //           "Lie on the bench, lift the barbell, keep your feet flat on the ground.",
-  //         sets: [
-  //           {
-  //             repetitions: 10,
-  //             weight: 200,
-  //             completed: false,
-  //           },
-  //           {
-  //             repetitions: 8,
-  //             weight: 220,
-  //             completed: false,
-  //           },
-  //         ],
-  //         completed: false,
-  //       },
-  //       {
-  //         name: "Bench Press",
-  //         type: "Strength",
-  //         muscle: "Chest",
-  //         equipment: "Barbell",
-  //         difficulty: "Intermediate",
-  //         instructions:
-  //           "Lie on the bench, lift the barbell, keep your feet flat on the ground.",
-  //         sets: [
-  //           {
-  //             repetitions: 10,
-  //             weight: 200,
-  //             completed: false,
-  //           },
-  //           {
-  //             repetitions: 8,
-  //             weight: 220,
-  //             completed: false,
-  //           },
-  //         ],
-  //         completed: false,
-  //       },
-  //     ],
-  //   ],
-  // ]);
-
-  //  useLocalStorageWrite(testData);
-
+  
   // bool to help toggle between the add exercise interface and the main content
   const [showAddExerciseMenu, setShowAddExerciseMenu] =
     useState<boolean>(false);
@@ -142,7 +57,7 @@ const App: React.FC = () => {
       .concat(saturdayData)
       .concat(sundayData);
 
-    setData(exerciseData);
+    setExerciseData(exerciseData);
   }
 
   return (
@@ -153,12 +68,15 @@ const App: React.FC = () => {
         setSelectedWeekday={setSelectedWeekday}
       />
 
-      <Exercise weekday={selectedWeekday} weekExerciseListLength={data.length} getExerciseData={getExerciseData} />
+      <Exercise 
+        weightUnit={weightUnit}
+        weekday={selectedWeekday}
+        exerciseData={exerciseData} 
+        getExerciseData={getExerciseData} />
       <div>
         <h2>Exercises</h2>
         <h3>What is your training goal?</h3>
-        <TrainingGoalPicker setSettings={setSettings} />
-        <UnitsPicker setSettings={setSettings} />
+        <UnitsPicker setWeightUnits={setWeightUnit} getExerciseData={getExerciseData}/>
       </div>
 
       {/* The code below shows the "normal" interface with exercise names,
@@ -168,7 +86,9 @@ const App: React.FC = () => {
         {showAddExerciseMenu ? (
           <div className="AddExerciseMenu">
             {AddExerciseOrGoBackButton}
-            <MuscleCategoryList weekday={selectedWeekday} getExerciseData={getExerciseData} />
+            <MuscleCategoryList 
+              weekday={selectedWeekday} 
+              getExerciseData={getExerciseData} />
           </div>
         ) : (
           <div className="AddExerciseMenu">
@@ -177,9 +97,9 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <PieChart data={data} getExerciseData={getExerciseData} />
+      <PieChart exerciseData={exerciseData} getExerciseData={getExerciseData} />
 
-      <MuscleAnatomyChart weekday={selectedWeekday} weekExerciseListLength={data.length} />
+      <MuscleAnatomyChart weekday={selectedWeekday} weekExerciseListLength={exerciseData.length} />
 
     </div>
   );

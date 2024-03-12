@@ -82,7 +82,6 @@ const App: React.FC = () => {
       />
       <div>
         <h2>Exercises</h2>
-        <h3>What is your training goal?</h3>
         <UnitsPicker
           setWeightUnits={setWeightUnit}
           getExerciseData={getExerciseData}

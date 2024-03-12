@@ -87,8 +87,7 @@ export type ExerciseObject = {
     equipment: string,
     difficulty: string,
     instructions: string,
-    sets: WorkingSet[],
-    completed: boolean
+    sets: WorkingSet[]
 };
 
 // this will be the json structure of the localstorage file (technically SQLite in most cases)

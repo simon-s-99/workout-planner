@@ -25,7 +25,7 @@ const ClearDay: React.FC<{
         onClick={() => setIsDialogOpen(true)}
         style={styles.resetDayButton}
       >
-        Reset day 🚮
+        Clear day 🚮
       </button>
 
       {isDialogOpen && (

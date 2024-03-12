@@ -50,7 +50,6 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({
       completed: false,
     };
     newExercise.sets = [initialSet];
-    newExercise.completed = false;
 
     // new WeekdayExerciseMap to give to useLocalStorageWrite
     const weekdayExerciseMap: WeekdayExerciseMap = new Map<Weekday, ExerciseObject[]>([[weekday, [newExercise]]]);

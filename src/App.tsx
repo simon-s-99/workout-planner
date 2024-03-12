@@ -70,12 +70,12 @@ const App: React.FC = () => {
         selectedWeekday={selectedWeekday}
         setSelectedWeekday={setSelectedWeekday}
       />
-      <ResetProgress getExerciseData={getExerciseData} />
-
       <ClearDay
         getExerciseData={getExerciseData}
         selectedWeekday={selectedWeekday}
       />
+
+      <ResetProgress getExerciseData={getExerciseData} />
 
       <Exercise
         weightUnit={weightUnit}
@@ -85,7 +85,6 @@ const App: React.FC = () => {
       />
       <div>
         <h2>Exercises</h2>
-        <h3>What is your training goal?</h3>
         <UnitsPicker
           setWeightUnits={setWeightUnit}
           getExerciseData={getExerciseData}

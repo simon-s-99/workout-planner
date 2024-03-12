@@ -65,7 +65,7 @@ const App: React.FC = () => {
       </header>
 
       <main>
-        <nav>
+        <menu>
           <WeekdayPicker
             selectedWeekday={selectedWeekday}
             setSelectedWeekday={setSelectedWeekday}
@@ -78,7 +78,7 @@ const App: React.FC = () => {
             getExerciseData={getExerciseData}
             selectedWeekday={selectedWeekday}
           />
-        </nav>
+        </menu>
 
         <section>
           <h2>Exercises</h2>

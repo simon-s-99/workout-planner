@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import type {
-  ExerciseObject,
-  Unit,
-  Weekday,
-  WorkingSet,
-} from "../types";
+import type { ExerciseObject, Unit, Weekday, WorkingSet } from "../types";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 
@@ -24,7 +19,11 @@ interface ExerciseProps {
   getExerciseData: () => void;
 }
 
-const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExerciseListLength, getExerciseData }) => {
+const Exercise: React.FC<ExerciseProps> = ({
+  weekday,
+  exerciseData: weekExerciseListLength,
+  getExerciseData,
+}) => {
   // Fetch all exercises for the given weekday from local storage
   let weekdayExercises: ExerciseObject[] = [];
 
@@ -56,7 +55,9 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
 
     // clears localStorage of selected day and writes new exercises to it
     // runs getExerciseData to make sure every other component based on data in localStorage re-renders
-    useLocalStorageOverwrite(new Map<Weekday, ExerciseObject[]>([[weekday, exercises]]));
+    useLocalStorageOverwrite(
+      new Map<Weekday, ExerciseObject[]>([[weekday, exercises]])
+    );
     getExerciseData();
   };
 
@@ -78,7 +79,9 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
 
     // clears localStorage of selected day and writes new exercises to it
     // runs getExerciseData to make sure every other component based on data in localStorage re-renders
-    useLocalStorageOverwrite(new Map<Weekday, ExerciseObject[]>([[weekday, exercises]]));
+    useLocalStorageOverwrite(
+      new Map<Weekday, ExerciseObject[]>([[weekday, exercises]])
+    );
     getExerciseData();
   };
 
@@ -95,7 +98,9 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
 
     // clears localStorage of selected day and writes new exercises to it
     // runs getExerciseData to make sure every other component based on data in localStorage re-renders
-    useLocalStorageOverwrite(new Map<Weekday, ExerciseObject[]>([[weekday, exercises]]));
+    useLocalStorageOverwrite(
+      new Map<Weekday, ExerciseObject[]>([[weekday, exercises]])
+    );
     getExerciseData();
   };
 
@@ -112,13 +117,12 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
     });
 
     // this logic ensures that all sets are marked as complete if one or more sets are marked as complete
-    // if all sets are marked as complete they are marked as incomplete by this toggle 
+    // if all sets are marked as complete they are marked as incomplete by this toggle
     if (completed.length === exercisesCopy[exerciseIndex].sets.length) {
       for (const set of exercisesCopy[exerciseIndex].sets) {
         set.completed = false;
       }
-    }
-    else {
+    } else {
       for (const set of exercisesCopy[exerciseIndex].sets) {
         set.completed = true;
       }
@@ -128,7 +132,9 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
 
     // clears localStorage of selected day and writes new exercises to it
     // runs getExerciseData to make sure every other component based on data in localStorage re-renders
-    useLocalStorageOverwrite(new Map<Weekday, ExerciseObject[]>([[weekday, exercises]]));
+    useLocalStorageOverwrite(
+      new Map<Weekday, ExerciseObject[]>([[weekday, exercises]])
+    );
     getExerciseData();
   };
 
@@ -172,7 +178,9 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
 
       // clears localStorage of selected day and writes new exercises to it
       // runs getExerciseData to make sure every other component based on data in localStorage re-renders
-      useLocalStorageOverwrite(new Map<Weekday, ExerciseObject[]>([[weekday, exercises]]));
+      useLocalStorageOverwrite(
+        new Map<Weekday, ExerciseObject[]>([[weekday, exercises]])
+      );
       getExerciseData();
 
       return updatedExercises;
@@ -216,11 +224,11 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
               />
             </label>
             <label>
-              <input 
-                type="button" 
+              <input
+                type="button"
                 value="del"
-                onClick={() => removeExercise(exerciseIndex)}>
-              </input>
+                onClick={() => removeExercise(exerciseIndex)}
+              ></input>
             </label>
           </div>
           {!hiddenExercises.has(exerciseIndex) && (

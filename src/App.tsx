@@ -69,7 +69,10 @@ const App: React.FC = () => {
         selectedWeekday={selectedWeekday}
         setSelectedWeekday={setSelectedWeekday}
       />
-      <ClearDay getExerciseData={getExerciseData} />
+      <ClearDay
+        getExerciseData={getExerciseData}
+        selectedWeekday={selectedWeekday}
+      />
 
       <Exercise
         weightUnit={weightUnit}

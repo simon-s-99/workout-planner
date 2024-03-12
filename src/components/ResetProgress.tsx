@@ -1,38 +1,60 @@
 import React from "react";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
-import type { ExerciseObject, Weekday } from "../types";
+import type { ExerciseObject, Weekday, WeekdayExerciseMap } from "../types";
 
 interface ResetProgressProps {
-  selectedWeekday: Weekday;
-  onResetComplete: () => void;
   getExerciseData: () => void;
 }
 
-const ResetProgress: React.FC<ResetProgressProps> = ({
-  selectedWeekday,
-  onResetComplete,
-}) => {
+const allWeekdays: Weekday[] = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+
+const ResetProgress: React.FC<ResetProgressProps> = ({ getExerciseData }) => {
   const handleReset = () => {
-    // Read the exercises from local storage for the selected weekday
-    let exercises: ExerciseObject[] = useLocalStorageRead(selectedWeekday);
+    const updatedWeek: WeekdayExerciseMap = new Map();
 
-    // Iterate through all exercises and sets, untoggling completed sets
-    const updatedExercises = exercises.map((exercise) => ({
-      ...exercise,
-      sets: exercise.sets.map((set) => ({ ...set, completed: false })),
-    }));
+    allWeekdays.forEach((weekday) => {
+      // Read the exercises for the current weekday from local storage
+      let exercises: ExerciseObject[] = useLocalStorageRead(weekday);
 
-    //Overwrite the local storage with the updated list of exercises
-    useLocalStorageOverwrite(
-      new Map<Weekday, ExerciseObject[]>([[selectedWeekday, updatedExercises]])
-    );
+      // Iterate through all exercises and sets, untoggling completed sets
+      const updatedExercises = exercises.map((exercise) => ({
+        ...exercise,
+        sets: exercise.sets.map((set) => ({ ...set, completed: false })),
+      }));
 
-    //Call the onResetComplete callback to trigger any necessary updates or refreshes
-    onResetComplete();
+      // Update the week map with the reset exercises
+      updatedWeek.set(weekday, updatedExercises);
+    });
+
+    // Overwrite the local storage with the updated map for the entire week
+    useLocalStorageOverwrite(updatedWeek);
+
+    // Call getExerciseData to trigger any necessary updates or refreshes
+    getExerciseData();
   };
 
-  return <button onClick={handleReset}>Reset Week</button>;
+  return (
+    <button style={resetWeek} onClick={handleReset}>
+      Reset week ♻
+    </button>
+  );
 };
 
 export default ResetProgress;
+
+const resetWeek = {
+  justifyContent: "space-around",
+  width: "122px",
+  height: "60px",
+  borderRadius: "5px",
+  cursor: "pointer",
+};

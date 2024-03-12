@@ -70,6 +70,8 @@ const App: React.FC = () => {
         selectedWeekday={selectedWeekday}
         setSelectedWeekday={setSelectedWeekday}
       />
+      <ResetProgress getExerciseData={getExerciseData} />
+
       <ClearDay
         getExerciseData={getExerciseData}
         selectedWeekday={selectedWeekday}

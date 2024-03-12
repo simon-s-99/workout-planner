@@ -13,10 +13,6 @@ import ClearDay from "./components/ClearDay";
 const App: React.FC = () => {
   const [weightUnit, setWeightUnit] = useState<Unit>("kilograms");
 
-  /*
-    Change name of this variable
-    "data" means nothing in this context 
-  */
   const [exerciseData, setExerciseData] = useState<ExerciseObject[]>([]);
 
   // Currently selected weekday, initialized to "Monday" in case we want a start value.
@@ -64,54 +60,64 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <h1>Workout Planner</h1>
-      <WeekdayPicker
-        selectedWeekday={selectedWeekday}
-        setSelectedWeekday={setSelectedWeekday}
-      />
-      <ClearDay
-        getExerciseData={getExerciseData}
-        selectedWeekday={selectedWeekday}
-      />
+      <header>
+        <h1>Workout Planner</h1>
+      </header>
 
-      <Exercise
-        weightUnit={weightUnit}
-        weekday={selectedWeekday}
-        exerciseData={exerciseData}
-        getExerciseData={getExerciseData}
-      />
-      <div>
-        <h2>Exercises</h2>
-        <UnitsPicker
-          setWeightUnits={setWeightUnit}
-          getExerciseData={getExerciseData}
-        />
-      </div>
+      <main>
+        <menu>
+          <WeekdayPicker
+            selectedWeekday={selectedWeekday}
+            setSelectedWeekday={setSelectedWeekday}
+          />
+          <UnitsPicker
+            setWeightUnits={setWeightUnit}
+            getExerciseData={getExerciseData}
+          />
+          <ClearDay
+            getExerciseData={getExerciseData}
+            selectedWeekday={selectedWeekday}
+          />
+        </menu>
 
-      {/* The code below shows the "normal" interface with exercise names,
+        <section>
+          <h2>Exercises</h2>
+          <Exercise
+            weightUnit={weightUnit}
+            weekday={selectedWeekday}
+            exerciseData={exerciseData}
+            getExerciseData={getExerciseData}
+          />
+
+          {/* The code below shows the "normal" interface with exercise names,
           sets, reps & weight or the add exercise interface where the user
           can pick exercises to add to their program. (Uses ternary operator for brevity.)*/}
-      <main>
-        {showAddExerciseMenu ? (
-          <div className="AddExerciseMenu">
-            {AddExerciseOrGoBackButton}
-            <MuscleCategoryList
-              weekday={selectedWeekday}
-              getExerciseData={getExerciseData}
-            />
-          </div>
-        ) : (
-          <div className="AddExerciseMenu">{AddExerciseOrGoBackButton}</div>
-        )}
+          {showAddExerciseMenu ? (
+            <div className="AddExerciseMenu">
+              {AddExerciseOrGoBackButton}
+              <MuscleCategoryList
+                weekday={selectedWeekday}
+                getExerciseData={getExerciseData}
+              />
+            </div>
+          ) : (
+            <div className="AddExerciseMenu">{AddExerciseOrGoBackButton}</div>
+          )}
+        </section>
+
+        <aside>
+          <h2>Todays muscle activation</h2>
+          <MuscleAnatomyChart
+            weekday={selectedWeekday}
+            weekExerciseListLength={exerciseData.length}
+          />
+
+          <h2>Weekly set distribution</h2>
+          <PieChart exerciseData={exerciseData} getExerciseData={getExerciseData} />
+        </aside>
       </main>
-
-      <PieChart exerciseData={exerciseData} getExerciseData={getExerciseData} />
-
-      <MuscleAnatomyChart
-        weekday={selectedWeekday}
-        weekExerciseListLength={exerciseData.length}
-      />
     </div>
   );
 };
+
 export default App;

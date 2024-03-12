@@ -1,138 +1,58 @@
 import React, { useState, CSSProperties } from "react";
-import { Weekday } from "../types";
+import { Weekday, ExerciseObject } from "../types";
+import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 
-const WeekdaySelector: React.FC<{
+const ClearDay: React.FC<{
+  getExerciseData: () => void;
   selectedWeekday: Weekday;
-  setSelectedWeekday: React.Dispatch<React.SetStateAction<Weekday>>;
-  onClose: () => void;
-  onConfirm: () => void;
-}> = ({ selectedWeekday, setSelectedWeekday, onClose, onConfirm }) => {
-  // Renders a dropdown for selecting a day, and confirm and close buttons
-  return (
-    <div style={{ ...styles.dialog, ...styles.weekdaySelector }}>
-      <select
-        value={selectedWeekday}
-        onChange={(e) => setSelectedWeekday(e.target.value as Weekday)}
-        style={styles.select}
-      >
-        <option value="Monday">Monday</option>
-        <option value="Tuesday">Tuesday</option>
-        <option value="Wednesday">Wednesday</option>
-        <option value="Thursday">Thursday</option>
-        <option value="Friday">Friday</option>
-        <option value="Saturday">Saturday</option>
-        <option value="Sunday">Sunday</option>
-      </select>
-      <button
-        onClick={onConfirm}
-        style={{ ...styles.button, ...styles.confirmButton }}
-      >
-        Confirm
-      </button>{" "}
-      {/* Confirm button */}
-      <button onClick={onClose} style={styles.closeButton}>
-        Close
-      </button>
-    </div>
-  );
-};
-
-const ConfirmDialog: React.FC<{
-  onConfirm: () => void;
-  onCancel: () => void;
-}> = ({ onConfirm, onCancel }) => {
-  return (
-    <div style={styles.dialog}>
-      <p>
-        Are you sure that you want to reset the selected day's workout data?
-      </p>
-      <button
-        style={{ ...styles.button, ...styles.confirmButton }}
-        onClick={onConfirm}
-      >
-        Yes
-      </button>
-      <button
-        style={{ ...styles.button, ...styles.cancelButton }}
-        onClick={onCancel}
-      >
-        No
-      </button>
-    </div>
-  );
-};
-
-// ClearDay component provides functionality to clear data of a selected day
-const ClearDay: React.FC<{ getExerciseData: () => void }> = ({
-  getExerciseData,
-}) => {
-  // State for controlling dialog and selector visibility, selected weekday, and feedback messages
+}> = ({ getExerciseData, selectedWeekday }) => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [isWeekdaySelectorOpen, setIsWeekdaySelectorOpen] =
-    useState<boolean>(false); // New state for controlling the visibility of WeekdaySelector
-  const [selectedWeekday, setSelectedWeekday] = useState<Weekday>("Monday");
-  const [isFeedbackDialogOpen, setIsFeedbackDialogOpen] =
-    useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>("");
 
-  const handleResetConfirmed = () => {
-    try {
-      localStorage.removeItem(selectedWeekday); // Removes the data for the selected day
-      setFeedback(`${selectedWeekday} reset successfully.`);
-      setIsFeedbackDialogOpen(true);
-      setTimeout(() => {
-        setIsFeedbackDialogOpen(false);
-      }, 2000);
-      getExerciseData(); // Refresh data on the page
-    } catch (error) {
-      console.error(`Failed to reset the day: ${selectedWeekday}`, error);
-      setFeedback(
-        `Error resetting ${selectedWeekday}. See console for details.`
-      );
-      setIsFeedbackDialogOpen(true);
-      setTimeout(() => {
-        setIsFeedbackDialogOpen(false);
-      }, 3000);
-    }
-    setIsWeekdaySelectorOpen(false); // Close the selector after confirming
-  };
-
-  // FeedbackDialog component displays feedback messages to the user.
-  const FeedbackDialog: React.FC<{
-    message: string;
-  }> = ({ message }) => {
-    return (
-      <div style={styles.feedbackDialog}>
-        <p>{message}</p>
-      </div>
+  const handleReset = () => {
+    useLocalStorageOverwrite(
+      new Map<Weekday, ExerciseObject[]>([[selectedWeekday, []]])
     );
+    setFeedback(`${selectedWeekday} reset successfully.`);
+    setTimeout(() => setFeedback(""), 2000);
+    getExerciseData(); // Refresh or update data
+    setIsDialogOpen(false);
   };
 
-  //main render method for ClearDay component
   return (
     <div>
       <button
+        onClick={() => setIsDialogOpen(true)}
         style={styles.resetDayButton}
-        onClick={() => setIsWeekdaySelectorOpen(true)}
       >
         Reset day 🚮
       </button>
 
-      {isWeekdaySelectorOpen && (
-        <WeekdaySelector
-          selectedWeekday={selectedWeekday}
-          setSelectedWeekday={setSelectedWeekday}
-          onClose={() => setIsWeekdaySelectorOpen(false)}
-          onConfirm={handleResetConfirmed}
-        />
-      )}
       {isDialogOpen && (
-        <ConfirmDialog
-          onConfirm={handleResetConfirmed}
-          onCancel={() => setIsDialogOpen(false)}
-        />
+        <div style={styles.dialog}>
+          <p>
+            Are you sure you want to reset {selectedWeekday}'s workout data?
+          </p>
+          <button
+            onClick={handleReset}
+            style={{ ...styles.button, ...styles.confirmButton }}
+          >
+            Yes
+          </button>
+          <button
+            onClick={() => setIsDialogOpen(false)}
+            style={{ ...styles.button, ...styles.cancelButton }}
+          >
+            No
+          </button>
+        </div>
       )}
-      {isFeedbackDialogOpen && <FeedbackDialog message={feedback} />}
+
+      {feedback && (
+        <div style={styles.feedbackDialog}>
+          <p>{feedback}</p>
+        </div>
+      )}
     </div>
   );
 };
@@ -150,10 +70,8 @@ const styles: { [key: string]: CSSProperties } = {
   },
 
   resetDayButton: {
-    left: "10px",
-    bottom: "20px",
-    width: "140px",
-    padding: "10px 40px 10px 10px",
+    width: "122px",
+    height: "60px",
   },
 
   feedbackDialog: {

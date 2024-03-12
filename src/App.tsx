@@ -9,6 +9,7 @@ import PieChart from "./components/PieChart";
 import MuscleAnatomyChart from "./components/MuscleAnatomyChart";
 import UnitsPicker from "./components/UnitsPicker";
 import ClearDay from "./components/ClearDay";
+import ResetProgress from "./components/ResetProgress";
 
 const App: React.FC = () => {
   const [weightUnit, setWeightUnit] = useState<Unit>("kilograms");
@@ -70,6 +71,7 @@ const App: React.FC = () => {
         setSelectedWeekday={setSelectedWeekday}
       />
       <ClearDay getExerciseData={getExerciseData} />
+      <ResetProgress getExerciseData={getExerciseData} />
 
       <Exercise
         weightUnit={weightUnit}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Weekday } from "../types";
 import MuscleCategoryExercisesList from "./MuscleCategoryExercisesList";
 import type { MuscleGroup } from "../types";
+import test from "../assets/rightFacingArrow.svg"
 
 interface MuscleCategoryListProps {
   weekday: Weekday;
@@ -32,7 +33,7 @@ const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday, getExe
       const [selected, setSelected] = useState(false);
 
     return (
-      <li key={index}>
+      <li key={index} style={selected ? style.activeDropdown : style.inactiveDropdown}>
         <label>
           <input
             type="button"
@@ -56,3 +57,13 @@ const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday, getExe
 };
 
 export default MuscleCategoryList;
+
+// css for the dropdown menus icon, handled dynamically in the jsx 
+const style = {
+  activeDropdown: {
+    listStyleImage: 'url("/src/assets/downFacingArrow.svg")',
+  },
+  inactiveDropdown: {
+    listStyleImage: 'url("/src/assets/rightFacingArrow.svg")',
+  }
+}

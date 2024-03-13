@@ -210,7 +210,7 @@ const Exercise: React.FC<ExerciseProps> = ({
             <strong>Total Sets: {exercise.sets.length}</strong>
             <button onClick={() => toggleExerciseVisibility(exerciseIndex)}>
               <img
-                src="/src/assets/expandArrow.png"
+                src="/src/assets/rightFacingArrow.svg"
                 style={styles.visibilityButtonImg}
                 alt="Toggle visibilityButton"
               />

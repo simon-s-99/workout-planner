@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { ExerciseObject, Weekday, MuscleGroup } from "../types";
+import type { ExerciseObject, Weekday, MuscleGroup } from "../types";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
-import { Console } from "console";
 
 interface MuscleAnatomyChartProps {
 	weekday: Weekday;

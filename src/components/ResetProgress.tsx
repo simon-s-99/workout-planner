@@ -2,6 +2,7 @@ import React from "react";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 import type { ExerciseObject, Weekday, WeekdayExerciseMap } from "../types";
+import "../stylesheets/ResetProgress.css";
 
 interface ResetProgressProps {
   getExerciseData: () => void;
@@ -43,7 +44,7 @@ const ResetProgress: React.FC<ResetProgressProps> = ({ getExerciseData }) => {
   };
 
   return (
-    <button className="resetWeek" onClick={handleReset}>
+    <button className="reset-week" onClick={handleReset}>
       Reset week ♻
     </button>
   );

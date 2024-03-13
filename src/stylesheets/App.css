@@ -4,8 +4,11 @@
 }
 
 body {
+  /* body should not have to be a flexbox but because of the
+    divs created by react before any of our html actually
+    loads this is needed to center the content of the page */
   display: flex;
-  place-items: center;
+  justify-content: center;
 }
 
 main {
@@ -21,13 +24,41 @@ main > aside {
 }
 
 /* handles "medium" viewport size */
-@media screen and (max-width: 1279px) {
-  
+@media screen and (max-width: 1000px) {
+  main {
+    flex-wrap: wrap;
+    justify-content: center;
+    
+  }
+
+  main > menu,
+  main > section {
+    flex-grow: 1;
+    padding: 8px;
+  }
+
+  main > aside {
+    flex-direction: row;
+  }
+
+  main > aside div:first-child {
+    padding-right: 24px;
+  }
+
+  main > aside div:last-child {
+    padding-left: 24px;
+  }
 }
 
 /* small screen layout, phones etc. */
-@media screen and (max-width: 860px) {
+@media screen and (max-width: 640px) {
+  main {
+    flex-direction: column;
+  }
 
+  main > aside {
+    flex-direction: column;
+  }
 }
 
 /* this is add set button in exercise component */

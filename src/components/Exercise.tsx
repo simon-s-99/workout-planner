@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import type { ExerciseObject, Unit, Weekday, WorkingSet } from "../types";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
+import "../stylesheets/Exercise.css";
 
 // add function to click on exercise in order to show, and hide sets
 // Exercise completed should close the exercise when checked.
@@ -204,18 +205,19 @@ const Exercise: React.FC<ExerciseProps> = ({
   return (
     <div className="Exercise">
       {exercises.map((exercise, exerciseIndex) => (
-        <div key={exerciseIndex} style={styles.exerciseContainer}>
-          <div style={styles.exerciseHeader}>
-            <h3 style={styles.h3}>{exercise.name}</h3>
-            <strong>Total Sets: {exercise.sets.length}</strong>
+        <div key={exerciseIndex} className="exerciseContainer" >
             <button onClick={() => toggleExerciseVisibility(exerciseIndex)}>
               <img
                 src="/src/assets/rightFacingArrow.svg"
-                style={styles.visibilityButtonImg}
+                className="visibilityButtonImg"
                 alt="Toggle visibilityButton"
               />
             </button>
-            <label style={styles.flexLabel}>
+          <div className="exerciseHeader">
+            <h3>{exercise.name}</h3>
+            <strong>Total Sets: {exercise.sets.length}</strong>
+          
+            <label className="flexLabel">
               Toggle sets
               <input
                 type="checkbox"
@@ -234,15 +236,15 @@ const Exercise: React.FC<ExerciseProps> = ({
           {!hiddenExercises.has(exerciseIndex) && (
             <div>
               {exercise.sets.map((set, setIndex) => (
-                <div key={setIndex} style={styles.inputAndButtonContainer}>
+                <div key={setIndex} className="inputAndButtonContainer">
                   <button onClick={() => removeSet(exerciseIndex, setIndex)}>
                     ❌
                   </button>
-                  <span style={styles.labelSpan}>Set {setIndex + 1}:</span>
+                  <span className="labelSpan">Set {setIndex + 1}:</span>
                   Reps
                   <input
                     type="number"
-                    style={styles.setInput}
+                    className="setInput"
                     value={set.repetitions}
                     onChange={(e) =>
                       updateSetDetails(
@@ -256,7 +258,7 @@ const Exercise: React.FC<ExerciseProps> = ({
                   Weight
                   <input
                     type="number"
-                    style={styles.setInput}
+                    className="setInput"
                     value={set.weight}
                     onChange={(e) =>
                       updateSetDetails(
@@ -280,7 +282,7 @@ const Exercise: React.FC<ExerciseProps> = ({
               ))}
               <button
                 onClick={() => addSet(exerciseIndex, weekday)}
-                style={styles.addButton}
+                className="addButton"
               >
                 Add Set
               </button>
@@ -290,62 +292,6 @@ const Exercise: React.FC<ExerciseProps> = ({
       ))}
     </div>
   );
-};
-
-const styles = {
-  exerciseContainer: {
-    backgroundColor: "#f9f9f9",
-    border: "1px solid #e1e1e1",
-    borderRadius: "11px",
-    padding: "19px",
-    marginBottom: "20px",
-  },
-  flexLabel: {
-    display: "flex",
-    alignItems: "center",
-    cursor: "pointer",
-    marginLeft: "10px",
-  },
-  exerciseHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "20px",
-  },
-  setInput: {
-    margin: " 18px",
-    padding: "11px",
-    width: "60px",
-    borderRadius: "4px",
-    border: "1px solid #ccc",
-  },
-  inputAndButtonContainer: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: "11px",
-  },
-  visibilityButtonImg: {
-    width: "20px",
-    height: "20px",
-  },
-  addButton: {
-    display: "inline-block",
-    backgroundColor: "#4CAF50",
-    color: "white",
-    padding: "10px 15px",
-    borderRadius: "6px",
-    cursor: "pointer",
-    marginTop: "10px",
-  },
-  h3: {
-    cursor: "pointer",
-    margin: "0",
-    fontSize: "20px",
-  },
-  labelSpan: {
-    marginRight: "20px",
-  },
 };
 
 export default Exercise;

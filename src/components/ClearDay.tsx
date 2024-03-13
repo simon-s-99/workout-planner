@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Weekday, ExerciseObject } from "../types";
+import type { Weekday, ExerciseObject } from "../types";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 import "../stylesheets/ClearDay.css";
 

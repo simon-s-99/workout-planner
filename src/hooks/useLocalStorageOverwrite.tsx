@@ -1,4 +1,4 @@
-import { WeekdayExerciseMap, ExerciseObject } from "../types";
+import { WeekdayExerciseMap } from "../types";
 
 /*
     Custom React hook that effectively deletes a weekdays content and writes 

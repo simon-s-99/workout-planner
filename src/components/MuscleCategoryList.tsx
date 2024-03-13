@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Weekday } from "../types";
 import MuscleCategoryExercisesList from "./MuscleCategoryExercisesList";
-import type { MuscleGroup } from "../types";
+import type { MuscleGroup, Weekday } from "../types";
 
 interface MuscleCategoryListProps {
   weekday: Weekday;

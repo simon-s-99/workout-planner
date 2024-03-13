@@ -6,9 +6,6 @@ interface PieChartProps {
   getExerciseData: () => void;
 }
 const PieChart: React.FC<PieChartProps> = ({exerciseData, getExerciseData}) => {
-  const styles = {
-    canvas: {},
-  };
 
   const colors: Color[] = [
     "red",
@@ -129,7 +126,7 @@ const PieChart: React.FC<PieChartProps> = ({exerciseData, getExerciseData}) => {
 
   return (
     <div className="PieChart">
-      <canvas ref={canvasRef} style={styles.canvas} width={300} height={300}></canvas>
+      <canvas ref={canvasRef} width={300} height={300}></canvas>
       {muscleGroupData.map((data, index) => {
         return (
           <p key={index}>

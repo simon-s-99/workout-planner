@@ -1,5 +1,6 @@
 import React from "react";
 import { Weekday } from "../types";
+import "../stylesheets/WeekdayPicker.css";
 
 // Define the props expected by the WeekdayPicker
 interface WeekdayPickerProps {
@@ -13,7 +14,7 @@ const WeekdayPicker: React.FC<WeekdayPickerProps> = ({
   setSelectedWeekday,
 }) => {
   return (
-    <div className="WeekdayPicker" style={styles.main}>
+    <div className="WeekdayPicker">
       <h2 className="weekdays-heading">
         Day
       </h2>
@@ -33,14 +34,12 @@ const WeekdayPicker: React.FC<WeekdayPickerProps> = ({
           className={`weekday-label ${
             selectedWeekday === weekday ? "selected" : ""
           }`}
-          style={styles.weekdayLabel}
           // Apply the "selected" class if the current weekday matches the selectedWeekday state
         >
           {weekday}
           <input
             className="weekday"
             type="radio"
-            style={styles.weekday}
             name="weekday"
             value={weekday}
             onChange={(e) => setSelectedWeekday(e.target.value as Weekday)}
@@ -51,30 +50,6 @@ const WeekdayPicker: React.FC<WeekdayPickerProps> = ({
       ))}
     </div>
   );
-};
-
-const styles = {
-  main: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  weekday: {
-    opacity: "0",
-    width: "0",
-    height: "0",
-    position: "absolute",
-  },
-  weekdayLabel: {
-    display: "inline-block",
-    textAlign: "start",
-    padding: "10px 40px 10px 10px",
-    cursor: "pointer",
-    border: "1px solid black",
-    transition: "all 0.3s ease",
-    width: "60%",
-    fontWeight: "bold",
-  },
 };
 
 export default WeekdayPicker;

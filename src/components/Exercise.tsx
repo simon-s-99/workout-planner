@@ -252,7 +252,7 @@ const Exercise: React.FC<ExerciseProps> = ({
                         e.target.value
                       )
                     }
-                  />{" "}
+                  />
                   Weight
                   <input
                     type="number"
@@ -266,7 +266,7 @@ const Exercise: React.FC<ExerciseProps> = ({
                         e.target.value
                       )
                     }
-                  />{" "}
+                  />
                   <label>
                     <input
                       type="checkbox"
@@ -276,7 +276,6 @@ const Exercise: React.FC<ExerciseProps> = ({
                       }}
                     />
                   </label>
-                  {/* Completed */}
                 </div>
               ))}
               <button

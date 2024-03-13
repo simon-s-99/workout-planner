@@ -1,13 +1,11 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
 .App {
   display: flex;
   flex-direction: column;
+}
+
+body {
+  display: flex;
+  place-items: center;
 }
 
 main {
@@ -15,23 +13,38 @@ main {
   flex-direction: row;
 }
 
-.weekday-label:hover {
-  background-color: rgb(240, 230, 230);
+main > menu,
+main > section,
+main > aside {
+  display: flex;
+  flex-direction: column;
 }
 
-.weekday-label.selected {
-  border-color: #051007;
-  background-color: #8beb7f;
+/* handles "medium" viewport size */
+@media screen and (max-width: 1279px) {
+  
 }
 
-.UnitsPicker label:first-of-type, .TrainingGoalPicker label:first-of-type {
+/* small screen layout, phones etc. */
+@media screen and (max-width: 860px) {
+
+}
+
+/* this is add set button in exercise component */
+button {
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:hover {
+  border-color: #646cff;
+}
+
+/* move this to unitspicker.css */
+.UnitsPicker label:first-of-type {
   border-right: 1px solid rgb(165, 165, 165);
-}
-
-.TrainingGoalPicker label:last-of-type {
-  border-left: 1px solid rgb(165, 165, 165);
-}
-
-.UnitsPicker label:has(input:checked), .TrainingGoalPicker label:has(input:checked) {
-  text-shadow: 1px 1px 0px black;
 }

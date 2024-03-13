@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./App.css";
+import "./stylesheets/App.css";
 import Exercise from "./components/Exercise";
 import type { Weekday, ExerciseObject, Unit } from "./types";
 import MuscleCategoryList from "./components/MuscleCategoryList";

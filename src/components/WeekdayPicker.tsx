@@ -14,7 +14,7 @@ const WeekdayPicker: React.FC<WeekdayPickerProps> = ({
 }) => {
   return (
     <div className="WeekdayPicker" style={styles.main}>
-      <h2 className="weekdays-heading" style={styles.weekdaysHeading}>
+      <h2 className="weekdays-heading">
         Day
       </h2>
       {(
@@ -59,23 +59,15 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
   },
-
-  weekdaysHeading: {
-    textAlign: "center",
-    marginBottom: "10px",
-    fontSize: "40px",
-  },
-
   weekday: {
-    opacity: 0,
-    width: 0,
-    height: 0,
+    opacity: "0",
+    width: "0",
+    height: "0",
     position: "absolute",
   },
-
   weekdayLabel: {
     display: "inline-block",
-    textAlign: "left",
+    textAlign: "start",
     padding: "10px 40px 10px 10px",
     cursor: "pointer",
     border: "1px solid black",

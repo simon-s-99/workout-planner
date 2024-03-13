@@ -1,10 +1,11 @@
-import React, { useState } from "react";
 import "./stylesheets/App.css";
-import Exercise from "./components/Exercise";
+import "./stylesheets/MuscleCategoryList.css";
+import React, { useState } from "react";
 import type { Weekday, ExerciseObject, Unit } from "./types";
+import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
+import Exercise from "./components/Exercise";
 import MuscleCategoryList from "./components/MuscleCategoryList";
 import WeekdayPicker from "./components/WeekdayPicker";
-import { useLocalStorageRead } from "./hooks/useLocalStorageRead";
 import PieChart from "./components/PieChart";
 import MuscleAnatomyChart from "./components/MuscleAnatomyChart";
 import UnitsPicker from "./components/UnitsPicker";
@@ -26,6 +27,7 @@ const App: React.FC = () => {
     <label>
       <input
         type="button"
+        className="button"
         name={
           showAddExerciseMenu
             ? "GoBackFromExerciseMenuButton"

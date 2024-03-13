@@ -67,13 +67,15 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({
     return (
       <ul className="muscleGroupCategoryExercisesList">
         {loading ? (
-          <li>...</li>
+          <li style={style.loading}><i>Loading...</i></li>
         ) : (
           exercises.map((exercise, index) => (
             <li key={index}>
               <label>
-                {exercise.name}
-                <input type="button" value="+" onClick={() => addExerciseToWeekday(weekday, index)}></input>
+                <input type="button" 
+                  name="button"
+                  value={exercise.name} 
+                  onClick={() => addExerciseToWeekday(weekday, index)}></input>
               </label>
             </li>
           ))
@@ -86,3 +88,9 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({
 };
 
 export default MuscleCategoryExercisesList;
+
+const style = {
+  loading: {
+    listStyle: "none",
+  }
+}

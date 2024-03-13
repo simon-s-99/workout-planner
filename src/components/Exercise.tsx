@@ -313,13 +313,6 @@ const styles = {
     alignItems: "center",
     marginBottom: "20px",
   },
-  setContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: "50px",
-  },
   setInput: {
     margin: " 18px",
     padding: "11px",
@@ -327,53 +320,30 @@ const styles = {
     borderRadius: "4px",
     border: "1px solid #ccc",
   },
-
   inputAndButtonContainer: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: "11px",
-    // flex: 1,
   },
-
-  inputStyle: {
-    margin: "0 10px",
-    padding: "5px",
-    border: "1px solid #ccc",
-    borderRadius: "4px",
-  },
-
   visibilityButtonImg: {
     width: "20px",
     height: "20px",
   },
-
   addButton: {
     display: "inline-block",
     backgroundColor: "#4CAF50",
-    // border: "none",
     color: "white",
     padding: "10px 15px",
     borderRadius: "6px",
     cursor: "pointer",
     marginTop: "10px",
   },
-
-  totalSetsInfo: {
-    fontWeight: "bold",
-    marginLeft: "50px",
-  },
   h3: {
     cursor: "pointer",
     margin: "0",
     fontSize: "20px",
   },
-  h3Hover: {
-    backgroundColor: "#f2f2f2",
-    color: "#007bff",
-    textDecoration: "underline",
-  },
-
   labelSpan: {
     marginRight: "20px",
   },

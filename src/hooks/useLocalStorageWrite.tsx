@@ -1,4 +1,4 @@
-import { WeekdayExerciseMap, ExerciseObject, Weekday } from "../types";
+import { WeekdayExerciseMap, ExerciseObject } from "../types";
 
 /*
     Custom React hook that writes a map of weekdays and their associated exercises to localStorage.

@@ -1,0 +1,7 @@
+.reset-week {
+  justify-content: space-around;
+  width: 122px;
+  height: 60px;
+  border-radius: 5px;
+  cursor: pointer;
+}

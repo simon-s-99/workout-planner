@@ -1,13 +1,14 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
 .App {
   display: flex;
   flex-direction: column;
+}
+
+body {
+  /* body should not have to be a flexbox but because of the
+    divs created by react before any of our html actually
+    loads this is needed to center the content of the page */
+  display: flex;
+  justify-content: center;
 }
 
 main {
@@ -15,23 +16,66 @@ main {
   flex-direction: row;
 }
 
-.weekday-label:hover {
-  background-color: rgb(240, 230, 230);
+main > menu,
+main > section,
+main > aside {
+  display: flex;
+  flex-direction: column;
 }
 
-.weekday-label.selected {
-  border-color: #051007;
-  background-color: #8beb7f;
+/* handles "medium" viewport size */
+@media screen and (max-width: 1000px) {
+  main {
+    flex-wrap: wrap;
+    justify-content: center;
+    
+  }
+
+  main > menu,
+  main > section {
+    flex-grow: 1;
+    padding: 8px;
+  }
+
+  main > aside {
+    flex-direction: row;
+  }
+
+  main > aside div:first-child {
+    padding-right: 24px;
+  }
+
+  main > aside div:last-child {
+    padding-left: 24px;
+  }
 }
 
-.UnitsPicker label:first-of-type, .TrainingGoalPicker label:first-of-type {
+/* small screen layout, phones etc. */
+@media screen and (max-width: 640px) {
+  main {
+    flex-direction: column;
+  }
+
+  main > aside {
+    flex-direction: column;
+  }
+}
+
+/* this is add set button in exercise component */
+button {
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:hover {
+  border-color: #646cff;
+}
+
+/* move this to unitspicker.css */
+.UnitsPicker label:first-of-type {
   border-right: 1px solid rgb(165, 165, 165);
-}
-
-.TrainingGoalPicker label:last-of-type {
-  border-left: 1px solid rgb(165, 165, 165);
-}
-
-.UnitsPicker label:has(input:checked), .TrainingGoalPicker label:has(input:checked) {
-  text-shadow: 1px 1px 0px black;
 }

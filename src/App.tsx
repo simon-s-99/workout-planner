@@ -110,14 +110,18 @@ const App: React.FC = () => {
         </section>
 
         <aside>
-          <h2>Todays muscle activation</h2>
-          <MuscleAnatomyChart
-            weekday={selectedWeekday}
-            weekExerciseListLength={exerciseData.length}
-          />
+          <div>
+            <h2>Todays muscle activation</h2>
+            <MuscleAnatomyChart
+              weekday={selectedWeekday}
+              weekExerciseListLength={exerciseData.length}
+            />
+          </div>
 
-          <h2>Weekly set distribution</h2>
-          <PieChart exerciseData={exerciseData} getExerciseData={getExerciseData} />
+          <div>
+            <h2>Weekly set distribution</h2>
+            <PieChart exerciseData={exerciseData} getExerciseData={getExerciseData} />
+          </div>
         </aside>
       </main>
     </div>

@@ -1,0 +1,42 @@
+  .dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    z-index: 100;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .dialog button {
+      margin: 0;
+  }
+
+  .reset-day-button {
+    width: 122px;
+    height: 60px;
+  }
+
+  .feedback-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    z-index: 105;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .reset-day-button {
+    left: 10px;
+    bottom: 20px;
+  }
+
+  .dialog button:last-of-type {
+    margin-left: 10px;
+  }
+
+
+

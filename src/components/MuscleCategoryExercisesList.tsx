@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { ExerciseObject, Weekday, WeekdayExerciseMap, WorkingSet, MuscleGroup } from "../types";
+import type { ExerciseObject, Weekday, WeekdayExerciseMap, WorkingSet, MuscleGroup } from "../types";
 import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 
 interface MuscleCategoryProps {

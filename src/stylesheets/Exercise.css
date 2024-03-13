@@ -1,0 +1,61 @@
+.exerciseContainer {
+    background-color: #f9f9f9;
+    border: 1px solid #e1e1e1;
+    border-radius: 11px;
+    padding: 19px;
+    margin-bottom: 20px;
+  }
+  
+  .flexLabel {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .exerciseHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .setInput {
+    margin: 18px;
+    padding: 11px;
+    width: 60px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .inputAndButtonContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 11px;
+  }
+  
+  .visibilityButtonImg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .addButton {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  h3 {
+    margin: 0;
+    font-size: 20px;
+  }
+  
+  .labelSpan {
+    margin-right: 20px;
+  }
+  

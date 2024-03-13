@@ -1,6 +1,7 @@
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
-import { type Unit, type WeekdayExerciseMap, type ExerciseObject, Weekday } from "../types";
+import type { Unit, WeekdayExerciseMap, ExerciseObject, Weekday } from "../types";
+import "../stylesheets/UnitsPicker.css";
 
 interface UnitsPickerProps {
   setWeightUnits: React.Dispatch<React.SetStateAction<Unit>>;
@@ -56,13 +57,13 @@ const UnitsPicker: React.FC<UnitsPickerProps> = ({ setWeightUnits, getExerciseDa
   }
 
   return (
-    <div className="UnitsPicker" style={styles.main}>
-      <label style={styles.label}>
+    <div className="UnitsPicker">
+      <label>
         <input type="radio" name="weightUnits" value="kilograms" defaultChecked onChange={(e) => handleChange(e)} />
         Kilograms
       </label>
-      <label style={styles.label}>
-        <input type="radio" name="weightUnits" style={styles.label} value="pounds" onChange={(e) => handleChange(e)} />
+      <label>
+        <input type="radio" name="weightUnits" value="pounds" onChange={(e) => handleChange(e)} />
         Pounds
       </label>
     </div>
@@ -70,15 +71,3 @@ const UnitsPicker: React.FC<UnitsPickerProps> = ({ setWeightUnits, getExerciseDa
 };
 
 export default UnitsPicker;
-
-const styles = {
-  main: {
-    display: "inline-block",
-    border: "1px solid rgb(165, 165, 165)",
-    borderRadius: "5px",
-    padding: "1rem",
-  },
-  label: {
-    padding: "1rem",
-  },
-};

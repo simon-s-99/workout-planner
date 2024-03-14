@@ -1,15 +1,23 @@
 import React from "react";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
-import { ExerciseObject, Weekday } from "../types";
+import type { ExerciseObject, Weekday } from "../types";
+import "../stylesheets/AddSetButton.css";
 
 interface AddSetButtonProps {
   exerciseIndex: number;
   weekday: Weekday;
   exercises: ExerciseObject[];
   getExerciseData: () => void;
+  setExercises: React.Dispatch<React.SetStateAction<ExerciseObject[]>>;
 }
 
-const AddSetButton: React.FC<AddSetButtonProps> = ({ exerciseIndex, exercises, getExerciseData, weekday }) => {
+const AddSetButton: React.FC<AddSetButtonProps> = ({
+  exerciseIndex,
+  exercises,
+  getExerciseData,
+  weekday,
+  setExercises,
+}) => {
   // CHANGE: Adds new set to selected exercise, and updates the state variable with the updated array
   const addSet = (exerciseIndex: number, weekday: Weekday): void => {
     const exercisesCopy = [...exercises];
@@ -28,9 +36,9 @@ const AddSetButton: React.FC<AddSetButtonProps> = ({ exerciseIndex, exercises, g
   };
 
   return (
-    <label>
-      <input type="button" value="del" onClick={() => removeExercise(exerciseIndex)}></input>
-    </label>
+    <button onClick={() => addSet(exerciseIndex, weekday)} className="addButton">
+      Add Set
+    </button>
   );
 };
 

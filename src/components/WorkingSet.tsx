@@ -99,6 +99,7 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
           <input
             type="number"
             className="setInput"
+            min="0"
             value={set.repetitions}
             onChange={(e) => updateSetDetails(exerciseIndex, setIndex, "repetitions", e.target.value)}
           />
@@ -106,6 +107,7 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
           <input
             type="number"
             className="setInput"
+            min="0"
             value={set.weight}
             onChange={(e) => updateSetDetails(exerciseIndex, setIndex, "weight", e.target.value)}
           />

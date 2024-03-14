@@ -73,10 +73,6 @@ const App: React.FC = () => {
             selectedWeekday={selectedWeekday}
             setSelectedWeekday={setSelectedWeekday}
           />
-          <UnitsPicker
-            setWeightUnits={setWeightUnit}
-            getExerciseData={getExerciseData}
-          />
           <ResetProgress getExerciseData={getExerciseData} />
           <ClearDay
             getExerciseData={getExerciseData}
@@ -86,6 +82,10 @@ const App: React.FC = () => {
 
         <section>
           <h2>Exercises</h2>
+          <UnitsPicker
+            setWeightUnits={setWeightUnit}
+            getExerciseData={getExerciseData}
+          />
           <Exercise
             weightUnit={weightUnit}
             weekday={selectedWeekday}
@@ -110,18 +110,18 @@ const App: React.FC = () => {
         </section>
 
         <aside>
-          <div>
+          <>
             <h2>Todays muscle activation</h2>
             <MuscleAnatomyChart
               weekday={selectedWeekday}
               weekExerciseListLength={exerciseData.length}
             />
-          </div>
+          </>
 
-          <div>
+          <>
             <h2>Weekly set distribution</h2>
             <PieChart exerciseData={exerciseData} getExerciseData={getExerciseData} />
-          </div>
+          </>
         </aside>
       </main>
     </div>

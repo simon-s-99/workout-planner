@@ -6,15 +6,7 @@ import "../stylesheets/Exercise.css";
 import WorkingSet from "./WorkingSet";
 import TogglePageVisibilityButton from "./ToggleExerciseVisibilityButton";
 import RemoveExerciseButton from "./RemoveExerciseButton";
-
-// add function to click on exercise in order to show, and hide sets
-// Exercise completed should close the exercise when checked.
-//if already checked and unchecking it (while having the exercise + setmenu open) should not close it
-
-// Restructure positions of buttons, text etc
-//implement weekday logic
-
-//details + summary to show and hide
+import AddSetButton from "./AddSetButton";
 
 interface ExerciseProps {
   weightUnit: Unit;
@@ -27,25 +19,15 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
   // Fetch all exercises for the given weekday from local storage
   let weekdayExercises: ExerciseObject[] = [];
 
-  //form, when submitted send to localstorage. Give write an exercisemap,
-  // pair weekdayexercies with the weekday and send to localstorageWrite
-
   const [exercises, setExercises] = useState<ExerciseObject[]>([]);
-  // const [exercises, setExercises] = useState(weekdayExercises);
 
   useEffect(() => {
     weekdayExercises = useLocalStorageRead(weekday);
     setExercises(weekdayExercises);
   }, [weekday, weekExerciseListLength]); // Dependency array includes 'weekday' to re-run the effect when it changes
 
-  // save new sets to localstorage
-  // when adding a new set, make the update show directly.
-  // currently only updates the page if switching day and then returning.
-
-  
-
+  // v application remembers which exercises have had their dropdown minimized 
   const [hiddenExercises, setHiddenExercises] = useState<Set<number>>(new Set<number>());
-
 
   // Function to toggle all sets as completed for an exercise
   const toggleAllSetsCompleted = (exerciseIndex: number) => {

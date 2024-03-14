@@ -104,6 +104,7 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
             value={set.repetitions}
             onChange={(e) => updateSetDetails(exerciseIndex, setIndex, "repetitions", e.target.value)}
           />
+
           Weight
           <input
             type="number"

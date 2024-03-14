@@ -29,7 +29,7 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
   }, [weekday, weekExerciseListLength]); // Dependency array includes 'weekday' to re-run the effect when it changes
 
   return (
-    <div className="Exercise">
+    <>
       {exercises.map((exercise, exerciseIndex) => (
         <div key={exerciseIndex} className="exerciseContainer">
           <div className="RemoveExerciseButton">
@@ -42,7 +42,10 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
           </div>
           <div className="InnerExerciseContainer">
             <div className="ExerciseHeader">
-              <TogglePageVisibilityButton exerciseIndex={exerciseIndex} setHiddenExercises={setHiddenExercises} />
+              <TogglePageVisibilityButton
+                exerciseIndex={exerciseIndex}
+                hiddenExercises={hiddenExercises}
+                setHiddenExercises={setHiddenExercises} />
               <p>{exercise.name}</p>
             </div>
 
@@ -50,16 +53,16 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
               <i>Total Sets: {exercise.sets.length}</i>
             </p>
 
-            <ToggleAllSetsCompletedButton
-              exerciseIndex={exerciseIndex}
-              weekday={weekday}
-              exercises={exercises}
-              getExerciseData={getExerciseData}
-              setExercises={setExercises}
-              exercise={exercise}
-            />
             {!hiddenExercises.has(exerciseIndex) && (
               <>
+                <ToggleAllSetsCompletedButton
+                  exerciseIndex={exerciseIndex}
+                  weekday={weekday}
+                  exercises={exercises}
+                  getExerciseData={getExerciseData}
+                  setExercises={setExercises}
+                  exercise={exercise}
+                />
                 <WorkingSet
                   weekday={weekday}
                   exercise={exercise}
@@ -80,7 +83,7 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
           </div>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 

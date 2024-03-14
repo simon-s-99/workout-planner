@@ -45,7 +45,7 @@ const ToggleAllSetsCompletedButton: React.FC<ToggleAllSetsCompletedButtonProps> 
   };
 
   return (
-    <label className="flexLabel">
+    <label className="ToggleAllSetsCheckbox">
       Toggle sets
       <input
         type="checkbox"

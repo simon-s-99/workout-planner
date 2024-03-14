@@ -211,6 +211,7 @@ const Exercise: React.FC<ExerciseProps> = ({
               Toggle sets
               <input
                 type="checkbox"
+                className="toggleAllSetsCompleted"
                 checked={exercise.sets.every((set) => set.completed)}
                 onChange={() => toggleAllSetsCompleted(exerciseIndex)}
               />
@@ -218,7 +219,7 @@ const Exercise: React.FC<ExerciseProps> = ({
             <label>
               <input
                 type="button"
-                value="del"
+                value="delete"
                 onClick={() => removeExercise(exerciseIndex)}
               />
             </label>
@@ -227,7 +228,10 @@ const Exercise: React.FC<ExerciseProps> = ({
             <div>
               {exercise.sets.map((set, setIndex) => (
                 <div key={setIndex} className="inputAndButtonContainer">
-                  <button onClick={() => removeSet(exerciseIndex, setIndex)}>
+                  <button
+                    className="removeSetButton"
+                    onClick={() => removeSet(exerciseIndex, setIndex)}
+                  >
                     ❌
                   </button>
                   <span>Set {setIndex + 1}: </span>
@@ -262,6 +266,7 @@ const Exercise: React.FC<ExerciseProps> = ({
                   <label>
                     <input
                       type="checkbox"
+                      className="toggleSetCompleted"
                       checked={set.completed}
                       onChange={() =>
                         toggleSetCompleted(exerciseIndex, setIndex)
@@ -272,7 +277,8 @@ const Exercise: React.FC<ExerciseProps> = ({
               ))}
               <button
                 onClick={() => addSet(exerciseIndex, weekday)}
-                className="addButton"
+                className="addSetButton"
+                name="addSetButton"
               >
                 Add Set
               </button>

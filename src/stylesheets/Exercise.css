@@ -4,7 +4,9 @@
   border-radius: 11px;
   padding: 19px;
   margin-bottom: 20px;
-  position: relative; /* Needed for absolute positioning of children */
+  position: relative; 
+  display: flex; 
+  flex-direction: column; 
 }
 
 .flexLabel {
@@ -36,7 +38,7 @@
   margin-bottom: 11px;
 }
 
-.addButton {
+.addSetButton {
   display: inline-block;
   background-color: #4CAF50;
   color: white;
@@ -64,8 +66,7 @@ h3 {
 }
 
 .deleteButton {
-  position: absolute;
-  right: 10px;
-  top: 10px; 
+  align-self: flex-end;
+  margin-top: 10px;
   cursor: pointer;
 }

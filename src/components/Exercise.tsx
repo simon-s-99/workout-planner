@@ -42,22 +42,7 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
   // when adding a new set, make the update show directly.
   // currently only updates the page if switching day and then returning.
 
-  // CHANGE: Adds new set to selected exercise, and updates the state variable with the updated array
-  const addSet = (exerciseIndex: number, weekday: Weekday): void => {
-    const exercisesCopy = [...exercises];
-    const selectedExercise = exercisesCopy[exerciseIndex];
-    const newSet = { repetitions: 0, weight: 0, completed: false };
-    selectedExercise.sets.push(newSet);
-
-    // Replace the old exercise with updated
-    exercisesCopy.splice(exerciseIndex, 1, selectedExercise);
-    setExercises(exercisesCopy);
-
-    // clears localStorage of selected day and writes new exercises to it
-    // runs getExerciseData to make sure every other component based on data in localStorage re-renders
-    useLocalStorageOverwrite(new Map<Weekday, ExerciseObject[]>([[weekday, exercises]]));
-    getExerciseData();
-  };
+  
 
   const [hiddenExercises, setHiddenExercises] = useState<Set<number>>(new Set<number>());
 
@@ -125,9 +110,7 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
                 getExerciseData={getExerciseData}
                 exercises={exercises}
               />
-              <button onClick={() => addSet(exerciseIndex, weekday)} className="addButton">
-                Add Set
-              </button>
+              <AddSetButton />
             </>
           )}
         </div>

@@ -4,15 +4,6 @@ import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 import "../stylesheets/Exercise.css";
 
-// add function to click on exercise in order to show, and hide sets
-// Exercise completed should close the exercise when checked.
-//if already checked and unchecking it (while having the exercise + setmenu open) should not close it
-
-// Restructure positions of buttons, text etc
-//implement weekday logic
-
-//details + summary to show and hide
-
 interface ExerciseProps {
   weightUnit: Unit;
   weekday: Weekday;
@@ -28,9 +19,6 @@ const Exercise: React.FC<ExerciseProps> = ({
   // Fetch all exercises for the given weekday from local storage
   let weekdayExercises: ExerciseObject[] = [];
 
-  //form, when submitted send to localstorage. Give write an exercisemap,
-  // pair weekdayexercies with the weekday and send to localstorageWrite
-
   const [exercises, setExercises] = useState<ExerciseObject[]>([]);
   // const [exercises, setExercises] = useState(weekdayExercises);
 
@@ -39,11 +27,7 @@ const Exercise: React.FC<ExerciseProps> = ({
     setExercises(weekdayExercises);
   }, [weekday, weekExerciseListLength]); // Dependency array includes 'weekday' to re-run the effect when it changes
 
-  // save new sets to localstorage
-  // when adding a new set, make the update show directly.
-  // currently only updates the page if switching day and then returning.
-
-  // CHANGE: Adds new set to selected exercise, and updates the state variable with the updated array
+  // Adds new set to selected exercise, and updates the state variable with the updated array
   const addSet = (exerciseIndex: number, weekday: Weekday): void => {
     const exercisesCopy = [...exercises];
     const selectedExercise = exercisesCopy[exerciseIndex];
@@ -62,8 +46,7 @@ const Exercise: React.FC<ExerciseProps> = ({
     getExerciseData();
   };
 
-  // Function to remove a set from an exercise
-  // CHANGE: Removes set from selected exercise, and updates the state variable with the new amount of sets
+  // Removes set from selected exercise, and updates the state variable with the new amount of sets
   const removeSet = (exerciseIndex: number, setIndex: number): void => {
     const exercisesCopy = [...exercises];
     const selectedExercise = exercisesCopy[exerciseIndex];
@@ -205,18 +188,25 @@ const Exercise: React.FC<ExerciseProps> = ({
   return (
     <div className="Exercise">
       {exercises.map((exercise, exerciseIndex) => (
-        <div key={exerciseIndex} className="exerciseContainer" >
-            <button onClick={() => toggleExerciseVisibility(exerciseIndex)}>
-              <img
-                src="/src/assets/rightFacingArrow.svg"
-                className="visibilityButtonImg"
-                alt="Toggle visibilityButton"
-              />
-            </button>
+        <div key={exerciseIndex} className="exerciseContainer">
+          <div className="visibilityArrowContainer">
+            <img
+              src={
+                hiddenExercises.has(exerciseIndex)
+                  ? "/src/assets/rightFacingArrow.svg"
+                  : "/src/assets/downFacingArrow.svg"
+              }
+              alt="Toggle visibility"
+            />
+          </div>
           <div className="exerciseHeader">
-            <h3>{exercise.name}</h3>
+            <h3
+              onClick={() => toggleExerciseVisibility(exerciseIndex)}
+              style={{ cursor: "pointer" }}
+            >
+              {exercise.name}
+            </h3>
             <strong>Total Sets: {exercise.sets.length}</strong>
-          
             <label className="flexLabel">
               Toggle sets
               <input
@@ -230,7 +220,7 @@ const Exercise: React.FC<ExerciseProps> = ({
                 type="button"
                 value="del"
                 onClick={() => removeExercise(exerciseIndex)}
-              ></input>
+              />
             </label>
           </div>
           {!hiddenExercises.has(exerciseIndex) && (
@@ -240,7 +230,7 @@ const Exercise: React.FC<ExerciseProps> = ({
                   <button onClick={() => removeSet(exerciseIndex, setIndex)}>
                     ❌
                   </button>
-                  <span className="labelSpan">Set {setIndex + 1}:</span>
+                  <span>Set {setIndex + 1}: </span>
                   Reps
                   <input
                     type="number"
@@ -273,9 +263,9 @@ const Exercise: React.FC<ExerciseProps> = ({
                     <input
                       type="checkbox"
                       checked={set.completed}
-                      onChange={() => {
-                        toggleSetCompleted(exerciseIndex, setIndex);
-                      }}
+                      onChange={() =>
+                        toggleSetCompleted(exerciseIndex, setIndex)
+                      }
                     />
                   </label>
                 </div>

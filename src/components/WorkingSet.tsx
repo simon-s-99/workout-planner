@@ -1,5 +1,6 @@
 import type { ExerciseObject, Weekday, WorkingSet } from "../types";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
+import "../stylesheets/WorkingSet.css";
 
 interface WorkingSetProps {
   weekday: Weekday;
@@ -93,8 +94,8 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
     <>
       {exercise.sets.map((set, setIndex) => (
         <div key={setIndex} className="inputAndButtonContainer">
-          <button onClick={() => removeSet(exerciseIndex, setIndex)}>❌</button>
-          <span className="labelSpan">Set {setIndex + 1}:</span>
+          <button type="button" onClick={() => removeSet(exerciseIndex, setIndex)}>❌</button>
+          <span>Set {setIndex + 1}:</span>
           Reps
           <input
             type="number"

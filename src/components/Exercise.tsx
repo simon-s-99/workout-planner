@@ -28,50 +28,27 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
     setExercises(weekdayExercises);
   }, [weekday, weekExerciseListLength]); // Dependency array includes 'weekday' to re-run the effect when it changes
 
-  // v application remembers which exercises have had their dropdown minimized 
-
-  // Function to toggle all sets as completed for an exercise
-  const toggleAllSetsCompleted = (exerciseIndex: number) => {
-    const exercisesCopy: ExerciseObject[] = [...exercises];
-
-    const completed: boolean[] = [];
-
-    exercisesCopy[exerciseIndex].sets.forEach((set) => {
-      if (set.completed) {
-        completed.push(true);
-      }
-    });
-
-    // this logic ensures that all sets are marked as complete if one or more sets are marked as complete
-    // if all sets are marked as complete they are marked as incomplete by this toggle
-    if (completed.length === exercisesCopy[exerciseIndex].sets.length) {
-      for (const set of exercisesCopy[exerciseIndex].sets) {
-        set.completed = false;
-      }
-    } else {
-      for (const set of exercisesCopy[exerciseIndex].sets) {
-        set.completed = true;
-      }
-    }
-
-    setExercises(exercisesCopy);
-
-    // clears localStorage of selected day and writes new exercises to it
-    // runs getExerciseData to make sure every other component based on data in localStorage re-renders
-    useLocalStorageOverwrite(new Map<Weekday, ExerciseObject[]>([[weekday, exercises]]));
-    getExerciseData();
-  };
-
-  // set component
-  // buttons to components?
   return (
     <div className="Exercise">
       {exercises.map((exercise, exerciseIndex) => (
         <div key={exerciseIndex} className="exerciseContainer">
-          <TogglePageVisibilityButton exerciseIndex={exerciseIndex} setHiddenExercises={setHiddenExercises} />
-          <div className="exerciseHeader">
-            <h3>{exercise.name}</h3>
-            <strong>Total Sets: {exercise.sets.length}</strong>
+          <div className="RemoveExerciseButton">
+            <RemoveExerciseButton
+              exerciseIndex={exerciseIndex}
+              weekday={weekday}
+              exercises={exercises}
+              getExerciseData={getExerciseData}
+            />
+          </div>
+          <div className="InnerExerciseContainer">
+            <div className="ExerciseHeader">
+              <TogglePageVisibilityButton exerciseIndex={exerciseIndex} setHiddenExercises={setHiddenExercises} />
+              <p>{exercise.name}</p>
+            </div>
+
+            <p>
+              <i>Total Sets: {exercise.sets.length}</i>
+            </p>
 
             <ToggleAllSetsCompletedButton
               exerciseIndex={exerciseIndex}
@@ -81,32 +58,26 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
               setExercises={setExercises}
               exercise={exercise}
             />
-            <RemoveExerciseButton
-              exerciseIndex={exerciseIndex}
-              weekday={weekday}
-              exercises={exercises}
-              getExerciseData={getExerciseData}
-            />
+            {!hiddenExercises.has(exerciseIndex) && (
+              <>
+                <WorkingSet
+                  weekday={weekday}
+                  exercise={exercise}
+                  exerciseIndex={exerciseIndex}
+                  setExercises={setExercises}
+                  getExerciseData={getExerciseData}
+                  exercises={exercises}
+                />
+                <AddSetButton
+                  exerciseIndex={exerciseIndex}
+                  exercises={exercises}
+                  setExercises={setExercises}
+                  weekday={weekday}
+                  getExerciseData={getExerciseData}
+                />
+              </>
+            )}
           </div>
-          {!hiddenExercises.has(exerciseIndex) && (
-            <>
-              <WorkingSet
-                weekday={weekday}
-                exercise={exercise}
-                exerciseIndex={exerciseIndex}
-                setExercises={setExercises}
-                getExerciseData={getExerciseData}
-                exercises={exercises}
-              />
-              <AddSetButton
-                exerciseIndex={exerciseIndex}
-                exercises={exercises}
-                setExercises={setExercises}
-                weekday={weekday}
-                getExerciseData={getExerciseData}
-              />
-            </>
-          )}
         </div>
       ))}
     </div>

@@ -20,15 +20,15 @@ const ClearDay: React.FC<{
 
   return (
     <div className="ClearDay">
-      <button className="clear-day-button" onClick={() => setIsDialogOpen(true)}>
+      <button type="button" className="clear-day-button" onClick={() => setIsDialogOpen(true)}>
         Clear day 🚮
       </button>
 
       {isDialogOpen && (
         <div className="dialog">
           <p>Are you sure you want to reset {selectedWeekday}'s workout data?</p>
-          <button onClick={handleReset}>Yes</button>
-          <button onClick={() => setIsDialogOpen(false)}>No</button>
+          <button type="button" onClick={handleReset}>Yes</button>
+          <button type="button" onClick={() => setIsDialogOpen(false)}>No</button>
         </div>
       )}
 

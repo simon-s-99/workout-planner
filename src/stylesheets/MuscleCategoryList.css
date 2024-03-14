@@ -8,16 +8,17 @@
     and the go back button from the add exercise
     interface */
 .AddExerciseMenu .button {
-    width: 75%;
+    min-width: 368px;
+    max-width: 369px;
     background-color: #f9f9f9;
     border: 1px solid #e1e1e1;
     border-radius: 10px;
     padding: 8px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 
 .muscleGroupsCategoriesList {
-    width: 75%;
+    width: 100%;
     list-style-position: inside;
     background-color: #f9f9f9;
     border: 1px solid #e1e1e1;
@@ -38,7 +39,6 @@
 
 .muscleGroupsCategoriesList li label input[name="categoryDropdown"] {
     width: 90%;
-    justify-content: center;
     vertical-align: 10%; /* aligns li's arrows to center of button*/
     border: 1px solid #e1e1e1;
     border-radius: 10px;

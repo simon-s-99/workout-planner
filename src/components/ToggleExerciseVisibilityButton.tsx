@@ -24,7 +24,7 @@ const TogglePageVisibilityButton: React.FC<TogglePageVisibilityButtonProps> = ({
   };
 
   return (
-    <button onClick={() => toggleExerciseVisibility(exerciseIndex)}>
+    <button type="button" onClick={() => toggleExerciseVisibility(exerciseIndex)}>
       <img src="/src/assets/rightFacingArrow.svg" className="visibilityButtonImg" alt="Toggle visibilityButton" />
     </button>
   );

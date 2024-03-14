@@ -11,6 +11,15 @@ body {
   justify-content: center;
 }
 
+body h1 {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  background-color: #f9f9f9;
+  border: 1px solid #e1e1e1;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
 main {
   display: flex;
   flex-direction: row;
@@ -21,10 +30,13 @@ main > section,
 main > aside {
   display: flex;
   flex-direction: column;
+  margin-right: 24px;
 }
 
-main menu {
-  padding-bottom: 1000px;
+@media screen and (min-width: 1001px) {
+  main > aside > div:first-child {
+    margin-bottom: 36px;
+  }
 }
 
 /* handles "medium" viewport size */

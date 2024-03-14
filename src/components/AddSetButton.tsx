@@ -36,7 +36,7 @@ const AddSetButton: React.FC<AddSetButtonProps> = ({
   };
 
   return (
-    <button onClick={() => addSet(exerciseIndex, weekday)} className="addButton">
+    <button type="button" onClick={() => addSet(exerciseIndex, weekday)} className="addButton">
       Add Set
     </button>
   );

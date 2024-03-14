@@ -19,27 +19,7 @@ const App: React.FC = () => {
 
   // Currently selected weekday, initialized to "Monday" in case we want a start value.
   const [selectedWeekday, setSelectedWeekday] = useState<Weekday>("Monday");
-
-  // bool to help toggle between the add exercise interface and the main content
-  const [showAddExerciseMenu, setShowAddExerciseMenu] =
-    useState<boolean>(false);
-  let AddExerciseOrGoBackButton: JSX.Element = (
-    <label>
-      <input
-        type="button"
-        className="button"
-        name={
-          showAddExerciseMenu
-            ? "GoBackFromExerciseMenuButton"
-            : "AddExerciseMenuButton"
-        }
-        value={showAddExerciseMenu ? "<" : "+"}
-        onClick={() => setShowAddExerciseMenu(!showAddExerciseMenu)}
-      ></input>
-      {/* ^ toggle showAddExerciseMenu to true if it is false and vice versa */}
-    </label>
-  );
-
+  
   function getExerciseData(): void {
     const mondayData = useLocalStorageRead("Monday");
     const tuesdayData = useLocalStorageRead("Tuesday");
@@ -48,18 +28,33 @@ const App: React.FC = () => {
     const fridayData = useLocalStorageRead("Friday");
     const saturdayData = useLocalStorageRead("Saturday");
     const sundayData = useLocalStorageRead("Sunday");
-
+    
     // Combine all arrays into one
     const exerciseData = mondayData
-      .concat(tuesdayData)
-      .concat(wednesdayData)
-      .concat(thursdayData)
-      .concat(fridayData)
-      .concat(saturdayData)
-      .concat(sundayData);
-
+    .concat(tuesdayData)
+    .concat(wednesdayData)
+    .concat(thursdayData)
+    .concat(fridayData)
+    .concat(saturdayData)
+    .concat(sundayData);
+    
     setExerciseData(exerciseData);
+  
   }
+
+  // bool to help toggle between the add exercise interface and the main content
+  const [showAddExerciseMenu, setShowAddExerciseMenu] = useState<boolean>(false);
+  let AddExerciseOrGoBackButton: JSX.Element = (
+    <label>
+      <input
+        type="button"
+        className="button"
+        name={showAddExerciseMenu ? "GoBackFromExerciseMenuButton" : "AddExerciseMenuButton"}
+        value={showAddExerciseMenu ? "< Go back" : "Add exercise +"}
+        onClick={() => setShowAddExerciseMenu(!showAddExerciseMenu)}></input>
+      {/* ^ toggle showAddExerciseMenu to true if it is false and vice versa */}
+    </label>
+  );
 
   return (
     <div className="App">
@@ -69,29 +64,26 @@ const App: React.FC = () => {
 
       <main>
         <menu>
-          <WeekdayPicker
-            selectedWeekday={selectedWeekday}
-            setSelectedWeekday={setSelectedWeekday}
-          />
+          <WeekdayPicker selectedWeekday={selectedWeekday} setSelectedWeekday={setSelectedWeekday} />
           <ResetProgress getExerciseData={getExerciseData} />
-          <ClearDay
-            getExerciseData={getExerciseData}
-            selectedWeekday={selectedWeekday}
-          />
+          <ClearDay getExerciseData={getExerciseData} selectedWeekday={selectedWeekday} />
         </menu>
 
         <section>
           <h2>Exercises</h2>
-          <UnitsPicker
-            setWeightUnits={setWeightUnit}
-            getExerciseData={getExerciseData}
-          />
-          <Exercise
-            weightUnit={weightUnit}
-            weekday={selectedWeekday}
-            exerciseData={exerciseData}
-            getExerciseData={getExerciseData}
-          />
+          {showAddExerciseMenu ? (
+            <></>
+          ) : (
+            <>
+              <UnitsPicker setWeightUnits={setWeightUnit} getExerciseData={getExerciseData} />
+              <Exercise
+                weightUnit={weightUnit}
+                weekday={selectedWeekday}
+                exerciseData={exerciseData}
+                getExerciseData={getExerciseData}
+              />
+            </>
+          )}
 
           {/* The code below shows the "normal" interface with exercise names,
           sets, reps & weight or the add exercise interface where the user
@@ -99,10 +91,7 @@ const App: React.FC = () => {
           {showAddExerciseMenu ? (
             <div className="AddExerciseMenu">
               {AddExerciseOrGoBackButton}
-              <MuscleCategoryList
-                weekday={selectedWeekday}
-                getExerciseData={getExerciseData}
-              />
+              <MuscleCategoryList weekday={selectedWeekday} getExerciseData={getExerciseData} />
             </div>
           ) : (
             <div className="AddExerciseMenu">{AddExerciseOrGoBackButton}</div>
@@ -110,18 +99,15 @@ const App: React.FC = () => {
         </section>
 
         <aside>
-          <>
+          <div>
             <h2>Todays muscle activation</h2>
-            <MuscleAnatomyChart
-              weekday={selectedWeekday}
-              weekExerciseListLength={exerciseData.length}
-            />
-          </>
+            <MuscleAnatomyChart weekday={selectedWeekday} weekExerciseListLength={exerciseData.length} />
+          </div>
 
-          <>
+          <div>
             <h2>Weekly set distribution</h2>
             <PieChart exerciseData={exerciseData} getExerciseData={getExerciseData} />
-          </>
+          </div>
         </aside>
       </main>
     </div>

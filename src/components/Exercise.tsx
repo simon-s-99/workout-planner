@@ -9,15 +9,6 @@ import RemoveExerciseButton from "./RemoveExerciseButton";
 import AddSetButton from "./AddSetButton";
 import ToggleAllSetsCompletedButton from "./ToggleAllSetsCompletedButton";
 
-// add function to click on exercise in order to show, and hide sets
-// Exercise completed should close the exercise when checked.
-//if already checked and unchecking it (while having the exercise + setmenu open) should not close it
-
-// Restructure positions of buttons, text etc
-//implement weekday logic
-
-//details + summary to show and hide
-
 interface ExerciseProps {
   weightUnit: Unit;
   weekday: Weekday;
@@ -29,11 +20,7 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
   // Fetch all exercises for the given weekday from local storage
   let weekdayExercises: ExerciseObject[] = [];
 
-  //form, when submitted send to localstorage. Give write an exercisemap,
-  // pair weekdayexercies with the weekday and send to localstorageWrite
-
   const [exercises, setExercises] = useState<ExerciseObject[]>([]);
-  // const [exercises, setExercises] = useState(weekdayExercises);
   const [hiddenExercises, setHiddenExercises] = useState<Set<number>>(new Set<number>());
 
   useEffect(() => {
@@ -41,11 +28,42 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData: weekExercise
     setExercises(weekdayExercises);
   }, [weekday, weekExerciseListLength]); // Dependency array includes 'weekday' to re-run the effect when it changes
 
-  // save new sets to localstorage
-  // when adding a new set, make the update show directly.
-  // currently only updates the page if switching day and then returning.
+  // v application remembers which exercises have had their dropdown minimized 
 
+  // Function to toggle all sets as completed for an exercise
+  const toggleAllSetsCompleted = (exerciseIndex: number) => {
+    const exercisesCopy: ExerciseObject[] = [...exercises];
 
+    const completed: boolean[] = [];
+
+    exercisesCopy[exerciseIndex].sets.forEach((set) => {
+      if (set.completed) {
+        completed.push(true);
+      }
+    });
+
+    // this logic ensures that all sets are marked as complete if one or more sets are marked as complete
+    // if all sets are marked as complete they are marked as incomplete by this toggle
+    if (completed.length === exercisesCopy[exerciseIndex].sets.length) {
+      for (const set of exercisesCopy[exerciseIndex].sets) {
+        set.completed = false;
+      }
+    } else {
+      for (const set of exercisesCopy[exerciseIndex].sets) {
+        set.completed = true;
+      }
+    }
+
+    setExercises(exercisesCopy);
+
+    // clears localStorage of selected day and writes new exercises to it
+    // runs getExerciseData to make sure every other component based on data in localStorage re-renders
+    useLocalStorageOverwrite(new Map<Weekday, ExerciseObject[]>([[weekday, exercises]]));
+    getExerciseData();
+  };
+
+  // set component
+  // buttons to components?
   return (
     <div className="Exercise">
       {exercises.map((exercise, exerciseIndex) => (

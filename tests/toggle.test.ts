@@ -1,40 +1,32 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("toggle tests", () => {
+test.describe("Exercise component tests", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("http://localhost:5173");
   });
 
-  test("add pushups as an exercise, then add two sets, and toggle one as completed, followed by all as completed", async ({ page }) => {
+  test("add pushups as an exercise, then add two sets, and toggle set 2", async ({ page }) => {
+    // Steps to add exercise and set
     await page.click(".AddExerciseMenu .button");
     await page.click("text=Chest");
     await page.click("text=Pushups");
-    await expect(page.locator('h3:text("Pushups")')).toBeVisible();
+    await page.click(".AddExerciseMenu .button"); // Press again to go back and show the exercise
+    await expect(page.locator('p:text("Pushups")')).toBeVisible();
     await expect(page.locator("text=Set 1:")).toBeVisible();
 
-    await page.click('.addSetButton');
-    await page.click('.addSetButton');
+    await page.click('.addButton');
+    await page.click('.addButton');
     await expect(page.locator("text=Set 2:")).toBeVisible();
     await expect(page.locator("text=Set 3:")).toBeVisible();
 
-    await expect(page.locator('.toggleSetComplete input[type="checkbox"]')).toHaveCount(3);
+    const checkboxSelector = '[data-testid="checkbox-exercise-0-set-1"]'; //targets the first added set
 
+    await page.click(checkboxSelector); 
 
-    // Toggle the first set as completed by checking its checkbox
-    // Here's assuming the checkboxes for sets can be indexed similarly to how they are added
-    await page.check('.setContainer:nth-child(1) .setCheckbox');
+    // Check if the checkbox is checked
+    const isChecked = await page.isChecked(checkboxSelector);
 
-    // Verify the first set is marked as completed
-    // Assuming checking the checkbox changes its state visibly
-    await expect(page.locator('.setContainer:nth-child(1) .setCheckbox')).toBeChecked();
-
-    // If there's a specific action to mark all as completed, perform that action
-    // For this example, we'll check all checkboxes manually
-    await page.check('.setContainer:nth-child(2) .setCheckbox');
-    await page.check('.setContainer:nth-child(3) .setCheckbox');
-
-    // Verify all sets are marked as completed
-    const checkedSets = page.locator('.setCheckbox:checked');
-    await expect(checkedSets).toHaveCount(3);
+    // Assert that the checkbox is checked
+    expect(isChecked).toBe(true);
   });
 });

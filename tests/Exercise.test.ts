@@ -9,11 +9,12 @@ test.describe("Exercise component tests", () => {
     await page.click(".AddExerciseMenu .button");
     await page.click("text=Chest");
     await page.click("text=Pushups");
-    await expect(page.locator('h3:text("Pushups")')).toBeVisible();
+    await page.click(".AddExerciseMenu .button"); //press again in order to go back and show the exercise
+    await expect(page.locator('p:text("Pushups")')).toBeVisible();
     await expect(page.locator("text=Set 1:")).toBeVisible();
 
-    await page.click('.addSetButton');
-    await page.click('.addSetButton');
+    await page.click('.addButton');
+    await page.click('.addButton');
     await expect(page.locator("text=Set 2:")).toBeVisible();
     await expect(page.locator("text=Set 3:")).toBeVisible();
   });

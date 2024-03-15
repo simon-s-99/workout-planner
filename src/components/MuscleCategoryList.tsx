@@ -7,7 +7,10 @@ interface MuscleCategoryListProps {
   getExerciseData: () => void;
 }
 
-const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday, getExerciseData }) => {
+const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({
+  weekday,
+  getExerciseData,
+}) => {
   const muscleGroups: MuscleGroup[] = [
     "Abdominals",
     "Biceps",
@@ -30,24 +33,30 @@ const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday, getExe
     (muscleGroup, index) => {
       const [selected, setSelected] = useState(false);
 
-    return (
-      <li key={index} style={selected ? style.activeDropdown : style.inactiveDropdown}>
-        <label>
-          <input
-            type="button"
-            name="categoryDropdown"
-            value={muscleGroup}
-            onClick={() => setSelected(!selected)}></input>
-          {/* ^ toggle selected to true if it is false and vice versa */}
-        </label>
-        {/* <MuscleCategoryExercisesList 
-          getExerciseData={getExerciseData} 
-          weekday={weekday} 
-          muscleGroup={muscleGroup} 
-          renderList={selected} /> */}
-      </li>
-    );
-  });
+      return (
+        <li
+          key={index}
+          style={selected ? style.activeDropdown : style.inactiveDropdown}
+        >
+          <label>
+            <input
+              type="button"
+              name="categoryDropdown"
+              value={muscleGroup}
+              onClick={() => setSelected(!selected)}
+            ></input>
+            {/* ^ toggle selected to true if it is false and vice versa */}
+          </label>
+          <MuscleCategoryExercisesList
+            getExerciseData={getExerciseData}
+            weekday={weekday}
+            muscleGroup={muscleGroup}
+            renderList={selected}
+          />
+        </li>
+      );
+    }
+  );
 
   return (
     <ul className="muscleGroupsCategoriesList">{muscleGroupsListItems}</ul>
@@ -56,12 +65,12 @@ const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday, getExe
 
 export default MuscleCategoryList;
 
-// css for the dropdown menus icon, handled dynamically in the jsx 
+// css for the dropdown menus icon, handled dynamically in the jsx
 const style = {
   activeDropdown: {
     listStyleImage: 'url("/src/assets/downFacingArrow.svg")',
   },
   inactiveDropdown: {
     listStyleImage: 'url("/src/assets/rightFacingArrow.svg")',
-  }
-}
+  },
+};

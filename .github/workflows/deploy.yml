@@ -32,9 +32,8 @@ jobs:
       - name: 🏗 Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 20.11.20
+          node-version: 20
           cache: pnpm
-          cache-dependency-path: ./package-lock.json
 
       - name: 🗂️ Install dependencies
         run: pnpm i

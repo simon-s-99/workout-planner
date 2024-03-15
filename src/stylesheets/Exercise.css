@@ -5,6 +5,7 @@
   padding: 8px;
   display: flex;
   flex-direction: row;
+  margin: 0 auto;
 }
 
 .InnerExerciseContainer {
@@ -14,6 +15,7 @@
   border: 1px solid #e1e1e1;
   border-radius: 10px;
   padding: 16px;
+  width: 100%;
 }
 
 .InnerExerciseContainer>p {

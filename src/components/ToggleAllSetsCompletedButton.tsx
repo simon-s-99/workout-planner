@@ -2,6 +2,10 @@ import React from "react";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 import { ExerciseObject, Weekday } from "../types";
 
+/*
+  This component is a checkbox that toggles all sets of one exercise as completed or not completed
+*/
+
 interface ToggleAllSetsCompletedButtonProps {
   exerciseIndex: number;
   weekday: Weekday;
@@ -18,6 +22,7 @@ const ToggleAllSetsCompletedButton: React.FC<ToggleAllSetsCompletedButtonProps> 
 
     const completed: boolean[] = [];
 
+    // Mark every set in every exercise as completed
     exercisesCopy[exerciseIndex].sets.forEach((set) => {
       if (set.completed) {
         completed.push(true);
@@ -47,6 +52,7 @@ const ToggleAllSetsCompletedButton: React.FC<ToggleAllSetsCompletedButtonProps> 
   return (
     <label className="ToggleAllSetsCheckbox">
       Toggle sets
+      {/* Is checked if every set is marked as completed and vice versa */}
       <input
         type="checkbox"
         checked={exercise.sets.every((set) => set.completed)}

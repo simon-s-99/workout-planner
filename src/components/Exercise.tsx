@@ -48,7 +48,8 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData, getExerciseD
               <TogglePageVisibilityButton
                 exerciseIndex={exerciseIndex}
                 hiddenExercises={hiddenExercises}
-                setHiddenExercises={setHiddenExercises} />
+                setHiddenExercises={setHiddenExercises}
+              />
               <p>{exercise.name}</p>
             </div>
 

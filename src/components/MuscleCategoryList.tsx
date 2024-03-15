@@ -15,7 +15,10 @@ interface MuscleCategoryListProps {
   getExerciseData: () => void;
 }
 
-const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday, getExerciseData }) => {
+const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({
+  weekday,
+  getExerciseData,
+}) => {
   const muscleGroups: MuscleGroup[] = [
     "Abdominals",
     "Biceps",
@@ -65,12 +68,12 @@ const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday, getExe
 
 export default MuscleCategoryList;
 
-// css for the dropdown menus icon, handled dynamically in the jsx 
+// css for the dropdown menus icon, handled dynamically in the jsx
 const style = {
   activeDropdown: {
     listStyleImage: 'url("/src/assets/downFacingArrow.svg")',
   },
   inactiveDropdown: {
     listStyleImage: 'url("/src/assets/rightFacingArrow.svg")',
-  }
-}
+  },
+};

@@ -24,7 +24,7 @@ const RemoveExerciseButton: React.FC<RemoveExerciseButtonProps> = ({ exerciseInd
 
   return (
     <label>
-      <input type="button" value="del" onClick={() => removeExercise(exerciseIndex)}></input>
+      <input type="button" value="❌" onClick={() => removeExercise(exerciseIndex)}></input>
     </label>
   );
 };

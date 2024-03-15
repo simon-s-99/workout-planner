@@ -30,5 +30,12 @@
 
 .weekday-label.selected {
   background-color: #8beb7f;
-  border-radius: 10px;
+}
+
+.weekday-label.selected:first-child {
+  border-radius: 10px 10px 0px 0px;
+}
+
+.weekday-label.selected:last-child {
+  border-radius: 0px 0px 10px 10px;
 }

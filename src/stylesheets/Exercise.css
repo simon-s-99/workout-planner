@@ -1,9 +1,10 @@
 .exerciseContainer {
+  min-width: 430px;
+  max-width: 430px;
   border-radius: 10px;
   padding: 8px;
-  margin-bottom: 20px;
-  display: flex; 
-  flex-direction: row; 
+  display: flex;
+  flex-direction: row;
 }
 
 .InnerExerciseContainer {
@@ -12,11 +13,15 @@
   background-color: #f9f9f9;
   border: 1px solid #e1e1e1;
   border-radius: 10px;
-  padding: 8px;
+  padding: 16px;
 }
 
-.InnerExerciseContainer > p {
+.InnerExerciseContainer>p {
   justify-self: flex-end;
+}
+
+.InnerExerciseContainer input[type="checkbox"] {
+  cursor: pointer;
 }
 
 .ExerciseHeader {
@@ -24,16 +29,26 @@
   flex-direction: row;
 }
 
-.flexLabel {
-  display: flex;
-  align-items: center;
+.ExerciseHeader>button {
+  height: 36px;
+  width: 36px;
+  background-color: #f9f9f9;
+  border: none;
+}
+
+.ToggleAllSetsCheckbox {
   cursor: pointer;
-  margin-left: 10px;
+  text-align: right;
+}
+
+.ToggleAllSetsCheckbox>input {
+  margin-left: 12px;
+  vertical-align: -2px;
 }
 
 .setInput {
   margin: 12px;
-  padding: 11px;
+  padding: 12px;
   width: 62px;
   border-radius: 10px;
   border: 1px solid #e1e1e1;
@@ -50,12 +65,18 @@
 }
 
 .deleteButton {
-  align-self: flex-end;
-  margin-top: 10px;
   cursor: pointer;
 }
 
 .RemoveExerciseButton {
   padding-right: 8px;
-  /* border: 3px solid red; */
+}
+
+.RemoveExerciseButton>label>input {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
 }

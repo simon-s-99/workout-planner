@@ -99,6 +99,7 @@ const PieChart: React.FC<PieChartProps> = ({exerciseData, getExerciseData}) => {
     const canvas = canvasRef.current;
 
     // Below error is caused by TypeScript, we know for a fact that canvas will not be null
+    // @ts-ignore: canvas is possibly 'null'.
     const canvasContext: CanvasRenderingContext2D = canvas.getContext("2d");
     let total: number = 0; // Sum of sets
     let angle: number = 0; // Current angle used when drawing an arc

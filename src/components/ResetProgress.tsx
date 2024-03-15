@@ -8,15 +8,7 @@ interface ResetProgressProps {
   getExerciseData: () => void;
 }
 
-const allWeekdays: Weekday[] = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
+const allWeekdays: Weekday[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 const ResetProgress: React.FC<ResetProgressProps> = ({ getExerciseData }) => {
   const handleReset = () => {
@@ -44,9 +36,11 @@ const ResetProgress: React.FC<ResetProgressProps> = ({ getExerciseData }) => {
   };
 
   return (
-    <button className="reset-week" onClick={handleReset}>
-      Reset week ♻
-    </button>
+    <div>
+      <button type="button" className="reset-week" onClick={handleReset}>
+        Reset week ♻
+      </button>
+    </div>
   );
 };
 

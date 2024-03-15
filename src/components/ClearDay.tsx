@@ -11,9 +11,7 @@ const ClearDay: React.FC<{
   const [feedback, setFeedback] = useState<string>("");
 
   const handleReset = () => {
-    useLocalStorageOverwrite(
-      new Map<Weekday, ExerciseObject[]>([[selectedWeekday, []]])
-    );
+    useLocalStorageOverwrite(new Map<Weekday, ExerciseObject[]>([[selectedWeekday, []]]));
     setFeedback(`${selectedWeekday} reset successfully.`);
     setTimeout(() => setFeedback(""), 2000);
     getExerciseData(); // Refresh or update data
@@ -22,28 +20,15 @@ const ClearDay: React.FC<{
 
   return (
     <div className="ClearDay">
-      <button
-        className="reset-day-button"
-        onClick={() => setIsDialogOpen(true)}
-      >
+      <button type="button" className="clear-day-button" onClick={() => setIsDialogOpen(true)}>
         Clear day 🚮
       </button>
 
       {isDialogOpen && (
         <div className="dialog">
-          <p>
-            Are you sure you want to reset {selectedWeekday}'s workout data?
-          </p>
-          <button
-            onClick={handleReset}
-          >
-            Yes
-          </button>
-          <button
-            onClick={() => setIsDialogOpen(false)}
-          >
-            No
-          </button>
+          <p>Are you sure you want to reset {selectedWeekday}'s workout data?</p>
+          <button type="button" onClick={handleReset}>Yes</button>
+          <button type="button" onClick={() => setIsDialogOpen(false)}>No</button>
         </div>
       )}
 

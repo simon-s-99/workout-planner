@@ -40,11 +40,11 @@ const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday, getExe
             onClick={() => setSelected(!selected)}></input>
           {/* ^ toggle selected to true if it is false and vice versa */}
         </label>
-        <MuscleCategoryExercisesList 
+        {/* <MuscleCategoryExercisesList 
           getExerciseData={getExerciseData} 
           weekday={weekday} 
           muscleGroup={muscleGroup} 
-          renderList={selected} />
+          renderList={selected} /> */}
       </li>
     );
   });

@@ -1,12 +1,27 @@
 .exerciseContainer {
+  border-radius: 10px;
+  padding: 8px;
+  margin-bottom: 20px;
+  display: flex; 
+  flex-direction: row; 
+}
+
+.InnerExerciseContainer {
+  display: flex;
+  flex-direction: column;
   background-color: #f9f9f9;
   border: 1px solid #e1e1e1;
-  border-radius: 11px;
-  padding: 19px;
-  margin-bottom: 20px;
-  position: relative; 
-  display: flex; 
-  flex-direction: column; 
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.InnerExerciseContainer > p {
+  justify-self: flex-end;
+}
+
+.ExerciseHeader {
+  display: flex;
+  flex-direction: row;
 }
 
 .flexLabel {
@@ -16,29 +31,15 @@
   margin-left: 10px;
 }
 
-.exerciseHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
 .setInput {
-  margin: 18px;
+  margin: 12px;
   padding: 11px;
-  width: 60px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  width: 62px;
+  border-radius: 10px;
+  border: 1px solid #e1e1e1;
 }
 
-.inputAndButtonContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 11px;
-}
-
-.addSetButton {
+.addButton {
   display: inline-block;
   background-color: #4CAF50;
   color: white;
@@ -48,25 +49,13 @@
   margin-top: 10px;
 }
 
-h3 {
-  margin: 0;
-  font-size: 20px;
-}
-
-.labelSpan {
-  margin-right: 20px;
-}
-
-
-.visibilityArrowContainer {
-  position: absolute;
-  left: -30px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
 .deleteButton {
   align-self: flex-end;
   margin-top: 10px;
   cursor: pointer;
+}
+
+.RemoveExerciseButton {
+  padding-right: 8px;
+  /* border: 3px solid red; */
 }

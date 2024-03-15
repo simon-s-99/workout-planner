@@ -6,7 +6,7 @@ test.describe("Exercise component tests", () => {
   });
 
   test("add pushups as an exercise, then add two sets, and toggle set 2", async ({ page }) => {
-    // Steps to add exercise and set
+
     await page.click(".AddExerciseMenu .button");
     await page.click("text=Chest");
     await page.click("text=Pushups");

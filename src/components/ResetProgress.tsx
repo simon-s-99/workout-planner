@@ -4,6 +4,11 @@ import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 import type { ExerciseObject, Weekday, WeekdayExerciseMap } from "../types";
 import "../stylesheets/ResetProgress.css";
 
+// this component toggles all sets of all exercises in every weekday
+// as not completed, effectively resetting the users progress
+// the idea is that the user can click this to run the same training 
+// program for another week 
+
 interface ResetProgressProps {
   getExerciseData: () => void;
 }
@@ -37,7 +42,7 @@ const ResetProgress: React.FC<ResetProgressProps> = ({ getExerciseData }) => {
 
   return (
     <div>
-      <button type="button" className="reset-week" onClick={handleReset}>
+      <button type="button" className="ResetWeek" onClick={handleReset}>
         Reset week ♻
       </button>
     </div>

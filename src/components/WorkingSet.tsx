@@ -1,6 +1,10 @@
 import type { ExerciseObject, Weekday, WorkingSet } from "../types";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
-import "../stylesheets/WorkingSet.css";
+
+// This component is one instance of a set in an exercise
+// containing everything related to one set such as:
+// reps, weight, which set it is (1,2,3 and so on...)
+// remove set button, toggle set as completed 
 
 interface WorkingSetProps {
   weekday: Weekday;
@@ -19,8 +23,7 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
   exercises,
   exerciseIndex,
 }) => {
-  // Function to remove a set from an exercise
-  // CHANGE: Removes set from selected exercise, and updates the state variable with the new amount of sets
+  // Removes set from selected exercise, and updates the state variable with the new amount of sets
   const removeSet = (exerciseIndex: number, setIndex: number): void => {
     const exercisesCopy = [...exercises];
     const selectedExercise = exercisesCopy[exerciseIndex];
@@ -32,8 +35,6 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
     exercisesCopy.splice(exerciseIndex, 1, selectedExercise);
 
     setExercises(exercisesCopy);
-    // Here, you should also update local storage to reflect the changes
-    // This can be done by calling your useLocalStorageWrite hook or similar functionality
 
     // clears localStorage of selected day and writes new exercises to it
     // runs getExerciseData to make sure every other component based on data in localStorage re-renders
@@ -51,6 +52,7 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
 
     selectedSet.completed = !selectedSet.completed;
 
+    // Replace the old set with the updated one
     exercisesCopy[exerciseIndex].sets.splice(setIndex, 1, selectedSet);
     setExercises(exercisesCopy);
 
@@ -99,18 +101,13 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
   return (
     <>
       {exercise.sets.map((set, setIndex) => (
-        <div key={setIndex} className="inputAndButtonContainer">
-          <button
-            type="button"
-            onClick={() => removeSet(exerciseIndex, setIndex)}
-          >
-            ❌
-          </button>
+        <div key={setIndex} className="InputAndButtonContainer">
+          <button type="button" onClick={() => removeSet(exerciseIndex, setIndex)}>❌</button>
           <span>Set {setIndex + 1}:</span>
           Reps
           <input
             type="number"
-            className="setInput"
+            className="WorkingSetInput"
             min="0"
             value={set.repetitions}
             onChange={(e) =>
@@ -125,8 +122,8 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
           Weight
           <input
             type="number"
-            className="setInput"
             name="weightInput"
+            className="WorkingSetInput"
             min="0"
             value={set.weight}
             onChange={(e) =>

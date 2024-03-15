@@ -74,7 +74,7 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({
     // if the api call is ever slow enough to display a "loading" phase
     // then "..." is displayed to the user so that they have some indication that the page is loading
     return (
-      <ul className="muscleGroupCategoryExercisesList">
+      <ul className="MuscleGroupCategoryExercisesList">
         {loading ? (
           <li style={style.loading}>
             <i>Loading...</i>

@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 import type { ExerciseObject, Weekday, MuscleGroup } from "../types";
 import { useLocalStorageRead } from "../hooks/useLocalStorageRead";
 
+/*
+	This component draws the muscle activation chart of the selected days exercises.
+	i.e. what muscles are being activated in that weekdays training regimen
+*/
+
 interface MuscleAnatomyChartProps {
 	weekday: Weekday;
 
@@ -10,15 +15,16 @@ interface MuscleAnatomyChartProps {
 	weekExerciseListLength: number;
 }
 
-const MuscleAnatomyChart: React.FC<MuscleAnatomyChartProps> = ({ weekday, weekExerciseListLength: weekExerciseListLength }) => {
+const MuscleAnatomyChart: React.FC<MuscleAnatomyChartProps> = ({ weekday, weekExerciseListLength }) => {
 	// get muscle groups from exercises to determine which muscles to mark as being activated 
 	const [rawExerciseData, setRawExerciseData] = useState<ExerciseObject[]>(useLocalStorageRead(weekday));
 
-	// update exercises if weekday changes, i.e. when user switches weekday
+	// update exercises if weekday changes OR an exercise is added, i.e. when user switches weekday
 	useEffect(() => {
 		setRawExerciseData(useLocalStorageRead(weekday));
 	}, [weekday, weekExerciseListLength]);
 
+	// if muscle group exists at least once in localStorage mark muscle group as true in hashmap
 	const activatedMuscleGroupsMap: Map<MuscleGroup, boolean> = new Map<MuscleGroup, boolean>();
 	rawExerciseData.forEach((exercise) => {
 		const muscle: MuscleGroup = exercise.muscle as MuscleGroup;

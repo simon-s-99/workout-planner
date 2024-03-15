@@ -31,20 +31,22 @@ const PieChart: React.FC<PieChartProps> = ({exerciseData, getExerciseData}) => {
 
   useEffect(() => {
     let dataArr: MuscleGroupData[] = [];
-    let colorCounter: number = 0;
+    let colorCounter: number = 0; // <-- Keeps track of which color to assign each exercise
 
     for (const exercise of exerciseData) {
       // If muscle group is not already present
       if (dataArr.filter((m) => m.muscleGroup === (exercise.muscle as MuscleGroup)).length === 0) {
-        let exerciseData: MuscleGroupData = {
+        let newExerciseData: MuscleGroupData = {
           muscleGroup: exercise.muscle as MuscleGroup,
           sets: exercise.sets.length,
           color: colors[colorCounter],
         };
-        dataArr.push(exerciseData);
+        dataArr.push(newExerciseData);
         colorCounter++;
       } else {
+        // Gets the muscle group if it already exists
         const duplicateMuscleGroup = dataArr.find((muscle) => muscle.muscleGroup === exercise.muscle);
+
         // To resolve TypeScript undefined error
         if (duplicateMuscleGroup) {
           // Add muscle group's sets to the total amount of sets
@@ -69,15 +71,17 @@ const PieChart: React.FC<PieChartProps> = ({exerciseData, getExerciseData}) => {
     for (const exercise of exerciseData) {
       // If muscle group is not already present
       if (dataArr.filter((m) => m.muscleGroup === (exercise.muscle as MuscleGroup)).length === 0) {
-        let exerciseData: MuscleGroupData = {
+        let newExerciseData: MuscleGroupData = {
           muscleGroup: exercise.muscle as MuscleGroup,
           sets: exercise.sets.length,
           color: colors[colorCounter],
         };
-        dataArr.push(exerciseData);
+        dataArr.push(newExerciseData);
         colorCounter++;
       } else {
+        // Gets the muscle group if it already exists
         const duplicateMuscleGroup = dataArr.find((muscle) => muscle.muscleGroup === exercise.muscle);
+
         // To resolve TypeScript undefined error
         if (duplicateMuscleGroup) {
           // Add muscle group's sets to the total amount of sets
@@ -88,21 +92,23 @@ const PieChart: React.FC<PieChartProps> = ({exerciseData, getExerciseData}) => {
     setMuscleGroupData(dataArr);
   }, []);
 
-  // Grab the element, the same as doing document.getElementById("canvas")
+  // Grab the element in the DOM, the same as doing document.getElementById("canvas")
   const canvasRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
 
-    const canvasContext = canvas.getContext("2d");
+    // Below error is caused by TypeScript, we know for a fact that canvas will not be null
+    const canvasContext: CanvasRenderingContext2D = canvas.getContext("2d");
     let total: number = 0; // Sum of sets
-    let angle: number = 0;
+    let angle: number = 0; // Current angle used when drawing an arc
 
     for (let value of muscleGroupData) {
       total += value.sets;
     }
 
     for (let i = 0; i < muscleGroupData.length; i++) {
+      // Set the color
       canvasContext.fillStyle = muscleGroupData[i].color;
 
       // Start drawing
@@ -111,7 +117,7 @@ const PieChart: React.FC<PieChartProps> = ({exerciseData, getExerciseData}) => {
       // Move to the center of the canvas
       canvasContext.moveTo(150, 150);
 
-      // Starting from the center of the canvas, add an arc with a radius of 50 from a start angle of 0 to an angle influenced by the amount of sets
+      // Starting from the center of the canvas, add an arc with a radius of 150 from a start angle of 0 to an angle influenced by the amount of sets
       canvasContext.arc(150, 150, 150, angle, angle + Math.PI * 2 * (muscleGroupData[i].sets / total));
 
       // Fill the arc
@@ -138,7 +144,9 @@ const PieChart: React.FC<PieChartProps> = ({exerciseData, getExerciseData}) => {
                 display: "inline-block",
                 borderRadius: "25px",
               }}></span>
+              {/* Get the individual exercise's percentage, rounded down */}
             {Math.floor(Math.round((data.sets / totalSets) * 100))}% -{" "}
+            {/* Make the first character uppercase, remove the underline found in some exercises */}
             {data.muscleGroup.charAt(0).toUpperCase() + data.muscleGroup.slice(1).replace("_", " ")}, {data.sets}{" "}
             {data.sets === 1 ? "set" : "sets"}
           </p>

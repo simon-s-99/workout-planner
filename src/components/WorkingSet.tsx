@@ -1,6 +1,5 @@
 import type { ExerciseObject, Weekday, WorkingSet } from "../types";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
-import "../stylesheets/WorkingSet.css";
 
 interface WorkingSetProps {
   weekday: Weekday;
@@ -99,7 +98,7 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
           Reps
           <input
             type="number"
-            className="setInput"
+            className="WorkingSetInput"
             min="0"
             value={set.repetitions}
             onChange={(e) => updateSetDetails(exerciseIndex, setIndex, "repetitions", e.target.value)}
@@ -108,7 +107,7 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
           Weight
           <input
             type="number"
-            className="setInput"
+            className="WorkingSetInput"
             min="0"
             value={set.weight}
             onChange={(e) => updateSetDetails(exerciseIndex, setIndex, "weight", e.target.value)}

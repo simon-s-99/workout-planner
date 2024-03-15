@@ -1,11 +1,12 @@
-.clear-day-button {
+.ClearDayButton {
   width: 116px;
   height: 50px;
   border: 1px solid #e1e1e1;
   margin-top: 8px;
+  border-radius: 10px;
 }
 
-.feedback-dialog {
+.FeedbackDialogue {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -16,7 +17,7 @@
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.dialog {
+.Dialogue {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -27,11 +28,11 @@
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.dialog button {
+.Dialogue button {
   padding: 8px;
   margin-top: 16px;
 }
 
-.dialog button:last-of-type {
+.Dialogue button:last-of-type {
   margin-left: 10px;
 }

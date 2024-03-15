@@ -1,7 +1,6 @@
 import React from "react";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 import type { ExerciseObject, Weekday } from "../types";
-import "../stylesheets/AddSetButton.css";
 
 interface AddSetButtonProps {
   exerciseIndex: number;
@@ -36,7 +35,7 @@ const AddSetButton: React.FC<AddSetButtonProps> = ({
   };
 
   return (
-    <button type="button" onClick={() => addSet(exerciseIndex, weekday)} className="addButton">
+    <button type="button" onClick={() => addSet(exerciseIndex, weekday)} className="AddSetButton">
       Add Set
     </button>
   );

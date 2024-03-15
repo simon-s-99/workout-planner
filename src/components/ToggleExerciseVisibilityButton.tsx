@@ -2,11 +2,13 @@ import React from "react";
 
 interface TogglePageVisibilityButtonProps {
   exerciseIndex: number;
+  hiddenExercises: Set<number>;
   setHiddenExercises: React.Dispatch<React.SetStateAction<Set<number>>>;
 }
 
 const TogglePageVisibilityButton: React.FC<TogglePageVisibilityButtonProps> = ({
   exerciseIndex,
+  hiddenExercises,
   setHiddenExercises,
 }) => {
   //toggles whether the sets of an exercise are hidden.
@@ -25,7 +27,12 @@ const TogglePageVisibilityButton: React.FC<TogglePageVisibilityButtonProps> = ({
 
   return (
     <button type="button" onClick={() => toggleExerciseVisibility(exerciseIndex)}>
-      <img src="/src/assets/rightFacingArrow.svg" className="visibilityButtonImg" alt="Toggle visibilityButton" />
+      <img src={
+        hiddenExercises.has(exerciseIndex)
+          ? "/src/assets/rightFacingArrow.svg"
+          : "/src/assets/downFacingArrow.svg"
+      }
+        className="visibilityButtonImg" alt="Toggle visibilityButton" />
     </button>
   );
 };

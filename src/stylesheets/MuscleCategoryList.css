@@ -4,17 +4,22 @@
     MuscleCategoryExercisesList component
 */
 
+.AddExerciseMenu {
+    padding-top: 8px;
+}
+
 /* this handles both the add exercise button
     and the go back button from the add exercise
     interface */
 .AddExerciseMenu .button {
-    min-width: 368px;
-    max-width: 369px;
+    min-width: 430px;
+    max-width: 430px;
     background-color: #f9f9f9;
     border: 1px solid #e1e1e1;
     border-radius: 10px;
     padding: 8px;
     margin-bottom: 8px;
+    cursor: pointer;
 }
 
 .muscleGroupsCategoriesList {
@@ -38,11 +43,13 @@
 }
 
 .muscleGroupsCategoriesList li label input[name="categoryDropdown"] {
-    width: 90%;
-    vertical-align: 10%; /* aligns li's arrows to center of button*/
+    width: 92%;
+    vertical-align: 10%;
+    /* aligns li's arrows to center of button*/
     border: 1px solid #e1e1e1;
     border-radius: 10px;
     padding: 8px;
+    cursor: pointer;
 }
 
 .muscleGroupCategoryExercisesList {
@@ -52,10 +59,12 @@
 
 .muscleGroupCategoryExercisesList li label input[name="button"] {
     width: 84%;
-    vertical-align: 40%; /* aligns li's arrows to center of button*/
+    vertical-align: 40%;
+    /* aligns li's arrows to center of button*/
     background-color: #f9f9f9;
     border: 1px solid #e1e1e1;
     border-radius: 10px;
     padding: 8px;
     margin-bottom: 4px;
+    cursor: pointer;
 }

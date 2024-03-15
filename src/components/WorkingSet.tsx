@@ -122,6 +122,7 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
               )
             }
           />
+
           Weight
           <input
             type="number"

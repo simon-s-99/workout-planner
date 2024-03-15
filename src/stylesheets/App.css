@@ -1,6 +1,8 @@
 .App {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  /* <-- this is for correct footer placement */
 }
 
 body {
@@ -9,6 +11,8 @@ body {
     loads this is needed to center the content of the page */
   display: flex;
   justify-content: center;
+  min-height: 100%;
+  /* <-- this is for correct footer placement */
 }
 
 body h1 {
@@ -20,47 +24,65 @@ body h1 {
   border-radius: 10px;
 }
 
+body h2 {
+  padding-bottom: 16px;
+}
+
 main {
   display: flex;
   flex-direction: row;
 }
 
-main > menu,
-main > section,
-main > aside {
+main>menu,
+main>section,
+main>aside {
   display: flex;
   flex-direction: column;
   margin-right: 24px;
 }
 
-@media screen and (min-width: 1001px) {
-  main > aside > div:first-child {
+main>menu .ResetAndClearButtons {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 961px) {
+  main>aside>div:first-child {
     margin-bottom: 36px;
   }
 }
 
+footer {
+  margin: 16px auto 8px auto;
+}
+
+footer>p {
+  text-align: center;
+  color: gray;
+}
+
 /* handles "medium" viewport size */
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 960px) {
   main {
     flex-wrap: wrap;
     justify-content: center;
   }
 
-  main > menu,
-  main > section {
+  main>menu,
+  main>section {
     flex-grow: 1;
     padding: 8px;
   }
 
-  main > aside {
+  main>aside {
     flex-direction: row;
   }
 
-  main > aside div:first-child {
+  main>aside div:first-child {
     padding-right: 24px;
   }
 
-  main > aside div:last-child {
+  main>aside div:last-child {
     padding-left: 24px;
   }
 }
@@ -71,7 +93,24 @@ main > aside {
     flex-direction: column;
   }
 
-  main > aside {
+  main>menu,
+  main>section,
+  main>aside {
+    margin-right: 0px;
+  }
+
+  main>aside {
     flex-direction: column;
+  }
+
+  main>menu .ResetAndClearButtons {
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  /* footer rule here to prevent footer from being 
+      placed inside the pie chart canvas on small screens */
+  footer {
+    margin: 160px auto 8px auto;
   }
 }

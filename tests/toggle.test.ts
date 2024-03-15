@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Exercise component tests", () => {
+test.describe("toggle checkbox tests", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("http://localhost:5173");
   });

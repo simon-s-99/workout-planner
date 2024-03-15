@@ -3,6 +3,9 @@ import type { Weekday, ExerciseObject } from "../types";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 import "../stylesheets/ClearDay.css";
 
+// clear day is the button component that allows the user to easily remove all exercises in a day
+// when this button is pressed the user is prompted to ensure that they really want to clear the day 
+
 const ClearDay: React.FC<{
   getExerciseData: () => void;
   selectedWeekday: Weekday;

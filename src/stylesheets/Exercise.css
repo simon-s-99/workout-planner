@@ -45,6 +45,7 @@
 
 .ToggleAllSetsCheckbox>input {
   margin-left: 12px;
+  margin-right: 1px;
   vertical-align: -2px;
 }
 

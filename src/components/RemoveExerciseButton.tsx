@@ -9,7 +9,9 @@ interface RemoveExerciseButtonProps {
   getExerciseData: () => void;
 }
 
-const RemoveExerciseButton: React.FC<RemoveExerciseButtonProps> = ({ exerciseIndex, exercises, getExerciseData, weekday }) => {
+const RemoveExerciseButton: React.FC<RemoveExerciseButtonProps> = (
+  { exerciseIndex, exercises, getExerciseData, weekday }) => {
+
   // removes the selected exercise from current weekday
   function removeExercise(exerciseIndex: number): void {
     const updatedExercises = [...exercises];
@@ -24,7 +26,7 @@ const RemoveExerciseButton: React.FC<RemoveExerciseButtonProps> = ({ exerciseInd
 
   return (
     <label>
-      <input type="button" value="❌" onClick={() => removeExercise(exerciseIndex)}></input>
+      <input type="button" value="❌" alt="RemoveExercise" onClick={() => removeExercise(exerciseIndex)}></input>
     </label>
   );
 };

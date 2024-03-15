@@ -30,7 +30,7 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({
     // this is intended React behaviour to help us catch bugs.
     fetch(url, {
       headers: {
-        "X-Api-Key": "hRwPXK6YvKgUbEKzGW01sw==YttRwZHUK8grKBfI",
+        "X-Api-Key": "WBwUck3C9U2k4S4Jn9yKFw==L0a2Ew4qeuJPacz3",
       },
     })
       .then((response) => response.json())

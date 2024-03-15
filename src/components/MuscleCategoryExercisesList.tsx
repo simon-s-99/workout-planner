@@ -30,7 +30,7 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({
     // this is intended React behaviour to help us catch bugs.
     fetch(url, {
       headers: {
-        "X-Api-Key": "hRwPXK6YvKgUbEKzGW01sw==YttRwZHUK8grKBfI",
+        "X-Api-Key": "WBwUck3C9U2k4S4Jn9yKFw==L0a2Ew4qeuJPacz3",
       },
     })
       .then((response) => response.json())
@@ -65,7 +65,7 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({
     // if the api call is ever slow enough to display a "loading" phase
     // then "..." is displayed to the user so that they have some indication that the page is loading
     return (
-      <ul className="muscleGroupCategoryExercisesList">
+      <ul className="MuscleGroupCategoryExercisesList">
         {loading ? (
           <li style={style.loading}><i>Loading...</i></li>
         ) : (

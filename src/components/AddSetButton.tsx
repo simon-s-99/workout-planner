@@ -1,7 +1,6 @@
 import React from "react";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 import type { ExerciseObject, Weekday } from "../types";
-import "../stylesheets/AddSetButton.css";
 
 interface AddSetButtonProps {
   exerciseIndex: number;
@@ -18,14 +17,14 @@ const AddSetButton: React.FC<AddSetButtonProps> = ({
   weekday,
   setExercises,
 }) => {
-  // CHANGE: Adds new set to selected exercise, and updates the state variable with the updated array
+  // Adds new set to selected exercise, and updates the state variable with the updated array
   const addSet = (exerciseIndex: number, weekday: Weekday): void => {
     const exercisesCopy = [...exercises];
     const selectedExercise = exercisesCopy[exerciseIndex];
     const newSet = { repetitions: 0, weight: 0, completed: false };
     selectedExercise.sets.push(newSet);
 
-    // Replace the old exercise with updated
+    // Replace the old exercise with the updated one
     exercisesCopy.splice(exerciseIndex, 1, selectedExercise);
     setExercises(exercisesCopy);
 
@@ -36,7 +35,7 @@ const AddSetButton: React.FC<AddSetButtonProps> = ({
   };
 
   return (
-    <button type="button" onClick={() => addSet(exerciseIndex, weekday)} className="addButton">
+    <button type="button" onClick={() => addSet(exerciseIndex, weekday)} className="AddSetButton">
       Add Set
     </button>
   );

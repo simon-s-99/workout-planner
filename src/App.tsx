@@ -20,6 +20,11 @@ const App: React.FC = () => {
   // Currently selected weekday, initialized to "Monday" in case we want a start value.
   const [selectedWeekday, setSelectedWeekday] = useState<Weekday>("Monday");
 
+  /*
+    getExerciseData() is used in many of our components to trigger a re-mount
+    of components that are meant to be reactive to the data in localStorage.
+    It is used frequently as a dependency in useEffect. 
+  */
   function getExerciseData(): void {
     const mondayData = useLocalStorageRead("Monday");
     const tuesdayData = useLocalStorageRead("Tuesday");
@@ -39,7 +44,6 @@ const App: React.FC = () => {
       .concat(sundayData);
 
     setExerciseData(exerciseData);
-
   }
 
   // bool to help toggle between the add exercise interface and the main content

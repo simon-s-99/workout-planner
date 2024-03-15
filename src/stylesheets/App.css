@@ -1,3 +1,9 @@
+/*
+  This css file is only really used for the sites layout
+  also handles media queries to change the layout based
+  on viewport size 
+*/
+
 .App {
   display: flex;
   flex-direction: column;

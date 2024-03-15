@@ -3,11 +3,14 @@ import type { Weekday, ExerciseObject } from "../types";
 import { useLocalStorageOverwrite } from "../hooks/useLocalStorageOverwrite";
 import "../stylesheets/ClearDay.css";
 
+// clear day is the button component that allows the user to easily remove all exercises in a day
+// when this button is pressed the user is prompted to ensure that they really want to clear the day 
+
 const ClearDay: React.FC<{
   getExerciseData: () => void;
   selectedWeekday: Weekday;
 }> = ({ getExerciseData, selectedWeekday }) => {
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isDialogueOpen, setIsDialogueOpen] = useState<boolean>(false);
   const [feedback, setFeedback] = useState<string>("");
 
   const handleReset = () => {
@@ -15,25 +18,25 @@ const ClearDay: React.FC<{
     setFeedback(`${selectedWeekday} reset successfully.`);
     setTimeout(() => setFeedback(""), 2000);
     getExerciseData(); // Refresh or update data
-    setIsDialogOpen(false);
+    setIsDialogueOpen(false);
   };
 
   return (
     <div className="ClearDay">
-      <button type="button" className="clear-day-button" onClick={() => setIsDialogOpen(true)}>
+      <button type="button" className="ClearDayButton" onClick={() => setIsDialogueOpen(true)}>
         Clear day 🚮
       </button>
 
-      {isDialogOpen && (
-        <div className="dialog">
+      {isDialogueOpen && (
+        <div className="Dialogue">
           <p>Are you sure you want to reset {selectedWeekday}'s workout data?</p>
           <button type="button" onClick={handleReset}>Yes</button>
-          <button type="button" onClick={() => setIsDialogOpen(false)}>No</button>
+          <button type="button" onClick={() => setIsDialogueOpen(false)}>No</button>
         </div>
       )}
 
       {feedback && (
-        <div className="feedback-dialog">
+        <div className="FeedbackDialogue">
           <p>{feedback}</p>
         </div>
       )}

@@ -1,5 +1,7 @@
 import React from "react";
 
+// works as a dropdown toggle to either hide or display sets for an exercise 
+
 interface TogglePageVisibilityButtonProps {
   exerciseIndex: number;
   hiddenExercises: Set<number>;
@@ -27,6 +29,7 @@ const TogglePageVisibilityButton: React.FC<TogglePageVisibilityButtonProps> = ({
 
   return (
     <button type="button" onClick={() => toggleExerciseVisibility(exerciseIndex)}>
+      {/* If exercise is hidden, show a special icon, if not, show another icon */}
       <img src={
         hiddenExercises.has(exerciseIndex)
           ? "/src/assets/rightFacingArrow.svg"

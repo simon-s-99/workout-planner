@@ -1,4 +1,4 @@
-.exerciseContainer {
+.ExerciseContainer {
   min-width: 430px;
   max-width: 430px;
   border-radius: 10px;
@@ -36,6 +36,7 @@
   width: 36px;
   background-color: #f9f9f9;
   border: none;
+  cursor: pointer;
 }
 
 .ToggleAllSetsCheckbox {
@@ -45,10 +46,11 @@
 
 .ToggleAllSetsCheckbox>input {
   margin-left: 12px;
+  margin-right: 1px;
   vertical-align: -2px;
 }
 
-.setInput {
+.WorkingSetInput {
   margin: 12px;
   padding: 12px;
   width: 62px;
@@ -56,7 +58,7 @@
   border: 1px solid #e1e1e1;
 }
 
-.addButton {
+.AddSetButton {
   display: inline-block;
   background-color: #4CAF50;
   color: white;
@@ -64,10 +66,9 @@
   border-radius: 6px;
   cursor: pointer;
   margin-top: 10px;
-}
-
-.deleteButton {
-  cursor: pointer;
+  font-weight: 500;
+  font-family: inherit;
+  border: none;
 }
 
 .RemoveExerciseButton {
@@ -81,4 +82,18 @@
   background-color: #f9f9f9;
   border: 1px solid #e1e1e1;
   border-radius: 4px;
+}
+
+.InputAndButtonContainer>button {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+}
+
+.InputAndButtonContainer>span {
+  margin-right: 8px;
+  margin-left: 8px;
 }

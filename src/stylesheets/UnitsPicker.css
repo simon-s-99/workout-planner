@@ -1,15 +1,21 @@
 .UnitsPicker {
-  max-width: 290px;
+  max-width: 220px;
+  margin: 0 auto;
   border: 1px solid #e1e1e1;
   border-radius: 10px;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .UnitsPicker label {
-  padding: 1rem;
   cursor: pointer;
+  padding: 0.5rem;
 }
 
 .UnitsPicker label:first-of-type {
   border-right: 1px solid rgb(165, 165, 165);
+  padding-right: 0.8rem;
+}
+
+.UnitsPicker label:last-of-type {
+  padding-left: 0.8rem;
 }

@@ -19,7 +19,7 @@ const App: React.FC = () => {
 
   // Currently selected weekday, initialized to "Monday" in case we want a start value.
   const [selectedWeekday, setSelectedWeekday] = useState<Weekday>("Monday");
-  
+
   function getExerciseData(): void {
     const mondayData = useLocalStorageRead("Monday");
     const tuesdayData = useLocalStorageRead("Tuesday");
@@ -28,18 +28,18 @@ const App: React.FC = () => {
     const fridayData = useLocalStorageRead("Friday");
     const saturdayData = useLocalStorageRead("Saturday");
     const sundayData = useLocalStorageRead("Sunday");
-    
+
     // Combine all arrays into one
     const exerciseData = mondayData
-    .concat(tuesdayData)
-    .concat(wednesdayData)
-    .concat(thursdayData)
-    .concat(fridayData)
-    .concat(saturdayData)
-    .concat(sundayData);
-    
+      .concat(tuesdayData)
+      .concat(wednesdayData)
+      .concat(thursdayData)
+      .concat(fridayData)
+      .concat(saturdayData)
+      .concat(sundayData);
+
     setExerciseData(exerciseData);
-  
+
   }
 
   // bool to help toggle between the add exercise interface and the main content
@@ -65,8 +65,11 @@ const App: React.FC = () => {
       <main>
         <menu>
           <WeekdayPicker selectedWeekday={selectedWeekday} setSelectedWeekday={setSelectedWeekday} />
-          <ResetProgress getExerciseData={getExerciseData} />
-          <ClearDay getExerciseData={getExerciseData} selectedWeekday={selectedWeekday} />
+
+          <div className="ResetAndClearButtons">
+            <ResetProgress getExerciseData={getExerciseData} />
+            <ClearDay getExerciseData={getExerciseData} selectedWeekday={selectedWeekday} />
+          </div>
         </menu>
 
         <section>
@@ -110,6 +113,10 @@ const App: React.FC = () => {
           </div>
         </aside>
       </main>
+      <footer>
+        <p>Made in 2024 by</p>
+        <p>Samuel Lööf, Adam Kumlin & Simon Sörqvist</p>
+      </footer>
     </div>
   );
 };

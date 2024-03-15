@@ -1,5 +1,11 @@
 import { useState, useEffect } from "react";
-import type { ExerciseObject, Weekday, WeekdayExerciseMap, WorkingSet, MuscleGroup } from "../types";
+import type {
+  ExerciseObject,
+  Weekday,
+  WeekdayExerciseMap,
+  WorkingSet,
+  MuscleGroup,
+} from "../types";
 import { useLocalStorageWrite } from "../hooks/useLocalStorageWrite";
 
 interface MuscleCategoryProps {
@@ -30,7 +36,7 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({
     // this is intended React behaviour to help us catch bugs.
     fetch(url, {
       headers: {
-        "X-Api-Key": "hRwPXK6YvKgUbEKzGW01sw==YttRwZHUK8grKBfI",
+        "X-Api-Key": "WBwUck3C9U2k4S4Jn9yKFw==L0a2Ew4qeuJPacz3",
       },
     })
       .then((response) => response.json())
@@ -52,7 +58,10 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({
     newExercise.sets = [initialSet];
 
     // new WeekdayExerciseMap to give to useLocalStorageWrite
-    const weekdayExerciseMap: WeekdayExerciseMap = new Map<Weekday, ExerciseObject[]>([[weekday, [newExercise]]]);
+    const weekdayExerciseMap: WeekdayExerciseMap = new Map<
+      Weekday,
+      ExerciseObject[]
+    >([[weekday, [newExercise]]]);
 
     // write to local storage effectively adding the exercise to the users program
     useLocalStorageWrite(weekdayExerciseMap);
@@ -67,15 +76,19 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({
     return (
       <ul className="muscleGroupCategoryExercisesList">
         {loading ? (
-          <li style={style.loading}><i>Loading...</i></li>
+          <li style={style.loading}>
+            <i>Loading...</i>
+          </li>
         ) : (
           exercises.map((exercise, index) => (
             <li key={index}>
               <label>
-                <input type="button" 
+                <input
+                  type="button"
                   name="button"
-                  value={exercise.name} 
-                  onClick={() => addExerciseToWeekday(weekday, index)}></input>
+                  value={exercise.name}
+                  onClick={() => addExerciseToWeekday(weekday, index)}
+                ></input>
               </label>
             </li>
           ))
@@ -92,5 +105,5 @@ export default MuscleCategoryExercisesList;
 const style = {
   loading: {
     listStyle: "none",
-  }
-}
+  },
+};

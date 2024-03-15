@@ -5,7 +5,7 @@ test.describe("Exercise component tests", () => {
     await page.goto("http://localhost:5173");
   });
 
-  test("add pushups as an exercise, then change the weight", async ({ page }) => {
+  test("add pushups as an exercise, then change the weight from kgs to lbs", async ({ page }) => {
     await page.click(".AddExerciseMenu .button");
     await page.click("text=Chest");
     await page.click("text=Pushups");

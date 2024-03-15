@@ -5,7 +5,7 @@ test.describe("Exercise component tests", () => {
     await page.goto("http://localhost:5173");
   });
 
-  test("add pushups as an exercise, then switch weekday from monday to friday and add ", async ({ page }) => {
+  test("add pushups as an exercise, then switch weekday from monday to friday and add hip thrusts as an exercise", async ({ page }) => {
     await page.click(".AddExerciseMenu .button");
     await page.click("text=Chest");
     await page.click("text=Pushups");

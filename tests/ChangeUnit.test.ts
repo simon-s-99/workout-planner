@@ -15,7 +15,7 @@ test.describe("Change unit tests", () => {
 
     await page.click('.UnitsPicker label:text("Pounds")');
     // await weight change from 50 to 110
-    const weightValue = await page.inputValue('.setInput[name="weightInput"]');
+    const weightValue = await page.inputValue('.WorkingSetInput[name="WeightInput"]');
     expect(weightValue).toBe('110');
 
   });

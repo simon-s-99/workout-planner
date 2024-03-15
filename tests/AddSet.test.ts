@@ -13,15 +13,15 @@ test.describe("Exercise component tests", () => {
     await expect(page.locator('p:text("Pushups")')).toBeVisible();
     await expect(page.locator("text=Set 1:")).toBeVisible();
 
-    await page.click('.addButton');
+    await page.click('.AddSetButton');
     await expect(page.locator("text=Set 2:")).toBeVisible();
 
-    await page.click('.inputAndButtonContainer>button');
+    await page.click('.InputAndButtonContainer>button');
     await expect(page.locator("text=Set 2:")).not.toBeVisible();
 
     await page.click('.RemoveExerciseButton>label>input');
     await expect(page.locator('p:text("Pushups")')).not.toBeVisible();
 
   });
-  
+
 });

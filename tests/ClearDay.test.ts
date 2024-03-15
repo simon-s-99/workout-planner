@@ -13,11 +13,9 @@ test.describe("Clear day tests", () => {
     await expect(page.locator('p:text("Barbell Deadlift")')).toBeVisible();
     await expect(page.locator("text=Set 1:")).toBeVisible();
 
-    await page.click('.clear-day-button');
-    await expect(page.locator(".dialog")).toBeVisible();
-    await page.click('.dialog button'); //press the "yes" button
+    await page.click('.ClearDayButton');
+    await expect(page.locator(".Dialogue")).toBeVisible();
+    await page.click('.Dialogue button'); //press the "yes" button
     await expect(page.locator('p:text("Barbell Deadlift")')).not.toBeVisible();
-
   });
-  
 });

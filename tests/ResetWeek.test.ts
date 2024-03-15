@@ -14,19 +14,19 @@ test.describe("Reset week tests", () => {
     await expect(page.locator('p:text("Pushups")')).toBeVisible();
     await expect(page.locator("text=Set 1:")).toBeVisible();
 
-    await page.click('.addButton');
-    await page.click('.addButton');
+    await page.click('.AddSetButton');
+    await page.click('.AddSetButton');
     await expect(page.locator("text=Set 2:")).toBeVisible();
     await expect(page.locator("text=Set 3:")).toBeVisible();
 
     const checkboxSelector = '.InnerExerciseContainer input[type="checkbox"]'; // Targets toggle all sets
-    await page.click(checkboxSelector); 
+    await page.click(checkboxSelector);
 
     // Re-check if the checkbox is checked
     let isChecked = await page.isChecked(checkboxSelector);
     expect(isChecked).toBe(true);
 
-    await page.click(".reset-week");
+    await page.click(".ResetWeek");
 
     isChecked = await page.isChecked(checkboxSelector);
     // Assert that the checkbox is now unchecked

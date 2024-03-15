@@ -122,7 +122,7 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
           Weight
           <input
             type="number"
-            name="weightInput"
+            name="WeightInput"
             className="WorkingSetInput"
             min="0"
             value={set.weight}

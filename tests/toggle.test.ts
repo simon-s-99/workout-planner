@@ -14,14 +14,14 @@ test.describe("toggle checkbox tests", () => {
     await expect(page.locator('p:text("Pushups")')).toBeVisible();
     await expect(page.locator("text=Set 1:")).toBeVisible();
 
-    await page.click('.addButton');
-    await page.click('.addButton');
+    await page.click('.AddSetButton');
+    await page.click('.AddSetButton');
     await expect(page.locator("text=Set 2:")).toBeVisible();
     await expect(page.locator("text=Set 3:")).toBeVisible();
 
     const checkboxSelector = '[data-testid="checkbox-exercise-0-set-1"]'; //targets the first added set
 
-    await page.click(checkboxSelector); 
+    await page.click(checkboxSelector);
 
     // Check if the checkbox is checked
     const isChecked = await page.isChecked(checkboxSelector);

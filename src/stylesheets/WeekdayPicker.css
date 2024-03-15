@@ -5,13 +5,13 @@
   border-radius: 10px;
 }
 
-.weekday {
+.WeekdayInput {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.weekday-label {
+.WeekdayLabel {
   padding-top: 16px;
   padding-bottom: 16px;
   cursor: pointer;
@@ -20,22 +20,22 @@
   font-weight: bold;
 }
 
-.weekday-label:not(:last-child) {
+.WeekdayLabel:not(:last-child) {
   border-bottom: 1px solid #e1e1e1;
 }
 
-.weekday-label:hover {
+.WeekdayLabel:hover {
   background-color: rgb(240, 230, 230);
 }
 
-.weekday-label.selected {
+.WeekdayLabel.Selected {
   background-color: #8beb7f;
 }
 
-.weekday-label.selected:first-child {
+.WeekdayLabel.Selected:first-child {
   border-radius: 10px 10px 0px 0px;
 }
 
-.weekday-label.selected:last-child {
+.WeekdayLabel.Selected:last-child {
   border-radius: 0px 0px 10px 10px;
 }

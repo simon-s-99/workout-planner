@@ -34,7 +34,7 @@ const Exercise: React.FC<ExerciseProps> = ({ weekday, exerciseData, getExerciseD
   return (
     <>
       {exercises.map((exercise, exerciseIndex) => (
-        <div key={exerciseIndex} className="exerciseContainer">
+        <div key={exerciseIndex} className="ExerciseContainer">
           <div className="RemoveExerciseButton">
             <RemoveExerciseButton
               exerciseIndex={exerciseIndex}

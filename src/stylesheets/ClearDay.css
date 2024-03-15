@@ -4,6 +4,7 @@
   border: 1px solid #e1e1e1;
   margin-top: 8px;
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .FeedbackDialogue {

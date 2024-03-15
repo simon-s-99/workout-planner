@@ -95,7 +95,7 @@ const WorkingSet: React.FC<WorkingSetProps> = ({
   return (
     <>
       {exercise.sets.map((set, setIndex) => (
-        <div key={setIndex} className="inputAndButtonContainer">
+        <div key={setIndex} className="InputAndButtonContainer">
           <button type="button" onClick={() => removeSet(exerciseIndex, setIndex)}>❌</button>
           <span>Set {setIndex + 1}:</span>
           Reps

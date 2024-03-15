@@ -22,7 +22,7 @@
     cursor: pointer;
 }
 
-.muscleGroupsCategoriesList {
+.MuscleGroupsCategoriesList {
     width: 100%;
     list-style-position: inside;
     background-color: #f9f9f9;
@@ -30,19 +30,19 @@
     border-radius: 10px;
 }
 
-.muscleGroupsCategoriesList li {
+.MuscleGroupsCategoriesList li {
     padding: 3px;
 }
 
-.muscleGroupsCategoriesList li:first-child {
+.MuscleGroupsCategoriesList li:first-child {
     padding-top: 6px;
 }
 
-.muscleGroupsCategoriesList li:last-child {
+.MuscleGroupsCategoriesList li:last-child {
     padding-bottom: 6px;
 }
 
-.muscleGroupsCategoriesList li label input[name="categoryDropdown"] {
+.MuscleGroupsCategoriesList li label input[name="categoryDropdown"] {
     width: 92%;
     vertical-align: 10%;
     /* aligns li's arrows to center of button*/
@@ -52,12 +52,12 @@
     cursor: pointer;
 }
 
-.muscleGroupCategoryExercisesList {
+.MuscleGroupCategoryExercisesList {
     list-style: inside;
     list-style-image: url("/src/assets/plusSign.svg");
 }
 
-.muscleGroupCategoryExercisesList li label input[name="button"] {
+.MuscleGroupCategoryExercisesList li label input[name="button"] {
     width: 84%;
     vertical-align: 40%;
     /* aligns li's arrows to center of button*/

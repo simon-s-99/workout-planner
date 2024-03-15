@@ -25,12 +25,12 @@ const allWeekdays: Weekday[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "F
           (weekday) => (
             <label
               key={weekday} // Unique key for each element in the list, which is required by React.
-              className={`weekday-label ${selectedWeekday === weekday ? "selected" : ""}`}
+              className={`WeekdayLabel ${selectedWeekday === weekday ? "Selected" : ""}`}
               // Apply the "selected" class if the current weekday matches the selectedWeekday state
             >
               {weekday}
               <input
-                className="weekday"
+                className="WeekdayInput"
                 type="radio"
                 name="weekday"
                 value={weekday}

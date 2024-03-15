@@ -42,7 +42,7 @@ const ResetProgress: React.FC<ResetProgressProps> = ({ getExerciseData }) => {
 
   return (
     <div>
-      <button type="button" className="reset-week" onClick={handleReset}>
+      <button type="button" className="ResetWeek" onClick={handleReset}>
         Reset week ♻
       </button>
     </div>

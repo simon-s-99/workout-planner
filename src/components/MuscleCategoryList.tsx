@@ -59,7 +59,7 @@ const MuscleCategoryList: React.FC<MuscleCategoryListProps> = ({ weekday, getExe
     });
 
   return (
-    <ul className="muscleGroupsCategoriesList">{muscleGroupsListItems}</ul>
+    <ul className="MuscleGroupsCategoriesList">{muscleGroupsListItems}</ul>
   );
 };
 

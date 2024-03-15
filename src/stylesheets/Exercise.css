@@ -1,4 +1,4 @@
-.exerciseContainer {
+.ExerciseContainer {
   min-width: 430px;
   max-width: 430px;
   border-radius: 10px;
@@ -36,6 +36,7 @@
   width: 36px;
   background-color: #f9f9f9;
   border: none;
+  cursor: pointer;
 }
 
 .ToggleAllSetsCheckbox {
@@ -83,7 +84,7 @@
   border-radius: 4px;
 }
 
-.inputAndButtonContainer>button {
+.InputAndButtonContainer>button {
   width: 24px;
   height: 24px;
   cursor: pointer;
@@ -92,7 +93,7 @@
   border-radius: 4px;
 }
 
-.inputAndButtonContainer>span {
+.InputAndButtonContainer>span {
   margin-right: 8px;
   margin-left: 8px;
 }

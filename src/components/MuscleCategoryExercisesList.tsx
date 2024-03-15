@@ -81,7 +81,7 @@ const MuscleCategoryExercisesList: React.FC<MuscleCategoryProps> = ({
           </li>
         ) : (
           exercises.map((exercise, index) => (
-            <li key={index}>
+            <li key={index} style={style.plusSign}>
               <label>
                 <input
                   type="button"
@@ -106,4 +106,8 @@ const style = {
   loading: {
     listStyle: "none",
   },
+  plusSign: {
+    // This has to be placed here for correct import when running 'npm run build'
+    listStyleImage: 'url("./plusSign.svg")',
+  }
 };

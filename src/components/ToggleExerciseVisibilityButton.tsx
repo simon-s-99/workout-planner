@@ -32,8 +32,8 @@ const TogglePageVisibilityButton: React.FC<TogglePageVisibilityButtonProps> = ({
       {/* If exercise is hidden, show a special icon, if not, show another icon */}
       <img src={
         hiddenExercises.has(exerciseIndex)
-          ? "/src/assets/rightFacingArrow.svg"
-          : "/src/assets/downFacingArrow.svg"
+          ? "./rightFacingArrow.svg"
+          : "./downFacingArrow.svg"
       }
         className="visibilityButtonImg" alt="Toggle visibilityButton" />
     </button>

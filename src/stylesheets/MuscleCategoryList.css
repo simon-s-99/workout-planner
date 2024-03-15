@@ -54,7 +54,6 @@
 
 .MuscleGroupCategoryExercisesList {
     list-style: inside;
-    list-style-image: url("/src/assets/plusSign.svg");
 }
 
 .MuscleGroupCategoryExercisesList li label input[name="button"] {

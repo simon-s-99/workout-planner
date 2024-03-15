@@ -71,9 +71,9 @@ export default MuscleCategoryList;
 // css for the dropdown menus icon, handled dynamically in the jsx
 const style = {
   activeDropdown: {
-    listStyleImage: 'url("/src/assets/downFacingArrow.svg")',
+    listStyleImage: 'url("./downFacingArrow.svg")',
   },
   inactiveDropdown: {
-    listStyleImage: 'url("/src/assets/rightFacingArrow.svg")',
+    listStyleImage: 'url("./rightFacingArrow.svg")',
   },
 };
